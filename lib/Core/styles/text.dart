@@ -1,5 +1,5 @@
 import 'package:flutter/rendering.dart';
-import 'package:qanony/Core/styles/font.dart';
+import 'package:qanony/core/styles/font.dart';
 
 class AppText {
   static const TextStyle appHeading = TextStyle(
