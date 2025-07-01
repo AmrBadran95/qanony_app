@@ -15,7 +15,7 @@ class CustomButton extends StatelessWidget {
     required this.width,
     required this.height,
     required this.backgroundColor,
-    required this.textStyle
+    required this.textStyle,
   });
 
   @override
@@ -27,10 +27,10 @@ class CustomButton extends StatelessWidget {
         height: height,
         decoration: BoxDecoration(
           color: backgroundColor,
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(8),
         ),
         alignment: Alignment.center,
-        child: Text(text, textAlign: TextAlign.center, style: textStyle,),
+        child: Text(text, textAlign: TextAlign.center, style: textStyle),
       ),
     );
   }
