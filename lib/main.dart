@@ -12,6 +12,9 @@ class QanonyApp extends StatelessWidget {
     return MaterialApp(
       title: 'قانوني',
       theme: ThemeData(fontFamily: 'Cairo'),
+      builder: (context, child) {
+        return Directionality(textDirection: TextDirection.rtl, child: child!);
+      },
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
