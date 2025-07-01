@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomFormTextField extends StatelessWidget {
+class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final TextStyle textStyle;
@@ -15,7 +15,7 @@ class CustomFormTextField extends StatelessWidget {
   final bool obscureText;
   final String? Function(String?)? validator;
 
-  const CustomFormTextField({
+  const CustomTextFormField({
     super.key,
     required this.controller,
     required this.hintText,
