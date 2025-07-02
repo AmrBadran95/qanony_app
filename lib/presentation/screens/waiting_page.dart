@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/font.dart';
 import 'package:qanony/Core/styles/padding.dart';
+import 'package:qanony/Core/styles/text.dart';
 
 class WaitingPage extends StatelessWidget {
   const WaitingPage({super.key});
@@ -18,23 +19,13 @@ class WaitingPage extends StatelessWidget {
             children: [
               Text(
                 'برجاء الانتظار...',
-                style: TextStyle(
-                  fontFamily: AppFont.mainFont,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: AppColor.primary,
-                ),
+                style: AppText.headingMedium,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
               Text(
                 'تم إرسال بياناتك بنجاح ! عملية توثيق الهوية قيد المراجعه',
-                style: TextStyle(
-                  fontFamily: AppFont.mainFont,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: AppColor.dark,
-                ),
+                style: AppText.bodyLarge,
                 textAlign: TextAlign.center,
               ),
             ],
