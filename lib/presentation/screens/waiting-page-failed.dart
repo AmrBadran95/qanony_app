@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
-import 'package:qanony/Core/widgets/custom_button.dart'; // تأكد إن ده المسار الصحيح للزرار
+import 'package:qanony/Core/widgets/custom_button.dart';
 
 class WaitingPageFailed extends StatelessWidget {
   const WaitingPageFailed({super.key});
