@@ -18,26 +18,24 @@ class WaitingPageFailed extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'عمليه غير ناجحه!',
-                style: AppText.headingMedium,
+                'عملية غير ناجحة!',
+                style: AppText.headingMedium.copyWith(color: AppColor.primary),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
               Text(
-                'تم رفض طلبك ! برجاء التأكد من صحه البيانات والمحاوله مره اخرى',
-                style: AppText.bodyLarge,
+                'تم رفض طلبك ! برجاء التأكد من صحة البيانات والمحاولة مرة اخرى',
+                style: AppText.bodyLarge.copyWith(color: AppColor.dark),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 32),
               CustomButton(
-                text: 'العوده الي تسجيل الدخول',
-                onTap: () {
-                  Navigator.pop(context);
-                },
+                text: 'العودة الي تسجيل الدخول',
+                onTap: () {},
                 width: double.infinity,
                 height: 50,
                 backgroundColor: AppColor.primary,
-                textStyle: AppText.bodyMedium.copyWith(color: Colors.white),
+                textStyle: AppText.bodyMedium.copyWith(color: AppColor.light),
               ),
             ],
           ),
