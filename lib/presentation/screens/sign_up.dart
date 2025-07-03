@@ -32,7 +32,7 @@ class SignUpScreen extends StatelessWidget {
               const Spacer(),
 
               CustomTextFormField(
-                logo: const Icon(Icons.email_outlined),
+                logo: const Icon(Icons.email_outlined, color: AppColor.dark),
                 hintText: 'البريد الالكتروني',
                 controller: emailController,
                 textStyle: AppText.bodyMedium,
@@ -46,7 +46,7 @@ class SignUpScreen extends StatelessWidget {
               const SizedBox(height: 16),
 
               CustomTextFormField(
-                logo: const Icon(Icons.phone),
+                logo: const Icon(Icons.phone, color: AppColor.dark),
                 hintText: 'رقم الهاتف',
                 controller: phoneController,
                 textStyle: AppText.bodyMedium,
@@ -60,7 +60,7 @@ class SignUpScreen extends StatelessWidget {
               const SizedBox(height: 16),
 
               CustomTextFormField(
-                logo: const Icon(Icons.password_outlined),
+                logo: const Icon(Icons.password_outlined, color: AppColor.dark),
                 hintText: 'كلمة المرور',
                 controller: passwordController,
                 textStyle: AppText.bodyMedium,
@@ -75,7 +75,7 @@ class SignUpScreen extends StatelessWidget {
               const SizedBox(height: 16),
 
               CustomTextFormField(
-                logo: const Icon(Icons.password_outlined),
+                logo: const Icon(Icons.password_outlined, color: AppColor.dark),
                 hintText: 'تأكيد كلمة المرور',
                 controller: confirmPasswordController,
                 textStyle: AppText.bodyMedium,
@@ -96,10 +96,7 @@ class SignUpScreen extends StatelessWidget {
                 width: double.infinity,
                 height: 55,
                 backgroundColor: AppColor.primary,
-                textStyle: AppText.bodyMedium.copyWith(
-                  color: AppColor.light,
-                  fontWeight: FontWeight.bold,
-                ),
+                textStyle: AppText.title.copyWith(color: AppColor.light),
               ),
               const Spacer(),
 
@@ -111,9 +108,8 @@ class SignUpScreen extends StatelessWidget {
                     children: [
                       TextSpan(
                         text: 'تسجيل دخول',
-                        style: AppText.bodySmall.copyWith(
+                        style: AppText.bodyMedium.copyWith(
                           color: AppColor.primary,
-                          fontWeight: FontWeight.w600,
                         ),
                         recognizer: TapGestureRecognizer()..onTap = () {},
                       ),
