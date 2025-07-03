@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'Core/shared/Decider.dart';
+import 'Core/shared/logincash.dart';
 
-void main() {
+void main () async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SharedHelper.init();
   runApp(const QanonyApp());
 }
 
@@ -15,7 +19,7 @@ class QanonyApp extends StatelessWidget {
       builder: (context, child) {
         return Directionality(textDirection: TextDirection.rtl, child: child!);
       },
-      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      // home:const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
