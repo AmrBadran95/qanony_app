@@ -1,18 +1,14 @@
 import 'package:bloc/bloc.dart';
-
-import '../../../Core/shared/logincache.dart';
+import 'package:flutter/material.dart';
+import 'package:qanony/Core/shared/app_cache.dart';
 
 part 'onboarding_state.dart';
 
 class OnboardingCubit extends Cubit<OnboardingState> {
-  OnboardingCubit() : super(OnboardingInitial(pageIndex: 0));
-
-  void changePage(int index) {
-    emit(OnboardingInitial(pageIndex: index));
-  }
+  OnboardingCubit() : super(OnboardingInitial());
 
   Future<void> completeOnboarding() async {
-    await SharedHelper.saveOnboardingDone(true);
+    await AppCache.setFirstLaucnch(false);
     emit(OnboardingSkipped());
   }
 }
