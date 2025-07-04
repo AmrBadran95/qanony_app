@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(const QanonyApp());
@@ -12,6 +13,13 @@ class QanonyApp extends StatelessWidget {
     return MaterialApp(
       title: 'قانوني',
       theme: ThemeData(fontFamily: 'Cairo'),
+      locale: const Locale('ar', 'EG'),
+      supportedLocales: const [Locale('ar', 'EG'), Locale('en', 'US')],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       builder: (context, child) {
         return Directionality(textDirection: TextDirection.rtl, child: child!);
       },

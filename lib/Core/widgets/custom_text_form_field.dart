@@ -13,6 +13,7 @@ class CustomTextFormField extends StatelessWidget {
   final Color cursorColor;
   final bool filled;
   final Widget? logo;
+  final int? maxLines;
   final TextInputType keyboardType;
   final bool obscureText;
   final String? Function(String?)? validator;
@@ -27,6 +28,7 @@ class CustomTextFormField extends StatelessWidget {
     required this.width,
     required this.height,
     required this.backgroundColor,
+    this.maxLines,
     this.filled = false,
     this.cursorColor = AppColor.dark,
     this.logo,
@@ -41,6 +43,7 @@ class CustomTextFormField extends StatelessWidget {
       width: width,
       height: height,
       child: TextFormField(
+        maxLines: maxLines,
         controller: controller,
         keyboardType: keyboardType,
         obscureText: obscureText,
@@ -59,7 +62,7 @@ class CustomTextFormField extends StatelessWidget {
             borderSide: BorderSide.none,
           ),
           contentPadding: contentPadding,
-          suffixIcon: logo != null
+          prefixIcon: logo != null
               ? Padding(padding: const EdgeInsets.only(right: 32), child: logo)
               : null,
         ),
