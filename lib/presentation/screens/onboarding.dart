@@ -3,14 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
+import 'package:qanony/core/widgets/onboarding_screen.dart';
+import 'package:qanony/presentation/screens/choose_role_screen.dart';
 import '../../Core/styles/color.dart';
 import '../../Core/widgets/Indicator.dart';
-import '../../Core/widgets/onboardingScreen.dart';
 import '../../services/cubits/onboarding/onboarding_cubit.dart';
-import 'ChooseRoleScreen.dart';
 
-class onboarding extends StatelessWidget {
-  const onboarding({super.key});
+class Onboarding extends StatelessWidget {
+  const Onboarding({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +28,12 @@ class onboarding extends StatelessWidget {
             child: BlocBuilder<OnboardingCubit, OnboardingState>(
               builder: (context, state) {
                 if (state is OnboardingSkipped) {
-                  //بتأكدان كل الويدجات اتبنت وبعدين ينقل عشان ميعملش كراش ي عمرووو
                   Future.microtask(() {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (_) => const ChooseRoleScreen()),
+                      MaterialPageRoute(
+                        builder: (_) => const ChooseRoleScreen(),
+                      ),
                     );
                   });
                   //
@@ -58,19 +59,21 @@ class onboarding extends StatelessWidget {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                //تمام كداااااااااا
                                 await cubit.completeOnboarding();
                                 if (context.mounted) {
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (_) => const ChooseRoleScreen()),
+                                      builder: (_) => const ChooseRoleScreen(),
+                                    ),
                                   );
                                 }
                               },
                               child: Text(
                                 "تخطى",
-                                style: AppText.bodyMedium.copyWith(color: AppColor.secondary),
+                                style: AppText.bodyMedium.copyWith(
+                                  color: AppColor.secondary,
+                                ),
                               ),
                             ),
                           ],
@@ -82,47 +85,48 @@ class onboarding extends StatelessWidget {
                           child: Column(
                             children: [
                               SizedBox(
-                                height: MediaQuery.of(context).size.height * 0.6,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.6,
                                 child: PageView(
                                   controller: controller,
                                   onPageChanged: (i) {
                                     cubit.changePage(i);
                                   },
-                                  children: [
-                                    onboardingPage(
-
+                                  children: const [
+                                    OnboardingPage(
                                       text: 'أهلاً بك في دستورى',
                                       imagePath: 'assets/images/p1.png',
                                       paragraph:
-                                      "منصتك القانونية الذكية. سواء كنت محامٍ أو باحث عن استشارة، كل الحلول القانونية بين إيديك",
+                                          "منصتك القانونية الذكية. سواء كنت محامٍ أو باحث عن استشارة، كل الحلول القانونية بين إيديك",
                                     ),
-                                    onboardingPage(
-
+                                    OnboardingPage(
                                       text: 'خدمات قانونية في متناولك',
                                       imagePath: 'assets/images/lawyer 1.png',
                                       paragraph:
-                                      "اختَر محامي متخصص، اطلب خدمة، وتابع كل خطواتك من مكانك.",
+                                          "اختَر محامي متخصص، اطلب خدمة، وتابع كل خطواتك من مكانك.",
                                     ),
-                                    onboardingPage(
-
+                                    OnboardingPage(
                                       text: 'أمان وتنظيم في كل خطوة',
                                       imagePath: 'assets/images/court 1.png',
                                       paragraph:
-                                      "احفظ مستنداتك، راجع معاملتك، وتواصل مع محاميك بثقة كاملة..",
+                                          "احفظ مستنداتك، راجع معاملتك، وتواصل مع محاميك بثقة كاملة..",
                                     ),
                                   ],
                                 ),
                               ),
                               SizedBox(
-                                height: MediaQuery.of(context).size.height * 0.02,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.02,
                               ),
 
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: List.generate(
                                   3,
-                                      (i) => Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                                  (i) => Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 4,
+                                    ),
                                     child: Indicator(
                                       active: index == i,
                                       width: index == i ? 40 : 30,
@@ -134,16 +138,20 @@ class onboarding extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.03,
+                              ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   ElevatedButton(
                                     onPressed: () {
-                                      //الانميشن دا عشان التنقل ف pageViewيبقى جموده
                                       controller.animateToPage(
                                         nextIndex,
-                                        duration: const Duration(milliseconds: 600),
+                                        duration: const Duration(
+                                          milliseconds: 600,
+                                        ),
                                         curve: Curves.easeInOut,
                                       );
                                       cubit.changePage(nextIndex);

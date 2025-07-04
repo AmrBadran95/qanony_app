@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qanony/Core/styles/color.dart';
 
 import '../../Core/widgets/my_appointments_widget.dart';
-import '../screens/add-appointment.dart';
+import '../screens/add_appointment.dart';
 
 class MyAppointmentsTab extends StatelessWidget {
   const MyAppointmentsTab({super.key});

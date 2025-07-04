@@ -28,7 +28,7 @@ class CustomTextFormField extends StatelessWidget {
     required this.width,
     required this.height,
     required this.backgroundColor,
-    this.maxLines,
+    this.maxLines = 1,
     this.filled = false,
     this.cursorColor = AppColor.dark,
     this.logo,

@@ -4,5 +4,7 @@ part of 'decider_cubit.dart';
 sealed class DeciderState {}
 
 final class DeciderInitial extends DeciderState {}
+
 final class DeciderOnboarding extends DeciderState {}
+
 final class DeciderChooseRole extends DeciderState {}

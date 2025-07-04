@@ -11,7 +11,7 @@ class AppointmentLawyer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const DefaultTabController(
+    return DefaultTabController(
       length: 2,
       child: LawyerBaseScreen(
         body: Column(
@@ -21,11 +21,21 @@ class AppointmentLawyer extends StatelessWidget {
               unselectedLabelColor: AppColor.grey,
               indicatorColor: AppColor.secondary,
               tabs: [
-                Tab(child: Text("مواعيدى", style: AppText.bodyLarge)),
-                Tab(child: Text("مواعيد قانونى", style: AppText.bodyLarge)),
+                Tab(
+                  child: Text(
+                    "مواعيدى",
+                    style: AppText.bodyLarge.copyWith(color: AppColor.dark),
+                  ),
+                ),
+                Tab(
+                  child: Text(
+                    "مواعيد قانونى",
+                    style: AppText.bodyLarge.copyWith(color: AppColor.dark),
+                  ),
+                ),
               ],
             ),
-            Expanded(
+            const Expanded(
               child: TabBarView(
                 children: [MyAppointmentsTab(), QanonyAppointmentsTab()],
               ),
