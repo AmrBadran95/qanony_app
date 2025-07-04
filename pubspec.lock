@@ -136,7 +136,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.20.2"
-
   flutter_web_plugins:
     dependency: transitive
     description: flutter

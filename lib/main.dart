@@ -20,6 +20,8 @@ class QanonyApp extends StatelessWidget {
 
       title: 'قانوني',
       theme: ThemeData(fontFamily: 'Cairo'),
+      locale: const Locale('ar', 'EG'),
+      supportedLocales: const [Locale('ar', 'EG'), Locale('en', 'US')],
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
