@@ -88,7 +88,11 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.calendar_month, size: 18, color: AppColor.dark),
+                const Icon(
+                  Icons.calendar_month,
+                  size: 18,
+                  color: AppColor.dark,
+                ),
                 const SizedBox(width: 4),
                 Text(
                   date,
@@ -98,7 +102,7 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 12),
-                Icon(Icons.access_time, size: 18, color: AppColor.dark),
+                const Icon(Icons.access_time, size: 18, color: AppColor.dark),
                 const SizedBox(width: 4),
                 Text(
                   time,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:qanony/presentation/screens/appointment-lawyer.dart';
 
 void main() {
   runApp(const QanonyApp());
@@ -21,8 +22,8 @@ class QanonyApp extends StatelessWidget {
       builder: (context, child) {
         return Directionality(textDirection: TextDirection.rtl, child: child!);
       },
-
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const AppointmentLawyer(),
     );
   }
 }

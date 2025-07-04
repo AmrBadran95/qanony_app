@@ -50,7 +50,7 @@ class MyAppointmentsTab extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AddAppointment()),
+                MaterialPageRoute(builder: (context) => const AddAppointment()),
               );
             },
             child: const Icon(Icons.add, size: 30, color: AppColor.light),

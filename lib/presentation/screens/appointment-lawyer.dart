@@ -11,12 +11,12 @@ class AppointmentLawyer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
+    return const DefaultTabController(
       length: 2,
       child: LawyerBaseScreen(
         body: Column(
           children: [
-            const TabBar(
+            TabBar(
               labelColor: AppColor.dark,
               unselectedLabelColor: AppColor.grey,
               indicatorColor: AppColor.secondary,
