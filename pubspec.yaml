@@ -14,6 +14,9 @@ dependencies:
   cupertino_icons: ^1.0.8
   bloc: ^9.0.0
   flutter_bloc: ^9.1.1
+  intl: ^0.20.2
+  flutter_localizations:
+    sdk: flutter
   shared_preferences: ^2.5.3
   splash_screen_view: ^3.0.0
 
