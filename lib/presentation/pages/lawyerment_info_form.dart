@@ -24,7 +24,7 @@ class LawyermentInfoForm extends StatelessWidget {
             textStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
             hintStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
             keyboardType: TextInputType.multiline,
-            maxLines: 5,
+            maxLines: 3,
           ),
           SizedBox(height: MediaQuery.of(context).size.height * .01),
           CustomTextFormField(
