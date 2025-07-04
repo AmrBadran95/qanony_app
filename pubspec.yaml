@@ -17,6 +17,8 @@ dependencies:
   intl: ^0.20.2
   flutter_localizations:
     sdk: flutter
+  shared_preferences: ^2.5.3
+  splash_screen_view: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -29,6 +31,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
+
 
   fonts:
     - family: Cairo
@@ -49,3 +52,5 @@ flutter:
           weight: 300
         - asset: assets/fonts/Cairo-ExtraLight.ttf
           weight: 200
+splash_screen_view:
+    color: "#ffffff"
