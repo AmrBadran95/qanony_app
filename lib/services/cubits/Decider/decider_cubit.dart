@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
 
 import '../../../Core/shared/logincache.dart';
 
@@ -8,6 +8,7 @@ part 'decider_state.dart';
 class DeciderCubit extends Cubit<DeciderState> {
   DeciderCubit() : super(DeciderInitial());
   Future<void> checkDeciderState() async {
+    emit(DeciderOnboarding());
     final done = await SharedHelper.getOnboardingDone();
     if (done) {
       emit(DeciderChooseRole());
@@ -15,5 +16,4 @@ class DeciderCubit extends Cubit<DeciderState> {
       emit(DeciderOnboarding());
     }
   }
-
 }

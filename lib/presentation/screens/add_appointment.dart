@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:qanony/Core/styles/padding.dart';
+import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/core/styles/color.dart';
 import 'package:qanony/core/widgets/custom_text_form_field.dart';
 
@@ -44,7 +45,7 @@ class _AddAppointmentState extends State<AddAppointment> {
         return Theme(
           data: ThemeData.light().copyWith(
             primaryColor: AppColor.primary,
-            colorScheme: ColorScheme.light(primary: AppColor.primary),
+            colorScheme: const ColorScheme.light(primary: AppColor.primary),
             buttonTheme: const ButtonThemeData(
               textTheme: ButtonTextTheme.primary,
             ),
@@ -71,9 +72,6 @@ class _AddAppointmentState extends State<AddAppointment> {
       Navigator.pop(context);
     }
   }
-
-  final textStyle = const TextStyle(fontSize: 16, color: AppColor.dark);
-  final hintStyle = TextStyle(color: AppColor.grey);
 
   @override
   Widget build(BuildContext context) {
@@ -109,8 +107,8 @@ class _AddAppointmentState extends State<AddAppointment> {
               CustomTextFormField(
                 controller: nameController,
                 hintText: '',
-                textStyle: textStyle,
-                hintStyle: hintStyle,
+                textStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
+                hintStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: AppPadding.medium,
                   vertical: AppPadding.small,
@@ -174,8 +172,8 @@ class _AddAppointmentState extends State<AddAppointment> {
               CustomTextFormField(
                 controller: descriptionController,
                 hintText: 'وصف الموعد',
-                textStyle: textStyle,
-                hintStyle: hintStyle,
+                textStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
+                hintStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 16,
                   vertical: 12,
@@ -203,8 +201,8 @@ class _AddAppointmentState extends State<AddAppointment> {
                 controller: priceController,
                 hintText: 'السعر بالجنيه',
                 keyboardType: TextInputType.number,
-                textStyle: textStyle,
-                hintStyle: hintStyle,
+                textStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
+                hintStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 16,
                   vertical: 12,
@@ -234,8 +232,8 @@ class _AddAppointmentState extends State<AddAppointment> {
                   child: CustomTextFormField(
                     controller: dateController,
                     hintText: 'اختر التاريخ',
-                    textStyle: textStyle,
-                    hintStyle: hintStyle,
+                    textStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
+                    hintStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 16,
                       vertical: 12,

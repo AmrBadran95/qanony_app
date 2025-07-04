@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../presentation/screens/ChooseRoleScreen.dart';
+import 'package:qanony/presentation/screens/choose_role_screen.dart';
 import '../../presentation/screens/onboarding.dart';
 import '../../services/cubits/decider/decider_cubit.dart';
-
 
 class Decider extends StatelessWidget {
   const Decider({super.key});
@@ -17,7 +16,7 @@ class Decider extends StatelessWidget {
           if (state is DeciderOnboarding) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (_) => const onboarding()),
+              MaterialPageRoute(builder: (_) => const Onboarding()),
             );
           } else if (state is DeciderChooseRole) {
             Navigator.pushReplacement(
@@ -26,9 +25,7 @@ class Decider extends StatelessWidget {
             );
           }
         },
-        child: const Scaffold(
-          body: Center(child: CircularProgressIndicator()),
-        ),
+        child: const Scaffold(body: Center(child: CircularProgressIndicator())),
       ),
     );
   }
