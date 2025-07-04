@@ -44,13 +44,13 @@ Widget RoleContainer({
               padding: const EdgeInsets.only(right: 4),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly, // لضبط النصوص في المنتصف عموديًا
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
                     text2,
                     style: AppText.bodyMedium.copyWith(color: textColor),
                   ),
-                  SizedBox(height: screenHeight * 0.02), // مسافة بين النصين
+                  SizedBox(height: screenHeight * 0.02),
                   Text(
                     text3,
                     style: AppText.bodyMedium.copyWith(color: textColor),

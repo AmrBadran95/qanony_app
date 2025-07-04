@@ -8,11 +8,12 @@ class OnboardingInitial extends OnboardingState {
   OnboardingInitial({this.pageIndex = 0});
 
   @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        other is OnboardingInitial && pageIndex == other.pageIndex;
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is OnboardingInitial && pageIndex == other.pageIndex;
 
   @override
   int get hashCode => pageIndex.hashCode;
 }
+
+class OnboardingSkipped extends OnboardingState {}
