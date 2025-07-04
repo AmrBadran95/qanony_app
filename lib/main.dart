@@ -22,8 +22,7 @@ class QanonyApp extends StatelessWidget {
       builder: (context, child) {
         return Directionality(textDirection: TextDirection.rtl, child: child!);
       },
-      home: const splashscreen(),
-      // home:const MyHomePage(title: 'Flutter Demo Home Page'),
+      //home:const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
