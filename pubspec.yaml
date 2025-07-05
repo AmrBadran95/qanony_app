@@ -19,6 +19,7 @@ dependencies:
     sdk: flutter
   shared_preferences: ^2.5.3
   flutter_rating_bar: ^4.0.1
+  introduction_screen: ^3.1.17
 
 dev_dependencies:
   flutter_test:
