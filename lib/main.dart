@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:qanony/Core/shared/Decider.dart';
+import 'package:qanony/presentation/screens/lawyer_card.dart';
 import 'package:qanony/presentation/screens/sign_in.dart';
 import 'Core/shared/logincache.dart';
 
@@ -29,7 +31,8 @@ class QanonyApp extends StatelessWidget {
       builder: (context, child) {
         return Directionality(textDirection: TextDirection.rtl, child: child!);
       },
-      home: const SignInScreen(),
+      home: LawyerScreen(),
+      // home: const SignInScreen(),
     );
   }
 }
