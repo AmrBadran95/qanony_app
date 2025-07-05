@@ -1,19 +1,8 @@
 part of 'onboarding_cubit.dart';
 
-abstract class OnboardingState {}
+@immutable
+sealed class OnboardingState {}
 
-class OnboardingInitial extends OnboardingState {
-  final int pageIndex;
+final class OnboardingInitial extends OnboardingState {}
 
-  OnboardingInitial({this.pageIndex = 0});
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-          other is OnboardingInitial && pageIndex == other.pageIndex;
-
-  @override
-  int get hashCode => pageIndex.hashCode;
-}
-
-class OnboardingSkipped extends OnboardingState {}
+final class OnboardingSkipped extends OnboardingState {}
