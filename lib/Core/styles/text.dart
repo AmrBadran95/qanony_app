@@ -42,7 +42,7 @@ class AppText {
     fontSize: 14,
     fontWeight: FontWeight.w600,
   );
-  static const TextStyle labelSmall = TextStyle(
+  static const TextStyle laberSmall = TextStyle(
     fontFamily: AppFont.mainFont,
     fontSize: 12,
     fontWeight: FontWeight.normal,

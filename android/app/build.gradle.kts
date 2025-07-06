@@ -8,7 +8,7 @@ plugins {
 android {
     namespace = "com.example.qanony"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = "29.0.13113456"
+    ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -41,8 +41,4 @@ android {
 
 flutter {
     source = "../.."
-}
-//مهمه عشان الاسبلاش يتشال
-dependencies {
-    implementation("androidx.appcompat:appcompat:1.7.1")
 }
