@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:qanony/core/styles/color.dart';
+import 'package:qanony/Core/styles/color.dart';
+import 'package:qanony/core/styles/text.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final TextEditingController? controller;
-  final String hintText;
+  final String label;
+  final TextStyle labelStyle;
   final TextStyle textStyle;
-  final TextStyle hintStyle;
   final EdgeInsetsGeometry contentPadding;
   final double width;
-  final double height;
+  final double? height;
   final Color backgroundColor;
   final Color cursorColor;
   final bool filled;
@@ -21,12 +22,12 @@ class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
     super.key,
     this.controller,
-    required this.hintText,
+    required this.label,
     required this.textStyle,
-    required this.hintStyle,
+    required this.labelStyle,
     required this.contentPadding,
     required this.width,
-    required this.height,
+    this.height,
     required this.backgroundColor,
     this.maxLines = 1,
     this.filled = false,
@@ -41,7 +42,6 @@ class CustomTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
-      height: height,
       child: TextFormField(
         maxLines: maxLines,
         controller: controller,
@@ -53,8 +53,8 @@ class CustomTextFormField extends StatelessWidget {
         validator: validator,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: hintStyle,
+          labelText: label,
+          labelStyle: labelStyle,
           filled: true,
           fillColor: backgroundColor,
           border: OutlineInputBorder(
@@ -65,6 +65,7 @@ class CustomTextFormField extends StatelessWidget {
           prefixIcon: logo != null
               ? Padding(padding: const EdgeInsets.only(right: 32), child: logo)
               : null,
+          errorStyle: AppText.bodySmall.copyWith(color: AppColor.primary),
         ),
       ),
     );
