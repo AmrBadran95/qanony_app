@@ -8,8 +8,7 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
   final String specialty;
   final String description;
   final String price;
-  final String date;
-  final String time;
+  final List<Widget>? children;
 
   const QanonyAppointmentCardWidget({
     super.key,
@@ -17,16 +16,24 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
     required this.specialty,
     required this.description,
     required this.price,
-    required this.date,
-    required this.time,
+    this.children,
   });
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    final widthMedium = screenWidth * 0.04;
+    final heightMedium = screenHeight * 0.015;
+
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: EdgeInsets.symmetric(
+        horizontal: screenWidth * 0.04,
+        vertical: screenHeight * 0.01,
+      ),
       child: Padding(
         padding: const EdgeInsets.all(AppPadding.medium),
         child: Column(
@@ -36,13 +43,13 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Icon(Icons.person, size: 40, color: AppColor.dark),
-                const SizedBox(width: 12),
+                SizedBox(width: widthMedium),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(name, style: AppText.bodyMedium),
-                      const SizedBox(height: 4),
+                      SizedBox(height: heightMedium),
                       Text(
                         specialty,
                         style: TextStyle(
@@ -50,29 +57,29 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
                           color: AppColor.dark,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      SizedBox(height: heightMedium),
                       Text(
                         description,
                         style: TextStyle(
-                          fontSize: AppText.laberSmall.fontSize,
+                          fontSize: AppText.labelSmall.fontSize,
                           color: AppColor.dark,
                         ),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: widthMedium),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       "محادثة فيديو",
                       style: TextStyle(
-                        fontSize: AppText.laberSmall.fontSize,
+                        fontSize: AppText.labelSmall.fontSize,
                         color: AppColor.dark,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: heightMedium),
                     Text(
                       "المبلغ: $price",
                       style: TextStyle(
@@ -84,35 +91,10 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.calendar_month,
-                  size: 18,
-                  color: AppColor.dark,
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  date,
-                  style: TextStyle(
-                    fontSize: AppText.laberSmall.fontSize,
-                    color: AppColor.dark,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                const Icon(Icons.access_time, size: 18, color: AppColor.dark),
-                const SizedBox(width: 4),
-                Text(
-                  time,
-                  style: TextStyle(
-                    fontSize: AppText.laberSmall.fontSize,
-                    color: AppColor.dark,
-                  ),
-                ),
-              ],
-            ),
+            if (children != null && children!.isNotEmpty) ...[
+              SizedBox(height: heightMedium),
+              ...children!,
+            ],
           ],
         ),
       ),

@@ -79,7 +79,7 @@ class LawyerBaseScreen extends StatelessWidget {
                      Icon(Icons.home_sharp, size: iconSize, color: AppColor.light),
                     Text(
                       "الرئيسية",
-                      style: AppText.laberSmall.copyWith(color: AppColor.light),
+                      style: AppText.labelSmall.copyWith(color: AppColor.light),
                     ),
                   ],
                 ),
@@ -96,7 +96,7 @@ class LawyerBaseScreen extends StatelessWidget {
                     ),
                     Text(
                       "مواعيدي",
-                      style: AppText.laberSmall.copyWith(color: AppColor.light),
+                      style: AppText.labelSmall.copyWith(color: AppColor.light),
                     ),
                   ],
                 ),
@@ -113,7 +113,7 @@ class LawyerBaseScreen extends StatelessWidget {
                     ),
                     Text(
                       "طلباتي",
-                      style: AppText.laberSmall.copyWith(color: AppColor.light),
+                      style: AppText.labelSmall.copyWith(color: AppColor.light),
                     ),
                   ],
                 ),
@@ -130,7 +130,7 @@ class LawyerBaseScreen extends StatelessWidget {
                     ),
                     Text(
                       "تسجيل الخروج",
-                      style: AppText.laberSmall.copyWith(color: AppColor.light),
+                      style: AppText.labelSmall.copyWith(color: AppColor.light),
                     ),
                   ],
                 ),

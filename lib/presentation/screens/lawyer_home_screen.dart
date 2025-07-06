@@ -105,7 +105,7 @@ class LawyerHomeScreen extends StatelessWidget {
                         ),
                         Text(
                           'Developer',
-                          style: AppText.laberSmall.copyWith(
+                          style: AppText.labelSmall.copyWith(
                             color: AppColor.dark,
                           ),
                         ),
