@@ -5,6 +5,7 @@ import '../../Core/styles/color.dart';
 import '../../Core/styles/text.dart';
 import '../../Core/widgets/custom_button.dart';
 import '../pages/lawyer_base_screen.dart';
+
 class LawyerScreen extends StatelessWidget {
   const LawyerScreen({super.key});
 
@@ -22,27 +23,19 @@ class LawyerScreen extends StatelessWidget {
         "comment": "خدمة ممتازة وتعامل راقي.",
         "rating": 5.0,
       },
-      {
-        "name": "كريم علي",
-        "comment": "رد سريع ومحترف.",
-        "rating": 4.5,
-      },
-      {
-        "name": "سارة محمود",
-        "comment": "أنصح بالتعامل معه.",
-        "rating": 5.0,
-      },
+      {"name": "كريم علي", "comment": "رد سريع ومحترف.", "rating": 4.5},
+      {"name": "سارة محمود", "comment": "أنصح بالتعامل معه.", "rating": 5.0},
       {
         "name": "ياسر سالم",
         "comment": "خدمة جيدة لكن يمكن تحسين السرعة.",
         "rating": 3.5,
       },
     ];
-    return  LawyerBaseScreen(
-      body:Container(
+    return LawyerBaseScreen(
+      body: Container(
         color: AppColor.grey,
-      width: double.infinity,
-      height: double.infinity,
+        width: double.infinity,
+        height: double.infinity,
         child: Padding(
           padding: AppPadding.paddingSmall,
           child: Column(
@@ -53,7 +46,6 @@ class LawyerScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(
                       top: MediaQuery.of(context).size.height * 0.02,
-
                     ),
                     child: Column(
                       children: [
@@ -67,15 +59,16 @@ class LawyerScreen extends StatelessWidget {
                           ),
                         ),
 
-                         SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.01,
+                        ),
                         Text(
                           'Hadeer Mohamed',
-                          style: AppText.title.copyWith(color: AppColor.dark, ),
+                          style: AppText.title.copyWith(color: AppColor.dark),
                         ),
                       ],
                     ),
-                  )
-
+                  ),
                 ],
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.01),
@@ -83,15 +76,13 @@ class LawyerScreen extends StatelessWidget {
                 // height: MediaQuery.of(context).size.height * 0.065,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: AppColor.white,
+                  color: AppColor.light,
                   border: Border(
                     bottom: BorderSide(
                       color: AppColor.dark.withAlpha(100),
                       width: MediaQuery.of(context).size.width * 0.004,
-
                     ),
                   ),
-
                 ),
                 child: Padding(
                   padding: AppPadding.paddingSmall,
@@ -102,8 +93,10 @@ class LawyerScreen extends StatelessWidget {
                         text: "جنائى",
                         width: MediaQuery.of(context).size.width * 0.2,
                         height: MediaQuery.of(context).size.height * 0.045,
-                        textStyle: AppText.bodyLarge.copyWith(color: AppColor.light),
-                        onTap: (){
+                        textStyle: AppText.bodyLarge.copyWith(
+                          color: AppColor.light,
+                        ),
+                        onTap: () {
                           //handle tap
                         },
                         backgroundColor: AppColor.primary,
@@ -112,8 +105,10 @@ class LawyerScreen extends StatelessWidget {
                         text: "جنائى",
                         width: MediaQuery.of(context).size.width * 0.2,
                         height: MediaQuery.of(context).size.height * 0.045,
-                        textStyle: AppText.bodyLarge.copyWith(color: AppColor.light),
-                        onTap: (){
+                        textStyle: AppText.bodyLarge.copyWith(
+                          color: AppColor.light,
+                        ),
+                        onTap: () {
                           //handle tap
                         },
                         backgroundColor: AppColor.primary,
@@ -122,13 +117,14 @@ class LawyerScreen extends StatelessWidget {
                         text: "جنائى",
                         width: MediaQuery.of(context).size.width * 0.2,
                         height: MediaQuery.of(context).size.height * 0.045,
-                        textStyle: AppText.bodyLarge.copyWith(color: AppColor.light),
-                        onTap: (){
+                        textStyle: AppText.bodyLarge.copyWith(
+                          color: AppColor.light,
+                        ),
+                        onTap: () {
                           //handle tap
                         },
                         backgroundColor: AppColor.primary,
                       ),
-
                     ],
                   ),
                 ),
@@ -137,51 +133,53 @@ class LawyerScreen extends StatelessWidget {
                 width: double.infinity,
                 padding: AppPadding.paddingSmall,
                 decoration: BoxDecoration(
-                  color: AppColor.white,
+                  color: AppColor.light,
                   border: Border(
                     bottom: BorderSide(
                       color: AppColor.dark.withAlpha(100),
                       width: MediaQuery.of(context).size.width * 0.004,
-
                     ),
                   ),
-
                 ),
-                child:Text(
+                child: Text(
                   "محامي و مستشار قانوني مرخص من وزارة العدل. أمتلك خبرة واسعة في تقديم الاستشارات القانونية, و كتابة المذكرات و الاعتراضات, و صياغة العقود, و التمثيل القضائي أمام المحاكم",
                   softWrap: true,
-                  style: AppText.laberSmall,
+                  style: AppText.labelSmall,
                 ),
-
               ),
               Container(
                 width: double.infinity,
                 padding: AppPadding.paddingSmall,
                 decoration: BoxDecoration(
-                  color: AppColor.white,
+                  color: AppColor.light,
                   border: Border(
                     bottom: BorderSide(
                       color: AppColor.dark.withAlpha(100),
                       width: MediaQuery.of(context).size.width * 0.004,
-
                     ),
                   ),
-
                 ),
-                child:
-                Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Row(
                       children: [
-                        Text("حجز استشاره عن طريق:",
-                          style: AppText.bodySmall.copyWith(color: AppColor.dark, fontWeight: FontWeight.bold),
+                        Text(
+                          "حجز استشاره عن طريق:",
+                          style: AppText.bodySmall.copyWith(
+                            color: AppColor.dark,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.015),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.015,
+                    ),
                     Padding(
-                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.005),
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).size.height * 0.005,
+                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -189,69 +187,78 @@ class LawyerScreen extends StatelessWidget {
                             text: "محادثة فيديو/صوت",
                             width: MediaQuery.of(context).size.width * 0.43,
                             height: MediaQuery.of(context).size.height * 0.055,
-                            textStyle: AppText.bodySmall.copyWith(color: AppColor.light,fontWeight: FontWeight.bold),
-                            onTap: (){
+                            textStyle: AppText.bodySmall.copyWith(
+                              color: AppColor.light,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            onTap: () {
                               //handle tap
                             },
                             backgroundColor: AppColor.secondary,
                             icon: Icons.photo_camera_front,
                             textColor: AppColor.dark,
-
                           ),
                           CustomButton(
-                              textColor: AppColor.dark,
-                              text: "حجز فى المكتب",
-                              width: MediaQuery.of(context).size.width * 0.43,
-                              height: MediaQuery.of(context).size.height * 0.055,
-                              textStyle: AppText.bodySmall.copyWith(color: AppColor.light,fontWeight: FontWeight.bold),
-                              onTap: (){
-                                //handle tap
-                              },
-                              backgroundColor: AppColor.secondary,
-                              icon: Icons.message_outlined
+                            textColor: AppColor.dark,
+                            text: "حجز فى المكتب",
+                            width: MediaQuery.of(context).size.width * 0.43,
+                            height: MediaQuery.of(context).size.height * 0.055,
+                            textStyle: AppText.bodySmall.copyWith(
+                              color: AppColor.light,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            onTap: () {
+                              //handle tap
+                            },
+                            backgroundColor: AppColor.secondary,
+                            icon: Icons.message_outlined,
                           ),
                         ],
                       ),
                     ),
                   ],
                 ),
-
               ),
               Container(
                 width: double.infinity,
                 padding: AppPadding.paddingSmall,
                 decoration: BoxDecoration(
-                  color: AppColor.white,
+                  color: AppColor.light,
                   border: Border(
                     bottom: BorderSide(
                       color: AppColor.dark.withAlpha(100),
                       width: MediaQuery.of(context).size.width * 0.004,
-
                     ),
                   ),
-
                 ),
-                child:
-                Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Row(
                       children: [
-                        Text("التقيمات:",
-                          style: AppText.bodySmall.copyWith(color: AppColor.dark, fontWeight: FontWeight.bold),
+                        Text(
+                          "التقيمات:",
+                          style: AppText.bodySmall.copyWith(
+                            color: AppColor.dark,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.015),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.015,
+                    ),
                     Padding(
-                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.005),
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).size.height * 0.005,
+                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("4.48/5",style: AppText.headingMedium,),
+                              Text("4.48/5", style: AppText.headingMedium),
                               Text("29 تقيمات"),
                             ],
                           ),
@@ -260,7 +267,8 @@ class LawyerScreen extends StatelessWidget {
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.7,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     RatingBarIndicator(
                                       rating: 2.5,
@@ -273,24 +281,35 @@ class LawyerScreen extends StatelessWidget {
                                       direction: Axis.horizontal,
                                     ),
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width * 0.02,
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                          0.02,
                                     ),
                                     Flexible(
-                                      child:
-                                      Stack(
+                                      child: Stack(
                                         children: [
                                           Container(
-                                            height: MediaQuery.of(context).size.height * 0.01,
+                                            height:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.height *
+                                                0.01,
 
                                             decoration: BoxDecoration(
                                               color: Colors.grey[300],
-                                              borderRadius: BorderRadius.circular(4),
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
                                             ),
                                           ),
                                           FractionallySizedBox(
-                                            widthFactor: .5, //دى النسبه هنحسبها ب fun بعدين
+                                            widthFactor:
+                                                .5, //دى النسبه هنحسبها ب fun بعدين
                                             child: Container(
-                                              height: MediaQuery.of(context).size.height * 0.01,
+                                              height:
+                                                  MediaQuery.of(
+                                                    context,
+                                                  ).size.height *
+                                                  0.01,
 
                                               decoration: BoxDecoration(
                                                 gradient: LinearGradient(
@@ -302,7 +321,8 @@ class LawyerScreen extends StatelessWidget {
                                                   end: Alignment.centerRight,
                                                 ),
 
-                                                borderRadius: BorderRadius.circular(4),
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
                                               ),
                                             ),
                                           ),
@@ -310,35 +330,29 @@ class LawyerScreen extends StatelessWidget {
                                       ),
                                     ),
 
-
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width * 0.02,
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                          0.02,
                                     ),
                                     Text("100%"),
-
-
-
                                   ],
                                 ),
                               ),
                             ],
                           ),
-
-
-
                         ],
                       ),
                     ),
                   ],
                 ),
-
               ),
               Flexible(
                 child: Container(
                   width: double.infinity,
                   padding: AppPadding.paddingSmall,
                   decoration: BoxDecoration(
-                    color: AppColor.white,
+                    color: AppColor.light,
                     border: Border(
                       bottom: BorderSide(
                         color: AppColor.dark.withAlpha(100),
@@ -360,7 +374,9 @@ class LawyerScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.015),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.015,
+                      ),
                       Expanded(
                         child: ListView.builder(
                           itemCount: reviews.length,
@@ -369,11 +385,10 @@ class LawyerScreen extends StatelessWidget {
                             return Container(
                               width: double.infinity,
                               margin: EdgeInsets.only(
-                                bottom: MediaQuery.of(context).size.height * 0.01,
+                                bottom:
+                                    MediaQuery.of(context).size.height * 0.01,
                               ),
-                              decoration: BoxDecoration(
-                                color: AppColor.grey,
-                              ),
+                              decoration: BoxDecoration(color: AppColor.grey),
                               child: Padding(
                                 padding: AppPadding.paddingSmall,
                                 child: Row(
@@ -381,7 +396,8 @@ class LawyerScreen extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             review["name"],
@@ -391,7 +407,11 @@ class LawyerScreen extends StatelessWidget {
                                             ),
                                           ),
                                           SizedBox(
-                                            height: MediaQuery.of(context).size.height * 0.005,
+                                            height:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.height *
+                                                0.005,
                                           ),
                                           Text(
                                             review["comment"],
@@ -409,7 +429,9 @@ class LawyerScreen extends StatelessWidget {
                                         color: AppColor.secondary,
                                       ),
                                       itemCount: 5,
-                                      itemSize: MediaQuery.of(context).size.width * 0.05,
+                                      itemSize:
+                                          MediaQuery.of(context).size.width *
+                                          0.05,
                                       direction: Axis.horizontal,
                                     ),
                                   ],
@@ -422,13 +444,11 @@ class LawyerScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-              )
-
+              ),
             ],
           ),
         ),
-      )
-
+      ),
     );
   }
 }
