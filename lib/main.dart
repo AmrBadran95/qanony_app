@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:qanony/Core/shared/app_cache.dart';
-import 'package:qanony/presentation/screens/appointment_Page_For_User.dart';
-import 'package:qanony/presentation/screens/splash_screen.dart';
-import 'package:qanony/services/cubits/splash/splash_cubit.dart';
 
+import 'package:qanony/presentation/screens/add_appointment.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppCache.init();
@@ -37,8 +35,8 @@ class QanonyApp extends StatelessWidget {
             child: child!,
           );
         },
-        //home: const SplashScreen(),
-        home: AppointmentPageForUser(),
+
+        home: const AddAppointment(),
       ),
     );
   }
