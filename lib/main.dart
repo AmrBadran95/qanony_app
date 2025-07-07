@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:qanony/presentation/screens/sign_in.dart';
+import 'package:qanony/presentation/screens/search-screen.dart';
+
 import 'Core/shared/logincache.dart';
 
 void main() async {
@@ -29,7 +30,7 @@ class QanonyApp extends StatelessWidget {
       builder: (context, child) {
         return Directionality(textDirection: TextDirection.rtl, child: child!);
       },
-      home: const SignInScreen(),
+      home: SearchScreen(),
     );
   }
 }
