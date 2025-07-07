@@ -4,6 +4,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:qanony/Core/shared/app_cache.dart';
 import 'package:qanony/presentation/screens/appointment_Page_For_User.dart';
 import 'package:qanony/presentation/screens/splash_screen.dart';
+import 'package:qanony/presentation/screens/add_appointment.dart';
+import 'package:qanony/presentation/screens/subscriptionScreen.dart';
 import 'package:qanony/services/cubits/splash/splash_cubit.dart';
 
 void main() async {
@@ -37,8 +39,7 @@ class QanonyApp extends StatelessWidget {
             child: child!,
           );
         },
-        //home: const SplashScreen(),
-        home: AppointmentPageForUser(),
+        home: const SplashScreen(),
       ),
     );
   }
