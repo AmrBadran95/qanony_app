@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:qanony/presentation/screens/search-screen.dart';
-
 import 'Core/shared/app_cache.dart';
 import 'services/cubits/splash/splash_cubit.dart';
+import 'package:qanony/Core/shared/app_cache.dart';
 
+import 'package:qanony/presentation/screens/add_appointment.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppCache.init();
@@ -38,6 +39,7 @@ class QanonyApp extends StatelessWidget {
           );
         },
         home: const SearchScreen(),
+
       ),
     );
   }
