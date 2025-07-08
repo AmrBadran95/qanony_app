@@ -17,7 +17,7 @@ class CustomCalendar extends StatelessWidget {
 
   const CustomCalendar({
     super.key,
-    this.label = "اختر تاريخ الميلاد",
+    required this.label,
     this.width = double.infinity,
     this.height = 60,
     this.padding = AppPadding.paddingMedium,
@@ -33,7 +33,7 @@ class CustomCalendar extends StatelessWidget {
   Widget build(BuildContext context) {
     return InputDecorator(
       decoration: InputDecoration(
-        labelText: label,
+        labelText: selectedDate != null ? label : null,
         labelStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
         filled: true,
         fillColor: color,

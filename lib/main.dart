@@ -5,12 +5,8 @@ import 'package:qanony/presentation/screens/search-screen.dart';
 import 'Core/shared/app_cache.dart';
 import 'services/cubits/splash/splash_cubit.dart';
 import 'package:qanony/Core/shared/app_cache.dart';
-import 'package:qanony/presentation/screens/appointment_Page_For_User.dart';
 import 'package:qanony/presentation/screens/splash_screen.dart';
-import 'package:qanony/presentation/screens/add_appointment.dart';
-import 'package:qanony/presentation/screens/subscriptionScreen.dart';
 import 'package:qanony/services/cubits/splash/splash_cubit.dart';
-
 
 import 'package:qanony/presentation/screens/add_appointment.dart';
 void main() async {
