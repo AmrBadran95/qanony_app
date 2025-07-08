@@ -41,8 +41,6 @@ class QanonyApp extends StatelessWidget {
           );
         },
         home: const SplashScreen(),
-
-
       ),
     );
   }
