@@ -33,10 +33,10 @@ class SignUpScreen extends StatelessWidget {
 
               CustomTextFormField(
                 logo: const Icon(Icons.email_outlined, color: AppColor.dark),
-                hintText: 'البريد الالكتروني',
+                label: 'البريد الالكتروني',
                 controller: emailController,
                 textStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
-                hintStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
+                labelStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
                 contentPadding: AppPadding.paddingMedium,
                 width: double.infinity,
                 height: 60,
@@ -47,10 +47,10 @@ class SignUpScreen extends StatelessWidget {
 
               CustomTextFormField(
                 logo: const Icon(Icons.phone, color: AppColor.dark),
-                hintText: 'رقم الهاتف',
+                label: 'رقم الهاتف',
                 controller: phoneController,
                 textStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
-                hintStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
+                labelStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
                 contentPadding: AppPadding.paddingMedium,
                 width: double.infinity,
                 height: 60,
@@ -61,10 +61,10 @@ class SignUpScreen extends StatelessWidget {
 
               CustomTextFormField(
                 logo: const Icon(Icons.password_outlined, color: AppColor.dark),
-                hintText: 'كلمة المرور',
+                label: 'كلمة المرور',
                 controller: passwordController,
                 textStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
-                hintStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
+                labelStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
                 contentPadding: AppPadding.paddingMedium,
                 width: double.infinity,
                 height: 60,
@@ -76,10 +76,10 @@ class SignUpScreen extends StatelessWidget {
 
               CustomTextFormField(
                 logo: const Icon(Icons.password_outlined, color: AppColor.dark),
-                hintText: 'تأكيد كلمة المرور',
+                label: 'تأكيد كلمة المرور',
                 controller: confirmPasswordController,
                 textStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
-                hintStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
+                labelStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
                 contentPadding: AppPadding.paddingMedium,
                 width: double.infinity,
                 height: 60,

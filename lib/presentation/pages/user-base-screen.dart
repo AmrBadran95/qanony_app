@@ -10,44 +10,63 @@ class UserBaseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColor.primary,
-        leading: Builder(
-          builder: (context) => Padding(
-            padding: const EdgeInsets.all(AppPadding.small),
-            child: GestureDetector(
-              onTap: () {
-                Scaffold.of(context).openDrawer();
-              },
-              child: CircleAvatar(
-                backgroundColor: AppColor.secondary,
-                child: const Icon(
-                  Icons.person_2_outlined,
-                  color: AppColor.dark,
+      backgroundColor: AppColor.grey,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBar(
+          backgroundColor: AppColor.primary,
+          leading: Builder(
+            builder: (context) => Padding(
+              padding: const EdgeInsets.all(AppPadding.small),
+              child: GestureDetector(
+                onTap: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                child: CircleAvatar(
+                  radius: 40,
+                  backgroundImage: AssetImage('assets/images/lawyer 1.png'),
                 ),
               ),
             ),
           ),
-        ),
-        title: Text(
-          "قانوني",
-          style: AppText.headingLarge.copyWith(color: AppColor.light),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppPadding.medium),
-            child: GestureDetector(
-              onTap: () {},
-              child: CircleAvatar(
-                backgroundColor: AppColor.secondary,
-                child: const Icon(
-                  Icons.notifications_outlined,
-                  color: AppColor.dark,
+          title: Padding(
+            padding: EdgeInsets.only(
+              left: MediaQuery.of(context).size.width * 0.01,
+              right: MediaQuery.of(context).size.width * 0.01,
+              bottom: MediaQuery.of(context).size.height * 0.01,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "قانوني",
+                  style: AppText.headingMedium.copyWith(color: AppColor.light),
                 ),
-              ),
+                Stack(
+                  children: [
+                    Icon(
+                      Icons.notifications_none_sharp,
+                      size: MediaQuery.of(context).size.width * 0.095,
+                      color: AppColor.light,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(right: 4, top: 4),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.03,
+                        height: MediaQuery.of(context).size.width * 0.03,
+
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColor.secondary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
 
       drawer: Drawer(
@@ -106,7 +125,7 @@ class UserBaseScreen extends StatelessWidget {
                         const SizedBox(height: 4),
                         Text(
                           "الرئيسية",
-                          style: AppText.laberSmall.copyWith(
+                          style: AppText.labelSmall.copyWith(
                             color: AppColor.light,
                           ),
                         ),
@@ -126,7 +145,7 @@ class UserBaseScreen extends StatelessWidget {
                         const SizedBox(height: 4),
                         Text(
                           "البحث",
-                          style: AppText.laberSmall.copyWith(
+                          style: AppText.labelSmall.copyWith(
                             color: AppColor.light,
                           ),
                         ),
@@ -146,7 +165,7 @@ class UserBaseScreen extends StatelessWidget {
                         const SizedBox(height: 4),
                         Text(
                           "مواعيدي",
-                          style: AppText.laberSmall.copyWith(
+                          style: AppText.labelSmall.copyWith(
                             color: AppColor.light,
                           ),
                         ),
@@ -166,7 +185,7 @@ class UserBaseScreen extends StatelessWidget {
                         const SizedBox(height: 4),
                         Text(
                           "طلباتي",
-                          style: AppText.laberSmall.copyWith(
+                          style: AppText.labelSmall.copyWith(
                             color: AppColor.light,
                           ),
                         ),

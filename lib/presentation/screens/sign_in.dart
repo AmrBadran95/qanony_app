@@ -33,10 +33,10 @@ class SignInScreen extends StatelessWidget {
 
               CustomTextFormField(
                 logo: const Icon(Icons.email_outlined),
-                hintText: 'البريد الالكتروني',
+                label: 'البريد الالكتروني',
                 controller: emailController,
                 textStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
-                hintStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
+                labelStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
                 contentPadding: AppPadding.paddingMedium,
                 width: double.infinity,
                 height: 60,
@@ -48,10 +48,10 @@ class SignInScreen extends StatelessWidget {
 
               CustomTextFormField(
                 logo: const Icon(Icons.password_outlined),
-                hintText: 'كلمة المرور',
+                label: 'كلمة المرور',
                 controller: passwordController,
                 textStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
-                hintStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
+                labelStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
                 contentPadding: AppPadding.paddingMedium,
                 width: double.infinity,
                 height: 60,

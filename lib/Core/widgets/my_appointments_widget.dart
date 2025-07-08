@@ -51,7 +51,7 @@ class MyAppointmentCardWidget extends StatelessWidget {
                   Text(
                     description,
                     style: TextStyle(
-                      fontSize: AppText.laberSmall.fontSize,
+                      fontSize: AppText.labelSmall.fontSize,
                       color: AppColor.dark,
                     ),
                   ),
@@ -67,7 +67,7 @@ class MyAppointmentCardWidget extends StatelessWidget {
                 Text(
                   "محادثة فيديو",
                   style: TextStyle(
-                    fontSize: AppText.laberSmall.fontSize,
+                    fontSize: AppText.labelSmall.fontSize,
                     color: AppColor.dark,
                   ),
                 ),
