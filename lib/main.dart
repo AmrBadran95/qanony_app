@@ -8,6 +8,8 @@ import 'package:qanony/presentation/screens/add_appointment.dart';
 import 'package:qanony/presentation/screens/subscriptionScreen.dart';
 import 'package:qanony/services/cubits/splash/splash_cubit.dart';
 
+
+import 'package:qanony/presentation/screens/add_appointment.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppCache.init();
