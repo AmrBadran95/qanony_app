@@ -41,16 +41,17 @@ class CustomButton extends StatelessWidget {
 
           children: [
             if (icon != null) ...[
-              Icon(icon, color: AppColor.dark, size: MediaQuery.of(context).size.width * 0.07),
+              Icon(
+                icon,
+                color: AppColor.dark,
+                size: MediaQuery.of(context).size.width * 0.07,
+              ),
               SizedBox(width: MediaQuery.of(context).size.width * 0.02),
-
             ],
             Text(
               text,
               textAlign: TextAlign.center,
-              style: textStyle.copyWith(
-                color: textColor,
-              ),
+              style: textStyle.copyWith(color: textColor),
             ),
           ],
         ),
