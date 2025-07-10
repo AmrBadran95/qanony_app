@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:qanony/presentation/screens/search-screen.dart';
+import 'package:qanony/presentation/screens/sign_in.dart';
+import 'package:qanony/presentation/screens/sign_up.dart';
 import 'Core/shared/app_cache.dart';
 import 'services/cubits/splash/splash_cubit.dart';
 import 'package:qanony/Core/shared/app_cache.dart';
@@ -40,7 +42,8 @@ class QanonyApp extends StatelessWidget {
             child: child!,
           );
         },
-        home: const SplashScreen(),
+        //home: const SplashScreen(),
+        home: SignUpScreen(),
       ),
     );
   }
