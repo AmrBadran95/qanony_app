@@ -6,7 +6,7 @@ import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/widgets/custom_button.dart';
 import 'package:qanony/Core/widgets/custom_text_form_field.dart';
 
-import '../../services/controllers/signUpFormController.dart';
+import '../../services/controllers/signup_form_controller.dart';
 import '../../services/validators/form_Validators.dart';
 import 'lawyer_home_screen.dart';
 
