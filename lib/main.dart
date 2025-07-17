@@ -42,7 +42,7 @@ class QanonyApp extends StatelessWidget {
           );
         },
 
-        home: LawyerInformation(),
+        home: SignUpScreen(),
       ),
     );
   }

@@ -1,11 +1,11 @@
-part of 'search_cubit.dart';
+// part of 'search_cubit.dart';
 
-@immutable
-abstract class SearchState {}
+// @immutable
+// abstract class SearchState {}
 
-final class SearchInitial extends SearchState {}
+// final class SearchInitial extends SearchState {}
 
-class SearchLoading extends SearchState {
-  final List<LawyerModel> lawyers;
-  SearchLoading(this.lawyers);
-}
+// class SearchLoading extends SearchState {
+//   final List<LawyerModel> lawyers;
+//   SearchLoading(this.lawyers);
+// }
