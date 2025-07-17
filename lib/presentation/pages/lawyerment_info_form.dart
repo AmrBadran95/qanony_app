@@ -176,12 +176,9 @@ class LawyermentInfoForm extends StatelessWidget {
                                         ),
                                         onTap: () {
                                           Navigator.pop(context);
-                                          LawyermentInfoControllers.pickProfileImage(
+                                          LawyermentInfoControllers.pickCardImage(
                                             source: ImageSource.gallery,
                                             state: state,
-                                            profileImage:
-                                                LawyermentInfoControllers
-                                                    .cardImage,
                                           );
                                         },
                                       ),
@@ -198,12 +195,9 @@ class LawyermentInfoForm extends StatelessWidget {
                                         ),
                                         onTap: () {
                                           Navigator.pop(context);
-                                          LawyermentInfoControllers.pickProfileImage(
+                                          LawyermentInfoControllers.pickCardImage(
                                             source: ImageSource.camera,
                                             state: state,
-                                            profileImage:
-                                                LawyermentInfoControllers
-                                                    .cardImage,
                                           );
                                         },
                                       ),
@@ -226,8 +220,8 @@ class LawyermentInfoForm extends StatelessWidget {
                           Center(
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8),
-                              child: Image.file(
-                                File(value),
+                              child: Image.network(
+                                value,
                                 height: 120,
                                 width: 120,
                                 fit: BoxFit.cover,

@@ -1,18 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:qanony/presentation/screens/search-screen.dart';
-import 'package:qanony/presentation/screens/sign_in.dart';
+import 'package:qanony/firebase_options.dart';
+import 'package:qanony/presentation/screens/lawyer_information.dart';
 import 'package:qanony/presentation/screens/sign_up.dart';
 import 'Core/shared/app_cache.dart';
 import 'services/cubits/splash/splash_cubit.dart';
-import 'package:qanony/Core/shared/app_cache.dart';
-import 'package:qanony/presentation/screens/splash_screen.dart';
-import 'package:qanony/services/cubits/splash/splash_cubit.dart';
 
-import 'package:qanony/presentation/screens/add_appointment.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await AppCache.init();
   runApp(const QanonyApp());
 }
@@ -36,14 +34,15 @@ class QanonyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
+
         builder: (context, child) {
           return Directionality(
             textDirection: TextDirection.rtl,
             child: child!,
           );
         },
-        //home: const SplashScreen(),
-        home: SignUpScreen(),
+
+        home: LawyerInformation(),
       ),
     );
   }
