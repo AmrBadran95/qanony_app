@@ -7,7 +7,7 @@ import 'package:qanony/services/helpers/cloudinary_service.dart';
 class LawyermentInfoControllers {
   static final aboutMeController = TextEditingController();
   static final registrationNumberController = TextEditingController();
-  static final specializationController = TextEditingController();
+  static final specializationList = ValueNotifier<List<String>>([]);
 
   static final cardImage = ValueNotifier<String?>(null);
 
@@ -46,7 +46,7 @@ class LawyermentInfoControllers {
   static void dispose() {
     aboutMeController.dispose();
     registrationNumberController.dispose();
-    specializationController.dispose();
+    specializationList.dispose();
     cardImage.dispose();
   }
 }

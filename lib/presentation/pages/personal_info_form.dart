@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,9 +8,8 @@ import 'package:qanony/core/styles/text.dart';
 import 'package:qanony/core/widgets/custom_button.dart';
 import 'package:qanony/core/widgets/custom_text_form_field.dart';
 import 'package:qanony/data/static/egypt_governorates.dart';
-import 'package:qanony/services/controllers/calendar_controller.dart';
 import 'package:qanony/services/controllers/personal_info_controllers.dart';
-import 'package:qanony/services/cubits/calendar/calendar_cubit.dart';
+import 'package:qanony/services/cubits/date_of_birth/date_of_birth_cubit.dart';
 import 'package:qanony/services/validators/personal_info_validators.dart';
 
 class PersonalInfoForm extends StatelessWidget {
@@ -139,62 +137,60 @@ class PersonalInfoForm extends StatelessWidget {
           ),
           SizedBox(height: MediaQuery.of(context).size.height * .01),
 
-          BlocProvider(
-            create: (context) => CalendarCubit(),
-            child: Builder(
-              builder: (context) {
-                return FormField<DateTime>(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) {
-                    final selectedDate = CalendarController.getSelectedDate(
-                      context.read<CalendarCubit>().state,
-                    );
+          Builder(
+            builder: (context) {
+              return FormField<DateTime>(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (_) {
+                  final state = context.read<DateOfBirthCubit>().state;
+                  if (state is DateOfBirthSelected) {
                     return PersonalInfoValidators.validateBirthDate(
-                      selectedDate,
+                      state.selectedDate,
                     );
-                  },
-                  builder: (state) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        BlocBuilder<CalendarCubit, CalendarState>(
-                          builder: (context, calendarState) {
-                            final selectedDate =
-                                CalendarController.getSelectedDate(
-                                  calendarState,
-                                );
-                            return CustomCalendar(
-                              label: "تاريخ الميلاد",
-                              prevOnly: true,
-                              selectedDate: selectedDate,
-                              onDateSelected: (date) {
-                                CalendarController.updateDate(context, date);
-                                WidgetsBinding.instance.addPostFrameCallback((
-                                  _,
-                                ) {
-                                  state.didChange(date);
-                                });
-                              },
-                            );
-                          },
-                        ),
-                        if (state.hasError)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8),
-                            child: Text(
-                              state.errorText!,
-                              style: AppText.bodySmall.copyWith(
-                                color: AppColor.primary,
-                              ),
+                  }
+                  return PersonalInfoValidators.validateBirthDate(null);
+                },
+                builder: (state) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      BlocBuilder<DateOfBirthCubit, DateOfBirthState>(
+                        builder: (context, dateState) {
+                          DateTime? selectedDate;
+                          if (dateState is DateOfBirthSelected) {
+                            selectedDate = dateState.selectedDate;
+                          }
+
+                          return CustomCalendar(
+                            label: "تاريخ الميلاد",
+                            prevOnly: true,
+                            selectedDate: selectedDate,
+                            onDateSelected: (date) {
+                              context.read<DateOfBirthCubit>().selectDate(date);
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                state.didChange(date);
+                              });
+                            },
+                          );
+                        },
+                      ),
+                      if (state.hasError)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: Text(
+                            state.errorText!,
+                            style: AppText.bodySmall.copyWith(
+                              color: AppColor.primary,
                             ),
                           ),
-                      ],
-                    );
-                  },
-                );
-              },
-            ),
+                        ),
+                    ],
+                  );
+                },
+              );
+            },
           ),
+
           SizedBox(height: MediaQuery.of(context).size.height * .01),
 
           Text(
@@ -362,8 +358,8 @@ class PersonalInfoForm extends StatelessWidget {
                           const SizedBox(height: 10),
                           ClipRRect(
                             borderRadius: BorderRadius.circular(8),
-                            child: Image.file(
-                              File(value),
+                            child: Image.network(
+                              value,
                               height: 120,
                               width: 120,
                               fit: BoxFit.cover,

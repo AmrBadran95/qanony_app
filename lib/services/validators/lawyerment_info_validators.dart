@@ -10,14 +10,12 @@ class LawyermentInfoValidators {
   }
 
   static String? validateRegistrationDate(DateTime? date) {
-    if (date == null) {
-      return "يرجى اختيار تاريخ القيد";
-    }
+    if (date == null) return "يرجى اختيار تاريخ القيد";
     return null;
   }
 
-  static String? validateSpecialization(String? value) {
-    if (value == null || value.trim().isEmpty) return "يرجى كتابة التخصص";
+  static String? validateSpecializationList(List<String> value) {
+    if (value.isEmpty) return "يرجى اختيار تخصص واحد على الأقل";
     return null;
   }
 

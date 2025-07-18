@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:qanony/firebase_options.dart';
-import 'package:qanony/presentation/screens/lawyer_information.dart';
 import 'package:qanony/presentation/screens/sign_up.dart';
 import 'Core/shared/app_cache.dart';
 import 'services/cubits/splash/splash_cubit.dart';

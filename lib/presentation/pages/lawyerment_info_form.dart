@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,9 +7,9 @@ import 'package:qanony/core/styles/padding.dart';
 import 'package:qanony/core/styles/text.dart';
 import 'package:qanony/core/widgets/custom_button.dart';
 import 'package:qanony/core/widgets/custom_text_form_field.dart';
-import 'package:qanony/services/controllers/calendar_controller.dart';
+import 'package:qanony/data/static/lawyer_specializations.dart';
 import 'package:qanony/services/controllers/lawyerment_controller.dart';
-import 'package:qanony/services/cubits/calendar/calendar_cubit.dart';
+import 'package:qanony/services/cubits/registration_date/registration_date_cubit.dart';
 import 'package:qanony/services/validators/lawyerment_info_validators.dart';
 
 class LawyermentInfoForm extends StatelessWidget {
@@ -55,75 +54,158 @@ class LawyermentInfoForm extends StatelessWidget {
 
           SizedBox(height: MediaQuery.of(context).size.height * .01),
 
-          BlocProvider(
-            create: (context) => CalendarCubit(),
-            child: Builder(
-              builder: (context) {
-                return FormField<DateTime>(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) {
-                    final selectedDate = CalendarController.getSelectedDate(
-                      context.read<CalendarCubit>().state,
-                    );
-                    return LawyermentInfoValidators.validateRegistrationDate(
-                      selectedDate,
-                    );
-                  },
-                  builder: (state) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        BlocBuilder<CalendarCubit, CalendarState>(
-                          builder: (context, calendarState) {
-                            final selectedDate =
-                                CalendarController.getSelectedDate(
-                                  calendarState,
-                                );
-                            return CustomCalendar(
-                              label: "تاريخ القيد",
-                              prevOnly: true,
-                              selectedDate: selectedDate,
-                              onDateSelected: (date) {
-                                CalendarController.updateDate(context, date);
-                                WidgetsBinding.instance.addPostFrameCallback((
-                                  _,
-                                ) {
-                                  state.didChange(date);
-                                });
-                              },
-                            );
-                          },
-                        ),
-                        if (state.hasError)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8),
-                            child: Text(
-                              state.errorText!,
-                              style: AppText.bodySmall.copyWith(
-                                color: AppColor.primary,
+          Builder(
+            builder: (context) {
+              return BlocBuilder<RegistrationDateCubit, RegistrationDateState>(
+                builder: (context, dateState) {
+                  final selectedDate = dateState is RegistrationDateSelected
+                      ? dateState.selectedDate
+                      : null;
+
+                  return FormField<DateTime>(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (_) {
+                      return LawyermentInfoValidators.validateRegistrationDate(
+                        selectedDate,
+                      );
+                    },
+                    builder: (state) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomCalendar(
+                            label: "تاريخ القيد",
+                            prevOnly: true,
+                            selectedDate: selectedDate,
+                            onDateSelected: (date) {
+                              context.read<RegistrationDateCubit>().selectDate(
+                                date,
+                              );
+                              state.didChange(date);
+                            },
+                          ),
+                          if (state.hasError)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8),
+                              child: Text(
+                                state.errorText!,
+                                style: AppText.bodySmall.copyWith(
+                                  color: AppColor.primary,
+                                ),
                               ),
                             ),
-                          ),
-                      ],
-                    );
-                  },
-                );
-              },
-            ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              );
+            },
           ),
 
           SizedBox(height: MediaQuery.of(context).size.height * .01),
 
-          CustomTextFormField(
-            controller: LawyermentInfoControllers.specializationController,
-            validator: LawyermentInfoValidators.validateSpecialization,
-            width: double.infinity,
-            height: 60,
-            label: "التخصص",
-            contentPadding: AppPadding.paddingMedium,
-            backgroundColor: AppColor.grey,
-            textStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
-            labelStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
+          ValueListenableBuilder<List<String>>(
+            valueListenable: LawyermentInfoControllers.specializationList,
+            builder: (context, selectedList, _) {
+              return GestureDetector(
+                onTap: () async {
+                  final result = await showDialog<List<String>>(
+                    context: context,
+                    builder: (context) {
+                      final tempSelections = [...selectedList];
+                      return StatefulBuilder(
+                        builder: (context, setState) {
+                          return AlertDialog(
+                            title: Text("اختر التخصصات"),
+                            content: SingleChildScrollView(
+                              child: Column(
+                                children: lawyerSpecializations.map((item) {
+                                  final isSelected = tempSelections.contains(
+                                    item,
+                                  );
+                                  return CheckboxListTile(
+                                    value: isSelected,
+                                    title: Text(item),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        if (value == true) {
+                                          tempSelections.add(item);
+                                        } else {
+                                          tempSelections.remove(item);
+                                        }
+                                      });
+                                    },
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                child: Text("إلغاء"),
+                                onPressed: () =>
+                                    Navigator.pop(context, selectedList),
+                              ),
+                              TextButton(
+                                child: Text("تم"),
+                                onPressed: () =>
+                                    Navigator.pop(context, tempSelections),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  );
+
+                  if (result != null) {
+                    LawyermentInfoControllers.specializationList.value = result;
+                  }
+                },
+                child: AbsorbPointer(
+                  child: FormField<List<String>>(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (_) =>
+                        LawyermentInfoValidators.validateSpecializationList(
+                          LawyermentInfoControllers.specializationList.value,
+                        ),
+                    builder: (state) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomTextFormField(
+                            controller: TextEditingController(
+                              text: selectedList.join(', '),
+                            ),
+                            width: double.infinity,
+                            height: 60,
+                            label: "التخصصات",
+                            contentPadding: AppPadding.paddingMedium,
+                            backgroundColor: AppColor.grey,
+                            textStyle: AppText.bodyLarge.copyWith(
+                              color: AppColor.dark,
+                            ),
+                            labelStyle: AppText.bodyLarge.copyWith(
+                              color: AppColor.dark,
+                            ),
+                          ),
+                          if (state.hasError)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8),
+                              child: Text(
+                                state.errorText!,
+                                style: AppText.bodySmall.copyWith(
+                                  color: AppColor.primary,
+                                ),
+                              ),
+                            ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
           ),
 
           SizedBox(height: MediaQuery.of(context).size.height * .01),
