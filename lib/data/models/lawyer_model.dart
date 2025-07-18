@@ -9,13 +9,13 @@ class LawyerModel {
   final String? nationalId;
   final String? governorate;
   final String? address;
-  final String? dateOfBirth;
+  final DateTime? dateOfBirth;
   final String? gender;
   final String? profilePictureUrl;
 
   final String? bio;
   final String? registrationNumber;
-  final String? registrationDate;
+  final DateTime? registrationDate;
   final List<String>? specialty;
   final String? cardImageUrl;
 

@@ -8,7 +8,6 @@ class PersonalInfoControllers {
   static final fullNameController = TextEditingController();
   static final nationalIdController = TextEditingController();
   static final fullAddressController = TextEditingController();
-
   static final governorate = ValueNotifier<String?>(null);
   static final gender = ValueNotifier<String?>(null);
   static final profileImage = ValueNotifier<String?>(null);

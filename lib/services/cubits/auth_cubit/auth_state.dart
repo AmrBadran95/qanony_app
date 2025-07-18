@@ -7,9 +7,14 @@ class AuthInitial extends AuthState {}
 
 class AuthLoading extends AuthState {}
 
-class AuthAuthenticated extends AuthState {
-  final User user;
-  AuthAuthenticated(this.user);
+class AuthRegistered extends AuthState {
+  final String uid;
+  AuthRegistered(this.uid);
+}
+
+class AuthLoggedIn extends AuthState {
+  final String uid;
+  AuthLoggedIn(this.uid);
 }
 
 class AuthUnauthenticated extends AuthState {}

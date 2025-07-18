@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qanony/Core/shared/app_cache.dart';
 import 'package:qanony/services/auth/auth_service.dart';
@@ -15,8 +14,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoading());
     try {
       final user = await _authService.registerWithEmail(email, password);
-      await AppCache.setLoggedIn(true);
-      emit(AuthAuthenticated(user!));
+      emit(AuthRegistered(user!.uid));
     } catch (e) {
       emit(AuthError(e.toString()));
     }
@@ -26,8 +24,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoading());
     try {
       final user = await _authService.loginWithEmail(email, password);
-      await AppCache.setLoggedIn(true);
-      emit(AuthAuthenticated(user!));
+      emit(AuthLoggedIn(user!.uid));
     } catch (e) {
       emit(AuthError(e.toString()));
     }
