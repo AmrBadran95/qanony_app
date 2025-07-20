@@ -4,7 +4,7 @@ import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/core/styles/color.dart';
 import 'package:qanony/core/styles/padding.dart';
 
-import '../../Core/widgets/subscriptionCard.dart';
+import '../../Core/widgets/subscription_card.dart';
 
 class SubscriptionScreen extends StatelessWidget {
   const SubscriptionScreen({super.key});

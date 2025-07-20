@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,9 +8,8 @@ import 'package:qanony/core/styles/text.dart';
 import 'package:qanony/core/widgets/custom_button.dart';
 import 'package:qanony/core/widgets/custom_text_form_field.dart';
 import 'package:qanony/data/static/egypt_governorates.dart';
-import 'package:qanony/services/controllers/calendar_controller.dart';
 import 'package:qanony/services/controllers/personal_info_controllers.dart';
-import 'package:qanony/services/cubits/calendar/calendar_cubit.dart';
+import 'package:qanony/services/cubits/date_of_birth/date_of_birth_cubit.dart';
 import 'package:qanony/services/validators/personal_info_validators.dart';
 
 class PersonalInfoForm extends StatelessWidget {
@@ -52,79 +50,76 @@ class PersonalInfoForm extends StatelessWidget {
           SizedBox(height: MediaQuery.of(context).size.height * .01),
 
           FormField<String>(
+            initialValue: PersonalInfoControllers.governorate.value,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: PersonalInfoValidators.validateGovernorate,
             builder: (state) {
-              return ValueListenableBuilder<String?>(
-                valueListenable: PersonalInfoControllers.governorate,
-                builder: (context, value, _) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      DropdownButtonFormField<String>(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ValueListenableBuilder<String?>(
+                    valueListenable: PersonalInfoControllers.governorate,
+                    builder: (context, value, _) {
+                      return DropdownButtonFormField<String>(
                         value: value,
                         onChanged: (newValue) {
                           PersonalInfoControllers.governorate.value = newValue;
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            state.didChange(newValue);
-                          });
+                          state.didChange(newValue);
                         },
-                        items: egyptGovernorates
-                            .map(
-                              (type) => DropdownMenuItem(
-                                value: type,
-                                child: Text(type),
-                              ),
-                            )
-                            .toList(),
+                        style: AppText.bodyLarge.copyWith(color: AppColor.dark),
+                        dropdownColor: AppColor.grey,
                         decoration: InputDecoration(
-                          labelText: 'المحافظة',
-                          filled: true,
-                          fillColor: AppColor.grey,
+                          labelText: "اختر المحافظة",
                           labelStyle: AppText.bodyLarge.copyWith(
                             color: AppColor.dark,
                           ),
-                          contentPadding: AppPadding.paddingMedium,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide.none,
+                          filled: true,
+                          fillColor: AppColor.grey,
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: AppColor.dark),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: AppColor.dark),
+                            borderSide: BorderSide(
+                              color: AppColor.dark,
+                              width: 1,
+                            ),
                           ),
                           errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.red),
+                            borderSide: BorderSide(color: AppColor.primary),
                           ),
                           focusedErrorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.red),
+                            borderSide: BorderSide(
+                              color: AppColor.dark,
+                              width: 1,
+                            ),
                           ),
                         ),
-                        style: AppText.bodyLarge.copyWith(color: AppColor.dark),
-                        dropdownColor: AppColor.grey,
-                        borderRadius: BorderRadius.circular(8),
-                        icon: const Icon(
-                          Icons.arrow_drop_down,
-                          color: AppColor.dark,
+                        items: egyptGovernorates
+                            .map(
+                              (governorate) => DropdownMenuItem(
+                                value: governorate,
+                                child: Text(governorate),
+                              ),
+                            )
+                            .toList(),
+                      );
+                    },
+                  ),
+                  if (state.hasError)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Text(
+                        state.errorText!,
+                        style: AppText.bodySmall.copyWith(
+                          color: AppColor.primary,
                         ),
-                        isExpanded: true,
                       ),
-                      if (state.hasError)
-                        Text(
-                          state.errorText!,
-                          style: AppText.bodySmall.copyWith(
-                            color: AppColor.primary,
-                          ),
-                        ),
-                    ],
-                  );
-                },
+                    ),
+                ],
               );
             },
           ),
+
           SizedBox(height: MediaQuery.of(context).size.height * .01),
 
           CustomTextFormField(
@@ -139,130 +134,49 @@ class PersonalInfoForm extends StatelessWidget {
           ),
           SizedBox(height: MediaQuery.of(context).size.height * .01),
 
-          BlocProvider(
-            create: (context) => CalendarCubit(),
-            child: Builder(
-              builder: (context) {
-                return FormField<DateTime>(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) {
-                    final selectedDate = CalendarController.getSelectedDate(
-                      context.read<CalendarCubit>().state,
-                    );
+          Builder(
+            builder: (context) {
+              return FormField<DateTime>(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (_) {
+                  final state = context.read<DateOfBirthCubit>().state;
+                  if (state is DateOfBirthSelected) {
                     return PersonalInfoValidators.validateBirthDate(
-                      selectedDate,
+                      state.selectedDate,
                     );
-                  },
-                  builder: (state) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        BlocBuilder<CalendarCubit, CalendarState>(
-                          builder: (context, calendarState) {
-                            final selectedDate =
-                                CalendarController.getSelectedDate(
-                                  calendarState,
-                                );
-                            return CustomCalendar(
-                              label: "تاريخ الميلاد",
-                              prevOnly: true,
-                              selectedDate: selectedDate,
-                              onDateSelected: (date) {
-                                CalendarController.updateDate(context, date);
-                                WidgetsBinding.instance.addPostFrameCallback((
-                                  _,
-                                ) {
-                                  state.didChange(date);
-                                });
-                              },
-                            );
-                          },
-                        ),
-                        if (state.hasError)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8),
-                            child: Text(
-                              state.errorText!,
-                              style: AppText.bodySmall.copyWith(
-                                color: AppColor.primary,
-                              ),
-                            ),
-                          ),
-                      ],
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-          SizedBox(height: MediaQuery.of(context).size.height * .01),
-
-          Text(
-            "النوع",
-            style: AppText.bodyLarge.copyWith(color: AppColor.dark),
-          ),
-          SizedBox(height: MediaQuery.of(context).size.height * .01),
-          FormField<String>(
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: PersonalInfoValidators.validateGender,
-            builder: (state) {
-              return ValueListenableBuilder<String?>(
-                valueListenable: PersonalInfoControllers.gender,
-                builder: (context, value, _) {
+                  }
+                  return PersonalInfoValidators.validateBirthDate(null);
+                },
+                builder: (state) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: RadioListTile<String>(
-                              value: "male",
-                              groupValue: value,
-                              onChanged: (val) {
-                                PersonalInfoControllers.gender.value = val;
-                                WidgetsBinding.instance.addPostFrameCallback((
-                                  _,
-                                ) {
-                                  state.didChange(val);
-                                });
-                              },
-                              title: Text(
-                                "ذكر",
-                                style: AppText.bodyLarge.copyWith(
-                                  color: AppColor.dark,
-                                ),
-                              ),
-                              fillColor: WidgetStateProperty.all(AppColor.dark),
-                            ),
-                          ),
-                          Expanded(
-                            child: RadioListTile<String>(
-                              value: "female",
-                              groupValue: value,
-                              onChanged: (val) {
-                                PersonalInfoControllers.gender.value = val;
-                                WidgetsBinding.instance.addPostFrameCallback((
-                                  _,
-                                ) {
-                                  state.didChange(val);
-                                });
-                              },
-                              title: Text(
-                                "أنثى",
-                                style: AppText.bodyLarge.copyWith(
-                                  color: AppColor.dark,
-                                ),
-                              ),
-                              fillColor: WidgetStateProperty.all(AppColor.dark),
-                            ),
-                          ),
-                        ],
+                      BlocBuilder<DateOfBirthCubit, DateOfBirthState>(
+                        builder: (context, dateState) {
+                          DateTime? selectedDate;
+                          if (dateState is DateOfBirthSelected) {
+                            selectedDate = dateState.selectedDate;
+                          }
+
+                          return CustomCalendar(
+                            label: "تاريخ الميلاد",
+                            prevOnly: true,
+                            selectedDate: selectedDate,
+                            onDateSelected: (date) {
+                              context.read<DateOfBirthCubit>().selectDate(date);
+                              state.didChange(date);
+                            },
+                          );
+                        },
                       ),
                       if (state.hasError)
-                        Text(
-                          state.errorText!,
-                          style: AppText.bodySmall.copyWith(
-                            color: AppColor.primary,
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: Text(
+                            state.errorText!,
+                            style: AppText.bodySmall.copyWith(
+                              color: AppColor.primary,
+                            ),
                           ),
                         ),
                     ],
@@ -271,6 +185,70 @@ class PersonalInfoForm extends StatelessWidget {
               );
             },
           ),
+
+          SizedBox(height: MediaQuery.of(context).size.height * .01),
+
+          Text(
+            "النوع",
+            style: AppText.bodyLarge.copyWith(color: AppColor.dark),
+          ),
+          SizedBox(height: MediaQuery.of(context).size.height * .01),
+          FormField<String>(
+            initialValue: PersonalInfoControllers.gender.value,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: PersonalInfoValidators.validateGender,
+            builder: (state) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ValueListenableBuilder<String?>(
+                    valueListenable: PersonalInfoControllers.gender,
+                    builder: (context, value, _) {
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: RadioListTile<String>(
+                              value: 'male',
+                              groupValue: value,
+                              onChanged: (val) {
+                                PersonalInfoControllers.gender.value = val;
+                                state.didChange(val);
+                              },
+                              title: Text("ذكر"),
+                              activeColor: AppColor.dark,
+                            ),
+                          ),
+                          Expanded(
+                            child: RadioListTile<String>(
+                              value: 'female',
+                              groupValue: value,
+                              onChanged: (val) {
+                                PersonalInfoControllers.gender.value = val;
+                                state.didChange(val);
+                              },
+                              title: Text("أنثى"),
+                              activeColor: AppColor.dark,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                  if (state.hasError)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Text(
+                        state.errorText!,
+                        style: AppText.bodySmall.copyWith(
+                          color: AppColor.primary,
+                        ),
+                      ),
+                    ),
+                ],
+              );
+            },
+          ),
+
           SizedBox(height: MediaQuery.of(context).size.height * .01),
 
           Center(
@@ -362,8 +340,8 @@ class PersonalInfoForm extends StatelessWidget {
                           const SizedBox(height: 10),
                           ClipRRect(
                             borderRadius: BorderRadius.circular(8),
-                            child: Image.file(
-                              File(value),
+                            child: Image.network(
+                              value,
                               height: 120,
                               width: 120,
                               fit: BoxFit.cover,

@@ -10,12 +10,12 @@ final List<Widget> onboardingPages = [
   ),
   OnboardingPage(
     text: 'خدمات قانونية في متناولك',
-    imagePath: 'assets/images/lawyer 1.png',
+    imagePath: 'assets/images/lawyer1.png',
     paragraph: "اختَر محامي متخصص، اطلب خدمة، وتابع كل خطواتك من مكانك.",
   ),
   OnboardingPage(
     text: 'أمان وتنظيم في كل خطوة',
-    imagePath: 'assets/images/court 1.png',
+    imagePath: 'assets/images/court1.png',
     paragraph: "احفظ مستنداتك، راجع معاملتك، وتواصل مع محاميك بثقة كاملة..",
   ),
 ];

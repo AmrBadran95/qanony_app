@@ -7,141 +7,224 @@ import 'package:qanony/core/widgets/custom_button.dart';
 import 'package:qanony/presentation/pages/multi_stepper_form.dart';
 import 'package:qanony/presentation/screens/waiting_page.dart';
 import 'package:qanony/services/controllers/lawyer_info_confirmation_controller.dart';
+import 'package:qanony/services/cubits/date_of_birth/date_of_birth_cubit.dart';
 import 'package:qanony/services/cubits/lawyer_confirmation/lawyer_confirmation_cubit.dart';
+import 'package:qanony/services/cubits/registration_date/registration_date_cubit.dart';
 import 'package:qanony/services/cubits/stepper/multi_stepper_cubit.dart';
 
 class LawyerInformation extends StatelessWidget {
-  const LawyerInformation({super.key});
+  final String uid;
+  final String email;
+  final String phone;
+
+  const LawyerInformation({
+    super.key,
+    required this.uid,
+    required this.email,
+    required this.phone,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => MultiStepperCubit()),
-        BlocProvider(create: (context) => LawyerConfirmationCubit()),
+        BlocProvider(create: (_) => MultiStepperCubit()),
+        BlocProvider(create: (_) => DateOfBirthCubit()),
+        BlocProvider(create: (_) => RegistrationDateCubit()),
       ],
-      child: Scaffold(
-        body: SafeArea(
-          child: BlocConsumer<LawyerConfirmationCubit, LawyerConfirmationState>(
-            listener: (context, state) {
-              if (state is LawyerConfirmationValidationError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      state.message,
-                      style: AppText.bodyLarge.copyWith(
-                        color: AppColor.primary,
-                      ),
-                    ),
-                    backgroundColor: AppColor.grey,
-                  ),
-                );
-              } else if (state is LawyerConfirmationValidationSuccess) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => WaitingPage(),
-                  ),
-                );
-              }
-            },
-            builder: (context, state) {
-              return Padding(
-                padding: AppPadding.paddingSmall,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "المعلومات الشخصية",
-                          style: AppText.title.copyWith(color: AppColor.dark),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * .01,
-                        ),
-                        const Icon(
-                          Icons.person,
-                          color: AppColor.dark,
-                          size: 40,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * .01),
-
-                    const Expanded(child: MultiStepperForm()),
-
-                    SizedBox(height: MediaQuery.of(context).size.height * .01),
-                    ValueListenableBuilder<bool>(
-                      valueListenable: ConfirmationControllers.confirmedInfo,
-                      builder: (context, value, _) {
-                        return CheckboxListTile(
-                          value: value,
-                          onChanged: (val) =>
-                              ConfirmationControllers.confirmedInfo.value =
-                                  val ?? false,
-                          title: Text(
-                            "أقر أن البيانات السابقة صحيحة وأنا مسئول عنها",
-                            style: AppText.bodyMedium.copyWith(
-                              color: AppColor.dark,
+      child: Builder(
+        builder: (context) {
+          return BlocProvider(
+            create: (_) => LawyerConfirmationCubit(
+              uid: uid,
+              email: email,
+              phone: phone,
+              dateOfBirthCubit: context.read<DateOfBirthCubit>(),
+              registrationDateCubit: context.read<RegistrationDateCubit>(),
+            ),
+            child: Scaffold(
+              body: SafeArea(
+                child:
+                    BlocConsumer<
+                      LawyerConfirmationCubit,
+                      LawyerConfirmationState
+                    >(
+                      listener: (context, state) {
+                        if (state is LawyerConfirmationValidationError ||
+                            state is LawyerConfirmationSubmissionFailed) {
+                          final msg = state is LawyerConfirmationValidationError
+                              ? state.message
+                              : (state as LawyerConfirmationSubmissionFailed)
+                                    .message;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                msg,
+                                style: AppText.bodyLarge.copyWith(
+                                  color: AppColor.primary,
+                                ),
+                              ),
+                              backgroundColor: AppColor.grey,
                             ),
+                          );
+                        }
+
+                        if (state is LawyerConfirmationSubmitted) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const WaitingPage(),
+                            ),
+                          );
+                        }
+
+                        if (state is LawyerConfirmationValidationSuccess) {
+                          Future.microtask(() {
+                            DateTime? dob;
+                            final dobState = context
+                                .read<DateOfBirthCubit>()
+                                .state;
+                            if (dobState is DateOfBirthSelected) {
+                              dob = dobState.selectedDate;
+                            }
+
+                            DateTime? regDate;
+                            final regDateState = context
+                                .read<RegistrationDateCubit>()
+                                .state;
+                            if (regDateState is RegistrationDateSelected) {
+                              regDate = regDateState.selectedDate;
+                            }
+
+                            context
+                                .read<LawyerConfirmationCubit>()
+                                .submitLawyerData(
+                                  uid: uid,
+                                  email: email,
+                                  phone: phone,
+                                  dateOfBirth: dob,
+                                  registrationDate: regDate,
+                                );
+                          });
+                        }
+                      },
+                      builder: (context, state) {
+                        final isLoading = state is LawyerConfirmationLoading;
+
+                        return Padding(
+                          padding: AppPadding.paddingSmall,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "المعلومات الشخصية",
+                                    style: AppText.title.copyWith(
+                                      color: AppColor.dark,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const Icon(
+                                    Icons.person,
+                                    color: AppColor.dark,
+                                    size: 40,
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+                              const Expanded(child: MultiStepperForm()),
+                              const SizedBox(height: 16),
+                              ValueListenableBuilder<bool>(
+                                valueListenable:
+                                    ConfirmationControllers.confirmedInfo,
+                                builder: (_, value, _) {
+                                  return CheckboxListTile(
+                                    value: value,
+                                    onChanged: (val) =>
+                                        ConfirmationControllers
+                                                .confirmedInfo
+                                                .value =
+                                            val ?? false,
+                                    title: Text(
+                                      "أقر أن البيانات السابقة صحيحة وأنا مسئول عنها",
+                                      style: AppText.bodyMedium.copyWith(
+                                        color: AppColor.dark,
+                                      ),
+                                    ),
+                                    controlAffinity:
+                                        ListTileControlAffinity.leading,
+                                    activeColor: AppColor.green,
+                                  );
+                                },
+                              ),
+                              const SizedBox(height: 8),
+                              ValueListenableBuilder<bool>(
+                                valueListenable:
+                                    ConfirmationControllers.agreedToTerms,
+                                builder: (_, value, _) {
+                                  return CheckboxListTile(
+                                    value: value,
+                                    onChanged: (val) =>
+                                        ConfirmationControllers
+                                                .agreedToTerms
+                                                .value =
+                                            val ?? false,
+                                    title: Text(
+                                      "أوافق على الشروط والأحكام",
+                                      style: AppText.bodyMedium.copyWith(
+                                        color: AppColor.dark,
+                                      ),
+                                    ),
+                                    controlAffinity:
+                                        ListTileControlAffinity.leading,
+                                    activeColor: AppColor.green,
+                                  );
+                                },
+                              ),
+                              const SizedBox(height: 16),
+                              CustomButton(
+                                text: isLoading
+                                    ? "جاري الإرسال..."
+                                    : "تأكيد البيانات",
+                                onTap: () {
+                                  if (isLoading) return;
+
+                                  final confirmed = ConfirmationControllers
+                                      .confirmedInfo
+                                      .value;
+                                  final agreed = ConfirmationControllers
+                                      .agreedToTerms
+                                      .value;
+
+                                  context
+                                      .read<LawyerConfirmationCubit>()
+                                      .validateAllForms(
+                                        agreedToTerms: agreed,
+                                        confirmedData: confirmed,
+                                      );
+                                },
+                                width: double.infinity,
+                                height: 60,
+                                backgroundColor: isLoading
+                                    ? AppColor.grey
+                                    : AppColor.secondary,
+                                textStyle: AppText.bodyLarge.copyWith(
+                                  color: AppColor.dark,
+                                ),
+                                textColor: AppColor.dark,
+                              ),
+                              const SizedBox(height: 16),
+                            ],
                           ),
-                          controlAffinity: ListTileControlAffinity.leading,
-                          activeColor: AppColor.green,
                         );
                       },
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * .01),
-                    ValueListenableBuilder<bool>(
-                      valueListenable: ConfirmationControllers.agreedToTerms,
-                      builder: (context, value, _) {
-                        return CheckboxListTile(
-                          value: value,
-                          onChanged: (val) =>
-                              ConfirmationControllers.agreedToTerms.value =
-                                  val ?? false,
-                          title: Text(
-                            "أوافق على الشروط والأحكام",
-                            style: AppText.bodyMedium.copyWith(
-                              color: AppColor.dark,
-                            ),
-                          ),
-                          controlAffinity: ListTileControlAffinity.leading,
-                          activeColor: AppColor.green,
-                        );
-                      },
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * .01),
-                    CustomButton(
-                      text: "تأكيد البيانات",
-                      onTap: () {
-                        final confirmedData =
-                            ConfirmationControllers.confirmedInfo.value;
-                        final agreedToTerms =
-                            ConfirmationControllers.agreedToTerms.value;
-
-                        context
-                            .read<LawyerConfirmationCubit>()
-                            .validateAllForms(
-                              agreedToTerms: agreedToTerms,
-                              confirmedData: confirmedData,
-                            );
-                      },
-                      width: MediaQuery.of(context).size.width,
-                      height: 60,
-                      backgroundColor: AppColor.secondary,
-                      textStyle: AppText.bodyLarge.copyWith(
-                        color: AppColor.dark,
-                      ),
-                      textColor: AppColor.dark,
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
