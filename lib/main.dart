@@ -2,14 +2,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:qanony/Core/shared/app_cache.dart';
-import 'package:qanony/presentation/screens/add_appointment.dart';
-import 'package:qanony/presentation/screens/search-screen.dart';
+import 'package:qanony/firebase_options.dart';
 import 'package:qanony/presentation/screens/splash_screen.dart';
+import 'package:qanony/services/cubits/auth_cubit/auth_cubit.dart';
+import 'package:qanony/services/cubits/role/role_cubit.dart';
 import 'package:qanony/services/cubits/splash/splash_cubit.dart';
 
 import 'Core/shared/app_cache.dart';
-import 'services/cubits/splash/splash_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
