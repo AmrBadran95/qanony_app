@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:qanony/firebase_options.dart';
-import 'package:qanony/presentation/screens/sign_up.dart';
+import 'package:qanony/presentation/screens/splash_screen.dart';
+import 'package:qanony/services/cubits/auth_cubit/auth_cubit.dart';
+import 'package:qanony/services/cubits/role/role_cubit.dart';
 import 'Core/shared/app_cache.dart';
 import 'services/cubits/splash/splash_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await AppCache.init();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const QanonyApp());
 }
 
@@ -20,7 +22,11 @@ class QanonyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => SplashCubit())],
+      providers: [
+        BlocProvider(create: (context) => SplashCubit()),
+        BlocProvider(create: (_) => RoleCubit()..loadSavedRole()),
+        BlocProvider(create: (context) => AuthCubit()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
 
@@ -41,7 +47,7 @@ class QanonyApp extends StatelessWidget {
           );
         },
 
-        home: SignUpScreen(),
+        home: SplashScreen(),
       ),
     );
   }

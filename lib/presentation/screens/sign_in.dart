@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:qanony/Core/shared/app_cache.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/widgets/custom_button.dart';
 import 'package:qanony/Core/widgets/custom_text_form_field.dart';
-import 'package:qanony/presentation/screens/lawyer_home_screen.dart';
+import 'package:qanony/presentation/screens/user_home_screen.dart';
 import 'package:qanony/presentation/screens/sign_up.dart';
 import 'package:qanony/services/cubits/auth_cubit/auth_cubit.dart';
 import '../../services/controllers/signin_form_controller.dart';
@@ -25,9 +26,13 @@ class SignInScreen extends StatelessWidget {
           child: BlocConsumer<AuthCubit, AuthState>(
             listener: (context, state) {
               if (state is AuthLoggedIn) {
+                final isLawyer = AppCache.isLawyer;
+                final nextScreen = isLawyer
+                    ? const Placeholder()
+                    : const UserHomeScreen();
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (_) => const LawyerHomeScreen()),
+                  MaterialPageRoute(builder: (_) => nextScreen),
                 );
               }
               if (state is AuthError) {
@@ -36,6 +41,7 @@ class SignInScreen extends StatelessWidget {
                 ).showSnackBar(SnackBar(content: Text(state.message)));
               }
             },
+
             builder: (context, state) {
               final isLoading = state is AuthLoading;
 
@@ -132,7 +138,7 @@ class SignInScreen extends StatelessWidget {
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                Navigator.push(
+                                Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                     builder: (_) => const SignUpScreen(),
