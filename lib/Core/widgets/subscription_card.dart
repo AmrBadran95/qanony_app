@@ -1,6 +1,5 @@
-
-
 import 'package:flutter/material.dart';
+
 import '../styles/color.dart';
 import '../styles/padding.dart';
 import '../styles/text.dart';
@@ -18,9 +17,6 @@ class SubscriptionCard extends StatelessWidget {
   final String text2;
   final String text3;
 
-
-
-
   const SubscriptionCard({
     super.key,
     required this.label,
@@ -34,8 +30,6 @@ class SubscriptionCard extends StatelessWidget {
     required this.text1,
     required this.text2,
     required this.text3,
-
-
   });
 
   @override
@@ -54,9 +48,8 @@ class SubscriptionCard extends StatelessWidget {
 
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-              Container(
-                height:MediaQuery.of(context).size.height*.2,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * .2,
                 child: Padding(
                   padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.028,
@@ -64,52 +57,100 @@ class SubscriptionCard extends StatelessWidget {
 
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(title,style: AppText.headingMedium.copyWith(color: AppColor.dark),),
-                      Text(option1,style: AppText.bodyMedium.copyWith(color: AppColor.dark),)    ,
+                      Text(
+                        title,
+                        style: AppText.headingMedium.copyWith(
+                          color: AppColor.dark,
+                        ),
+                      ),
+                      Text(
+                        option1,
+                        style: AppText.bodyMedium.copyWith(
+                          color: AppColor.dark,
+                        ),
+                      ),
                       Row(
                         children: [
-                          Icon(Icons.stars,color: AppColor.secondary,size: MediaQuery.of(context).size.width*.03,),
-                          Text(text1,style: AppText.labelSmall.copyWith(color: AppColor.dark.withOpacity(.5)),),
+                          Icon(
+                            Icons.stars,
+                            color: AppColor.secondary,
+                            size: MediaQuery.of(context).size.width * .03,
+                          ),
+                          Text(
+                            text1,
+                            style: AppText.labelSmall.copyWith(
+                              color: AppColor.dark.withOpacity(.5),
+                            ),
+                          ),
                         ],
                       ),
-                      Text(option2,style: AppText.bodyMedium.copyWith(color: AppColor.dark),)    ,
+                      Text(
+                        option2,
+                        style: AppText.bodyMedium.copyWith(
+                          color: AppColor.dark,
+                        ),
+                      ),
                       Row(
                         children: [
-                          Icon(Icons.stars,color: AppColor.secondary,size: MediaQuery.of(context).size.width*.03,),
-                          Text(text2,style: AppText.labelSmall.copyWith(color: AppColor.dark.withOpacity(.5)),),
+                          Icon(
+                            Icons.stars,
+                            color: AppColor.secondary,
+                            size: MediaQuery.of(context).size.width * .03,
+                          ),
+                          Text(
+                            text2,
+                            style: AppText.labelSmall.copyWith(
+                              color: AppColor.dark.withOpacity(.5),
+                            ),
+                          ),
                         ],
                       ),
-                      Text(option3,style: AppText.bodyMedium.copyWith(color: AppColor.dark),)    ,
+                      Text(
+                        option3,
+                        style: AppText.bodyMedium.copyWith(
+                          color: AppColor.dark,
+                        ),
+                      ),
                       Row(
                         children: [
-                          Icon(Icons.stars,color: AppColor.secondary,size: MediaQuery.of(context).size.width*.03,),
-                          Text(text3,style: AppText.labelSmall.copyWith(color: AppColor.dark.withOpacity(.5)),),
+                          Icon(
+                            Icons.stars,
+                            color: AppColor.secondary,
+                            size: MediaQuery.of(context).size.width * .03,
+                          ),
+                          Text(
+                            text3,
+                            style: AppText.labelSmall.copyWith(
+                              color: AppColor.dark.withOpacity(.5),
+                            ),
+                          ),
                         ],
                       ),
                     ],
                   ),
                 ),
               ),
-              SizedBox(width: MediaQuery.of(context).size.width*.05,),
+              SizedBox(width: MediaQuery.of(context).size.width * .05),
               Padding(
-                padding:  EdgeInsets.only(  top: MediaQuery.of(context).size.height * 0.028, ),
+                padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.028,
+                ),
                 child: Column(
-
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width*.2,
-                      height:  MediaQuery.of(context).size.height * 0.075,
-                      decoration:  BoxDecoration(
+                      width: MediaQuery.of(context).size.width * .2,
+                      height: MediaQuery.of(context).size.height * 0.075,
+                      decoration: BoxDecoration(
                         color: labelColor,
                         shape: BoxShape.circle,
                       ),
-                      child:  Center(
+                      child: Center(
                         child: Icon(
                           icon,
                           color: AppColor.light,
-                          size: MediaQuery.of(context).size.width*.13,
+                          size: MediaQuery.of(context).size.width * .13,
                         ),
                       ),
                     ),
@@ -120,33 +161,36 @@ class SubscriptionCard extends StatelessWidget {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                       ).createShader(bounds),
-                      child:
-                      Text(
-                          priceText,
-                          style: AppText.bodyMedium.copyWith(color: AppColor.light,fontWeight: FontWeight.bold)
+                      child: Text(
+                        priceText,
+                        style: AppText.bodyMedium.copyWith(
+                          color: AppColor.light,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-
-
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
         Padding(
-          padding:  EdgeInsets.only(top: MediaQuery.of(context).size.width*.02),
+          padding: EdgeInsets.only(
+            top: MediaQuery.of(context).size.width * .02,
+          ),
           child: Container(
-              width: MediaQuery.of(context).size.width*.25,
-              height: MediaQuery.of(context).size.height*.03,
-              color: labelColor,
-              alignment: Alignment.center,
+            width: MediaQuery.of(context).size.width * .25,
+            height: MediaQuery.of(context).size.height * .03,
+            color: labelColor,
+            alignment: Alignment.center,
 
-              child: Text(label,style:AppText.bodySmall.copyWith(color: AppColor.light),)),
+            child: Text(
+              label,
+              style: AppText.bodySmall.copyWith(color: AppColor.light),
+            ),
+          ),
         ),
-
-
-
       ],
     );
   }

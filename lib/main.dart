@@ -6,8 +6,9 @@ import 'package:qanony/firebase_options.dart';
 import 'package:qanony/presentation/screens/splash_screen.dart';
 import 'package:qanony/services/cubits/auth_cubit/auth_cubit.dart';
 import 'package:qanony/services/cubits/role/role_cubit.dart';
+import 'package:qanony/services/cubits/splash/splash_cubit.dart';
+
 import 'Core/shared/app_cache.dart';
-import 'services/cubits/splash/splash_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,8 +47,7 @@ class QanonyApp extends StatelessWidget {
             child: child!,
           );
         },
-
-        home: SplashScreen(),
+        home: const SplashScreen(),
       ),
     );
   }
