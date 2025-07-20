@@ -26,36 +26,48 @@ class LawyerConfirmationCubit extends Cubit<LawyerConfirmationState> {
     required this.registrationDateCubit,
   }) : super(LawyerConfirmationInitial());
 
-  void validateAllForms({
+  Future<bool> validateAllForms({
     required bool agreedToTerms,
     required bool confirmedData,
-  }) {
-    PersonalInfoFormKey.formKey.currentState?.save();
-    LawyermentInfoFormKey.formKey.currentState?.save();
-    BankAccountFormKey.formKey.currentState?.save();
-    ContactFormKey.formKey.currentState?.save();
+  }) async {
+    try {
+      PersonalInfoFormKey.formKey.currentState?.save();
+      LawyermentInfoFormKey.formKey.currentState?.save();
+      BankAccountFormKey.formKey.currentState?.save();
+      ContactFormKey.formKey.currentState?.save();
 
-    final personalValid =
-        PersonalInfoFormKey.formKey.currentState?.validate() ?? false;
-    final lawyerValid =
-        LawyermentInfoFormKey.formKey.currentState?.validate() ?? false;
-    final bankValid =
-        BankAccountFormKey.formKey.currentState?.validate() ?? false;
-    final contactValid =
-        ContactFormKey.formKey.currentState?.validate() ?? false;
+      final personalValid =
+          PersonalInfoFormKey.formKey.currentState?.validate() ?? false;
+      final lawyerValid =
+          LawyermentInfoFormKey.formKey.currentState?.validate() ?? false;
+      final bankValid =
+          BankAccountFormKey.formKey.currentState?.validate() ?? false;
+      final contactValid =
+          ContactFormKey.formKey.currentState?.validate() ?? false;
 
-    if (!confirmedData || !agreedToTerms) {
-      emit(
-        LawyerConfirmationValidationError(
-          "يجب الموافقة على الشروط والإقرار بالبيانات",
-        ),
-      );
-    } else if (!personalValid || !lawyerValid || !bankValid || !contactValid) {
-      emit(
-        LawyerConfirmationValidationError("تأكد من ملء جميع الحقول بشكل صحيح"),
-      );
-    } else {
-      emit(LawyerConfirmationValidationSuccess());
+      if (!confirmedData || !agreedToTerms) {
+        emit(
+          LawyerConfirmationValidationError(
+            "يجب الموافقة على الشروط والإقرار بالبيانات",
+          ),
+        );
+        return false;
+      } else if (!personalValid ||
+          !lawyerValid ||
+          !bankValid ||
+          !contactValid) {
+        emit(
+          LawyerConfirmationValidationError(
+            "تأكد من ملء جميع الحقول بشكل صحيح",
+          ),
+        );
+        return false;
+      } else {
+        emit(LawyerConfirmationValidationSuccess());
+        return true;
+      }
+    } catch (e) {
+      return false;
     }
   }
 

@@ -4,8 +4,8 @@ import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/presentation/pages/lawyer_base_screen.dart';
 
-class LawyerHomeScreen extends StatelessWidget {
-  const LawyerHomeScreen({super.key});
+class UserHomeScreen extends StatelessWidget {
+  const UserHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

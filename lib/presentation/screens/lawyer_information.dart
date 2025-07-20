@@ -139,7 +139,7 @@ class LawyerInformation extends StatelessWidget {
                               ValueListenableBuilder<bool>(
                                 valueListenable:
                                     ConfirmationControllers.confirmedInfo,
-                                builder: (_, value, __) {
+                                builder: (_, value, _) {
                                   return CheckboxListTile(
                                     value: value,
                                     onChanged: (val) =>
@@ -163,7 +163,7 @@ class LawyerInformation extends StatelessWidget {
                               ValueListenableBuilder<bool>(
                                 valueListenable:
                                     ConfirmationControllers.agreedToTerms,
-                                builder: (_, value, __) {
+                                builder: (_, value, _) {
                                   return CheckboxListTile(
                                     value: value,
                                     onChanged: (val) =>

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/core/widgets/role_container.dart';
+import 'package:qanony/presentation/screens/sign_in.dart';
+import 'package:qanony/services/cubits/role/role_cubit.dart';
 
 class ChooseRoleScreen extends StatelessWidget {
   const ChooseRoleScreen({super.key});
@@ -8,34 +11,46 @@ class ChooseRoleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: AppColor.grey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            RoleContainer(
-              color: AppColor.primary,
-              onTap: () {},
-
-              text1: "أنا محامى",
-              text2:
-                  "كمحامٍ، يمكنك تقديم خدماتك، إدارة جلساتك، والتواصل مع عملائك بسهولة.",
-              text3: "ابدأ رحلتك القانونية الآن.",
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.06),
-            RoleContainer(
-              color: AppColor.secondary,
-              onTap: () {},
-
-              text1: "أنا عميل",
-              text2:
-                  "كعميل، يمكنك حجز جلسة مع محامٍ، طرح استشاراتك، وتتبع حالتك القانونية بكل سهولة.",
-              text3: "ابدأ رحلتك نحو حل قانوني واضح.",
-              textColor: AppColor.dark,
-            ),
-          ],
+      body: BlocListener<RoleCubit, RoleState>(
+        listener: (context, state) {
+          if (state is RoleSelected) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const SignInScreen()),
+            );
+          }
+        },
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: AppColor.grey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              RoleContainer(
+                color: AppColor.primary,
+                onTap: () {
+                  context.read<RoleCubit>().selectLawyerRole();
+                },
+                text1: "أنا محامى",
+                text2:
+                    "كمحامٍ، يمكنك تقديم خدماتك، إدارة جلساتك، والتواصل مع عملائك بسهولة.",
+                text3: "ابدأ رحلتك القانونية الآن.",
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.06),
+              RoleContainer(
+                color: AppColor.secondary,
+                onTap: () {
+                  context.read<RoleCubit>().selectUserRole();
+                },
+                text1: "أنا عميل",
+                text2:
+                    "كعميل، يمكنك حجز جلسة مع محامٍ، طرح استشاراتك، وتتبع حالتك القانونية بكل سهولة.",
+                text3: "ابدأ رحلتك نحو حل قانوني واضح.",
+                textColor: AppColor.dark,
+              ),
+            ],
+          ),
         ),
       ),
     );

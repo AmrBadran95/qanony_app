@@ -50,79 +50,76 @@ class PersonalInfoForm extends StatelessWidget {
           SizedBox(height: MediaQuery.of(context).size.height * .01),
 
           FormField<String>(
+            initialValue: PersonalInfoControllers.governorate.value,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: PersonalInfoValidators.validateGovernorate,
             builder: (state) {
-              return ValueListenableBuilder<String?>(
-                valueListenable: PersonalInfoControllers.governorate,
-                builder: (context, value, _) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      DropdownButtonFormField<String>(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ValueListenableBuilder<String?>(
+                    valueListenable: PersonalInfoControllers.governorate,
+                    builder: (context, value, _) {
+                      return DropdownButtonFormField<String>(
                         value: value,
                         onChanged: (newValue) {
                           PersonalInfoControllers.governorate.value = newValue;
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            state.didChange(newValue);
-                          });
+                          state.didChange(newValue);
                         },
-                        items: egyptGovernorates
-                            .map(
-                              (type) => DropdownMenuItem(
-                                value: type,
-                                child: Text(type),
-                              ),
-                            )
-                            .toList(),
+                        style: AppText.bodyLarge.copyWith(color: AppColor.dark),
+                        dropdownColor: AppColor.grey,
                         decoration: InputDecoration(
-                          labelText: 'المحافظة',
-                          filled: true,
-                          fillColor: AppColor.grey,
+                          labelText: "اختر المحافظة",
                           labelStyle: AppText.bodyLarge.copyWith(
                             color: AppColor.dark,
                           ),
-                          contentPadding: AppPadding.paddingMedium,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide.none,
+                          filled: true,
+                          fillColor: AppColor.grey,
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: AppColor.dark),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: AppColor.dark),
+                            borderSide: BorderSide(
+                              color: AppColor.dark,
+                              width: 1,
+                            ),
                           ),
                           errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.red),
+                            borderSide: BorderSide(color: AppColor.primary),
                           ),
                           focusedErrorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.red),
+                            borderSide: BorderSide(
+                              color: AppColor.dark,
+                              width: 1,
+                            ),
                           ),
                         ),
-                        style: AppText.bodyLarge.copyWith(color: AppColor.dark),
-                        dropdownColor: AppColor.grey,
-                        borderRadius: BorderRadius.circular(8),
-                        icon: const Icon(
-                          Icons.arrow_drop_down,
-                          color: AppColor.dark,
+                        items: egyptGovernorates
+                            .map(
+                              (governorate) => DropdownMenuItem(
+                                value: governorate,
+                                child: Text(governorate),
+                              ),
+                            )
+                            .toList(),
+                      );
+                    },
+                  ),
+                  if (state.hasError)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Text(
+                        state.errorText!,
+                        style: AppText.bodySmall.copyWith(
+                          color: AppColor.primary,
                         ),
-                        isExpanded: true,
                       ),
-                      if (state.hasError)
-                        Text(
-                          state.errorText!,
-                          style: AppText.bodySmall.copyWith(
-                            color: AppColor.primary,
-                          ),
-                        ),
-                    ],
-                  );
-                },
+                    ),
+                ],
               );
             },
           ),
+
           SizedBox(height: MediaQuery.of(context).size.height * .01),
 
           CustomTextFormField(
@@ -167,9 +164,7 @@ class PersonalInfoForm extends StatelessWidget {
                             selectedDate: selectedDate,
                             onDateSelected: (date) {
                               context.read<DateOfBirthCubit>().selectDate(date);
-                              WidgetsBinding.instance.addPostFrameCallback((_) {
-                                state.didChange(date);
-                              });
+                              state.didChange(date);
                             },
                           );
                         },
@@ -199,74 +194,61 @@ class PersonalInfoForm extends StatelessWidget {
           ),
           SizedBox(height: MediaQuery.of(context).size.height * .01),
           FormField<String>(
+            initialValue: PersonalInfoControllers.gender.value,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: PersonalInfoValidators.validateGender,
             builder: (state) {
-              return ValueListenableBuilder<String?>(
-                valueListenable: PersonalInfoControllers.gender,
-                builder: (context, value, _) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ValueListenableBuilder<String?>(
+                    valueListenable: PersonalInfoControllers.gender,
+                    builder: (context, value, _) {
+                      return Row(
                         children: [
                           Expanded(
                             child: RadioListTile<String>(
-                              value: "male",
+                              value: 'male',
                               groupValue: value,
                               onChanged: (val) {
                                 PersonalInfoControllers.gender.value = val;
-                                WidgetsBinding.instance.addPostFrameCallback((
-                                  _,
-                                ) {
-                                  state.didChange(val);
-                                });
+                                state.didChange(val);
                               },
-                              title: Text(
-                                "ذكر",
-                                style: AppText.bodyLarge.copyWith(
-                                  color: AppColor.dark,
-                                ),
-                              ),
-                              fillColor: WidgetStateProperty.all(AppColor.dark),
+                              title: Text("ذكر"),
+                              activeColor: AppColor.dark,
                             ),
                           ),
                           Expanded(
                             child: RadioListTile<String>(
-                              value: "female",
+                              value: 'female',
                               groupValue: value,
                               onChanged: (val) {
                                 PersonalInfoControllers.gender.value = val;
-                                WidgetsBinding.instance.addPostFrameCallback((
-                                  _,
-                                ) {
-                                  state.didChange(val);
-                                });
+                                state.didChange(val);
                               },
-                              title: Text(
-                                "أنثى",
-                                style: AppText.bodyLarge.copyWith(
-                                  color: AppColor.dark,
-                                ),
-                              ),
-                              fillColor: WidgetStateProperty.all(AppColor.dark),
+                              title: Text("أنثى"),
+                              activeColor: AppColor.dark,
                             ),
                           ),
                         ],
-                      ),
-                      if (state.hasError)
-                        Text(
-                          state.errorText!,
-                          style: AppText.bodySmall.copyWith(
-                            color: AppColor.primary,
-                          ),
+                      );
+                    },
+                  ),
+                  if (state.hasError)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Text(
+                        state.errorText!,
+                        style: AppText.bodySmall.copyWith(
+                          color: AppColor.primary,
                         ),
-                    ],
-                  );
-                },
+                      ),
+                    ),
+                ],
               );
             },
           ),
+
           SizedBox(height: MediaQuery.of(context).size.height * .01),
 
           Center(
