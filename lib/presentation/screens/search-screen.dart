@@ -51,7 +51,7 @@ class LawyersList extends StatelessWidget {
                     tileColor: AppColor.light,
                     leading: CircleAvatar(
                       backgroundColor: AppColor.grey,
-                      backgroundImage: AssetImage('assets/images/lawyer 1.png'),
+                      backgroundImage: AssetImage('assets/images/lawyer1.png'),
 
                       radius: 30,
                     ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:qanony/presentation/screens/search-screen.dart';
+import 'package:qanony/presentation/screens/lawer_account.dart';
 import 'package:qanony/services/cubits/splash/splash_cubit.dart';
 
 import 'Core/shared/app_cache.dart';
@@ -37,7 +37,7 @@ class QanonyApp extends StatelessWidget {
             child: child!,
           );
         },
-        home: SearchScreen(),
+        home: AccountLawyerScreen(),
       ),
     );
   }
