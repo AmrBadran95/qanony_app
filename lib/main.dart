@@ -11,8 +11,8 @@ import 'services/cubits/splash/splash_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await AppCache.init();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const QanonyApp());
 }
 
