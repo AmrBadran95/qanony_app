@@ -22,9 +22,9 @@ class MultiStepperForm extends StatelessWidget {
             SnackBar(
               content: Text(
                 'تم إرسال البيانات بنجاح',
-                style: AppText.title.copyWith(color: AppColor.light),
+                style: AppText.bodyLarge.copyWith(color: AppColor.green),
               ),
-              backgroundColor: AppColor.green,
+              backgroundColor: AppColor.grey,
             ),
           );
         } else if (state is MultiStepperStepError) {
@@ -32,9 +32,9 @@ class MultiStepperForm extends StatelessWidget {
             SnackBar(
               content: Text(
                 'يرجى تعبئة جميع الحقول المطلوبة',
-                style: AppText.title.copyWith(color: AppColor.light),
+                style: AppText.bodyLarge.copyWith(color: AppColor.primary),
               ),
-              backgroundColor: AppColor.primary,
+              backgroundColor: AppColor.grey,
             ),
           );
         }

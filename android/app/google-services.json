@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "55495130843",
+    "project_id": "qanony-app",
+    "storage_bucket": "qanony-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:55495130843:android:9c0b32a86bdfdbec5196fe",
+        "android_client_info": {
+          "package_name": "com.example.qanony"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBv48T6VwDasjGKzXbI2x3qX-rNWmusGIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

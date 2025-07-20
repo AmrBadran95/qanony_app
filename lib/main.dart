@@ -1,14 +1,20 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:qanony/Core/shared/app_cache.dart';
+import 'package:qanony/presentation/screens/add_appointment.dart';
 import 'package:qanony/presentation/screens/search-screen.dart';
+import 'package:qanony/presentation/screens/splash_screen.dart';
 import 'package:qanony/services/cubits/splash/splash_cubit.dart';
 
 import 'Core/shared/app_cache.dart';
+import 'services/cubits/splash/splash_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppCache.init();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const QanonyApp());
 }
 
@@ -18,7 +24,11 @@ class QanonyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => SplashCubit())],
+      providers: [
+        BlocProvider(create: (context) => SplashCubit()),
+        BlocProvider(create: (_) => RoleCubit()..loadSavedRole()),
+        BlocProvider(create: (context) => AuthCubit()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
 
@@ -31,13 +41,14 @@ class QanonyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
+
         builder: (context, child) {
           return Directionality(
             textDirection: TextDirection.rtl,
             child: child!,
           );
         },
-        home: SearchScreen(),
+        home: const SplashScreen(),
       ),
     );
   }
