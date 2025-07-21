@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class LawyerModel {
   final String uid;
   final String email;
@@ -64,6 +66,13 @@ class LawyerModel {
   });
 
   factory LawyerModel.fromJson(Map<String, dynamic> json) {
+    DateTime? parseDate(dynamic value) {
+      if (value == null) return null;
+      if (value is Timestamp) return value.toDate();
+      if (value is String) return DateTime.tryParse(value);
+      return null;
+    }
+
     return LawyerModel(
       uid: json['uid'],
       email: json['email'],
@@ -74,12 +83,12 @@ class LawyerModel {
       nationalId: json['nationalId'],
       governorate: json['governorate'],
       address: json['address'],
-      dateOfBirth: json['dateOfBirth'],
+      dateOfBirth: parseDate(json['dateOfBirth']),
       gender: json['gender'],
       profilePictureUrl: json['profilePictureUrl'],
       bio: json['bio'],
       registrationNumber: json['registrationNumber'],
-      registrationDate: json['registrationDate'],
+      registrationDate: parseDate(json['registrationDate']),
       specialty: List<String>.from(json['specialty'] ?? []),
       cardImageUrl: json['cardImageUrl'],
       bankName: json['bankName'],
@@ -90,14 +99,11 @@ class LawyerModel {
       offersOffice: json['offersOffice'],
       officePrice: (json['officePrice'] as num?)?.toDouble(),
       subscriptionType: json['subscriptionType'] ?? 'free',
-      subscriptionStart: json['subscriptionStart'] != null
-          ? DateTime.parse(json['subscriptionStart'])
-          : null,
-      subscriptionEnd: json['subscriptionEnd'] != null
-          ? DateTime.parse(json['subscriptionEnd'])
-          : null,
+      subscriptionStart: parseDate(json['subscriptionStart']),
+      subscriptionEnd: parseDate(json['subscriptionEnd']),
     );
   }
+
 
   Map<String, dynamic> toJson() {
     return {

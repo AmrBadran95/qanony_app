@@ -4,26 +4,27 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:qanony/firebase_options.dart';
-import 'package:qanony/presentation/screens/sign_up.dart';
+
 import 'package:qanony/presentation/screens/splash_screen.dart';
 import 'package:qanony/presentation/screens/subscription_screen.dart';
+import 'package:qanony/services/cubits/auth_cubit/auth_cubit.dart';
+import 'package:qanony/services/cubits/role/role_cubit.dart';
+import 'package:qanony/services/cubits/splash/splash_cubit.dart';
 
-import 'package:qanony/services/cubits/checkout/checkout_cubit.dart';
-import 'package:qanony/services/stripe/api_service.dart';
-import 'package:qanony/services/stripe/stripe_service.dart';
 import 'Core/shared/app_cache.dart';
-import 'services/cubits/splash/splash_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await AppCache.init();
+
   final key ="pk_test_51RmfujBCYVFzcUuX9HnRrvPp4PQkTb30GuFpqnQu7uHfGYGJzHIiiw0eUD9HYu6fg6SZu5MTxCYiNnGpP4TOM2ki00WIIZy1Fu";
   try {
-    Stripe.publishableKey = key; // تأكدي منه
+    Stripe.publishableKey = key;
   } catch (e) {
     print("Stripe error: $e");
   }
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const QanonyApp());
 }
 
@@ -33,7 +34,11 @@ class QanonyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => SplashCubit())],
+      providers: [
+        BlocProvider(create: (context) => SplashCubit()),
+        BlocProvider(create: (_) => RoleCubit()..loadSavedRole()),
+        BlocProvider(create: (context) => AuthCubit()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
 
@@ -54,9 +59,7 @@ class QanonyApp extends StatelessWidget {
           );
         },
 
-        // home: CheckoutPage(),
-        // home:
-        home:SplashScreen (),
+        home:SubscriptionScreen(),
       ),
     );
   }

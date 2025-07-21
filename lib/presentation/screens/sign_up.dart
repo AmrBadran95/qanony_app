@@ -1,16 +1,20 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:qanony/Core/shared/app_cache.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/widgets/custom_button.dart';
 import 'package:qanony/Core/widgets/custom_text_form_field.dart';
 import 'package:qanony/presentation/screens/lawyer_information.dart';
+import 'package:qanony/presentation/screens/sign_in.dart';
+import 'package:qanony/presentation/screens/user_home_screen.dart';
 import 'package:qanony/services/cubits/auth_cubit/auth_cubit.dart';
 import 'package:qanony/services/cubits/date_of_birth/date_of_birth_cubit.dart';
 import 'package:qanony/services/cubits/lawyer_confirmation/lawyer_confirmation_cubit.dart';
 import 'package:qanony/services/cubits/registration_date/registration_date_cubit.dart';
+import 'package:qanony/services/cubits/user_confirmation/user_confirmation_cubit.dart';
 import '../../services/controllers/signup_form_controller.dart';
 import '../../services/validators/signin_signup_validators.dart';
 
@@ -24,38 +28,62 @@ class SignUpScreen extends StatelessWidget {
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthRegistered) {
-            final dateOfBirthCubit = DateOfBirthCubit();
-            final registrationDateCubit = RegistrationDateCubit();
+            final uid = state.uid;
+            final email = SignUpControllers.emailController.text.trim();
+            final phone = SignUpControllers.phoneController.text.trim();
 
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (_) => MultiBlocProvider(
-                  providers: [
-                    BlocProvider<DateOfBirthCubit>.value(
-                      value: dateOfBirthCubit,
-                    ),
-                    BlocProvider<RegistrationDateCubit>.value(
-                      value: registrationDateCubit,
-                    ),
-                    BlocProvider(
-                      create: (_) => LawyerConfirmationCubit(
-                        uid: state.uid,
-                        email: SignUpControllers.emailController.text.trim(),
-                        phone: SignUpControllers.phoneController.text.trim(),
-                        dateOfBirthCubit: dateOfBirthCubit,
-                        registrationDateCubit: registrationDateCubit,
+            if (AppCache.isLawyer) {
+              final dateOfBirthCubit = DateOfBirthCubit();
+              final registrationDateCubit = RegistrationDateCubit();
+
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => MultiBlocProvider(
+                    providers: [
+                      BlocProvider<DateOfBirthCubit>.value(
+                        value: dateOfBirthCubit,
                       ),
+                      BlocProvider<RegistrationDateCubit>.value(
+                        value: registrationDateCubit,
+                      ),
+                      BlocProvider(
+                        create: (_) => LawyerConfirmationCubit(
+                          uid: uid,
+                          email: email,
+                          phone: phone,
+                          dateOfBirthCubit: dateOfBirthCubit,
+                          registrationDateCubit: registrationDateCubit,
+                        ),
+                      ),
+                    ],
+                    child: LawyerInformation(
+                      uid: uid,
+                      email: email,
+                      phone: phone,
                     ),
-                  ],
-                  child: LawyerInformation(
-                    uid: state.uid,
-                    email: SignUpControllers.emailController.text.trim(),
-                    phone: SignUpControllers.phoneController.text.trim(),
                   ),
                 ),
-              ),
-            );
+              );
+            } else {
+              final userCubit = UserConfirmationCubit(
+                uid: uid,
+                email: email,
+                phone: phone,
+              );
+
+              userCubit.submitUserData(uid: uid, email: email, phone: phone);
+
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => BlocProvider.value(
+                    value: userCubit,
+                    child: const UserHomeScreen(),
+                  ),
+                ),
+              );
+            }
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -218,7 +246,14 @@ class SignUpScreen extends StatelessWidget {
                                     color: AppColor.primary,
                                   ),
                                   recognizer: TapGestureRecognizer()
-                                    ..onTap = () {},
+                                    ..onTap = () {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => const SignInScreen(),
+                                        ),
+                                      );
+                                    },
                                 ),
                               ],
                             ),

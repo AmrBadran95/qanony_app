@@ -4,7 +4,7 @@ import 'dart:convert';
 import '../../data/models/payment_model.dart';
 
 class ApiService {
-  final String baseUrl = 'https://3b4c200ad8f8.ngrok-free.app';
+  final String baseUrl = 'https://4d46987f0388.ngrok-free.app';
 
 
   Future<Map<String, dynamic>> createPaymentIntent(int amount, String email) async {

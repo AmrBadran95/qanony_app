@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
+import 'package:qanony/presentation/screens/notification-screen.dart';
+import 'package:qanony/services/cubits/notification/cubit/notification_cubit.dart';
 
 class UserBaseScreen extends StatelessWidget {
   final Widget body;
@@ -44,10 +47,24 @@ class UserBaseScreen extends StatelessWidget {
                 ),
                 Stack(
                   children: [
-                    Icon(
-                      Icons.notifications_none_sharp,
-                      size: MediaQuery.of(context).size.width * 0.095,
-                      color: AppColor.light,
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => BlocProvider(
+                              create: (_) =>
+                                  NotificationCubit()..loadNotifications(),
+                              child: const NotificationScreen(),
+                            ),
+                          ),
+                        );
+                      },
+                      icon: Icon(
+                        Icons.notifications_none_sharp,
+                        size: MediaQuery.of(context).size.width * 0.095,
+                        color: AppColor.light,
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(right: 4, top: 4),
