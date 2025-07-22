@@ -2,8 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:qanony/firebase_options.dart';
-import 'package:qanony/presentation/screens/lawyer_account.dart';
+import 'package:qanony/presentation/screens/subscription_screen.dart';
 import 'package:qanony/services/cubits/auth_cubit/auth_cubit.dart';
 import 'package:qanony/services/cubits/lawyer/lawyer_cubit.dart';
 import 'package:qanony/services/cubits/role/role_cubit.dart';
@@ -15,6 +16,15 @@ import 'Core/shared/app_cache.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppCache.init();
+
+  final key =
+      "pk_test_51RmfujBCYVFzcUuX9HnRrvPp4PQkTb30GuFpqnQu7uHfGYGJzHIiiw0eUD9HYu6fg6SZu5MTxCYiNnGpP4TOM2ki00WIIZy1Fu";
+  try {
+    Stripe.publishableKey = key;
+  } catch (e) {
+    print("Stripe error: $e");
+  }
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const QanonyApp());
 }
@@ -52,9 +62,8 @@ class QanonyApp extends StatelessWidget {
             child: child!,
           );
         },
-        home: const AccountLawyerScreen(
-          lawyerId: 'EI9zXLuMKpNTGjledGy330bJDHE2',
-        ),
+
+        home: SubscriptionScreen(),
       ),
     );
   }

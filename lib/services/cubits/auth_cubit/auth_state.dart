@@ -23,3 +23,18 @@ class AuthError extends AuthState {
   final String message;
   AuthError(this.message);
 }
+
+class AuthLoggedInWithStatus extends AuthState {
+  final String uid;
+  final String status;
+
+  AuthLoggedInWithStatus(this.uid, this.status);
+}
+
+class AuthLawyerNeedsInfo extends AuthState {
+  final String uid;
+  final String email;
+  final String phone;
+
+  AuthLawyerNeedsInfo(this.uid, this.email, this.phone);
+}

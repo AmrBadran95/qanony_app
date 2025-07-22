@@ -8,6 +8,7 @@ import 'package:qanony/services/controllers/personal_info_controllers.dart';
 import 'package:qanony/services/cubits/date_of_birth/date_of_birth_cubit.dart';
 import 'package:qanony/services/cubits/registration_date/registration_date_cubit.dart';
 import 'package:qanony/services/firestore/lawyer_firestore_service.dart';
+import 'package:qanony/services/validators/contact_validators.dart';
 
 part 'lawyer_confirmation_state.dart';
 
@@ -79,7 +80,6 @@ class LawyerConfirmationCubit extends Cubit<LawyerConfirmationState> {
     required DateTime? registrationDate,
   }) async {
     emit(LawyerConfirmationLoading());
-
     try {
       final lawyer = LawyerModel(
         uid: uid,
@@ -106,11 +106,15 @@ class LawyerConfirmationCubit extends Cubit<LawyerConfirmationState> {
             .trim(),
         offersCall: ContactControllers.callEnabled.value,
         callPrice: double.tryParse(
-          ContactControllers.callPriceController.text.trim(),
+          ContactValidators.convertArabicNumbersToEnglish(
+            ContactControllers.callPriceController.text.trim(),
+          ),
         ),
         offersOffice: ContactControllers.officeEnabled.value,
         officePrice: double.tryParse(
-          ContactControllers.officePriceController.text.trim(),
+          ContactValidators.convertArabicNumbersToEnglish(
+            ContactControllers.officePriceController.text.trim(),
+          ),
         ),
         subscriptionType: 'free',
         subscriptionStart: DateTime.now(),

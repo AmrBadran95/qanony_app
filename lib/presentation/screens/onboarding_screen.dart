@@ -15,11 +15,12 @@ class OnboardingScreen extends StatelessWidget {
     return BlocListener<OnboardingCubit, OnboardingState>(
       listener: (context, state) {
         if (state is OnboardingSkipped) {
-          Navigator.pushReplacement(
+          Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute<void>(
               builder: (BuildContext context) => const ChooseRoleScreen(),
             ),
+            (route) => false,
           );
         }
       },

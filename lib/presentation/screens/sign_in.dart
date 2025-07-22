@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:qanony/Core/shared/app_cache.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/widgets/custom_button.dart';
 import 'package:qanony/Core/widgets/custom_text_form_field.dart';
+import 'package:qanony/presentation/screens/Alaa.dart';
+import 'package:qanony/presentation/screens/lawyer_information.dart';
 import 'package:qanony/presentation/screens/user_home_screen.dart';
 import 'package:qanony/presentation/screens/sign_up.dart';
+import 'package:qanony/presentation/screens/waiting_page.dart';
+import 'package:qanony/presentation/screens/waiting_page_failed.dart';
 import 'package:qanony/services/cubits/auth_cubit/auth_cubit.dart';
 import '../../services/controllers/signin_form_controller.dart';
 import '../../services/validators/signin_signup_validators.dart';
@@ -26,19 +29,65 @@ class SignInScreen extends StatelessWidget {
           child: BlocConsumer<AuthCubit, AuthState>(
             listener: (context, state) {
               if (state is AuthLoggedIn) {
-                final isLawyer = AppCache.isLawyer;
-                final nextScreen = isLawyer
-                    ? const Placeholder()
-                    : const UserHomeScreen();
-                Navigator.pushReplacement(
+                Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (_) => nextScreen),
+                  MaterialPageRoute(builder: (_) => const UserHomeScreen()),
+                  (route) => false,
                 );
               }
-              if (state is AuthError) {
-                ScaffoldMessenger.of(
+
+              if (state is AuthLoggedInWithStatus) {
+                if (state.status == 'pending') {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => const WaitingPage()),
+                    (route) => false,
+                  );
+                } else if (state.status == 'accepted') {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const Alaa(),
+                    ), // LawyerHomeScreen
+                    (route) => false,
+                  );
+                } else if (state.status == 'rejected') {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const WaitingPageFailed(),
+                    ),
+                    (route) => false,
+                  );
+                }
+              }
+
+              if (state is AuthLawyerNeedsInfo) {
+                Navigator.pushAndRemoveUntil(
                   context,
-                ).showSnackBar(SnackBar(content: Text(state.message)));
+                  MaterialPageRoute(
+                    builder: (_) => LawyerInformation(
+                      uid: state.uid,
+                      email: state.email,
+                      phone: state.phone,
+                    ),
+                  ),
+                  (route) => false,
+                );
+              }
+
+              if (state is AuthError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      state.message,
+                      style: AppText.bodySmall.copyWith(
+                        color: AppColor.primary,
+                      ),
+                    ),
+                    backgroundColor: AppColor.grey,
+                  ),
+                );
               }
             },
 
@@ -96,7 +145,7 @@ class SignInScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         CustomButton(
-                          text: isLoading ? '...جاري الدخول' : 'تسجيل الدخول',
+                          text: isLoading ? '...جارٍ الدخول' : 'تسجيل الدخول',
                           onTap: () {
                             if (isLoading) return;
 

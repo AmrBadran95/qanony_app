@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
@@ -25,6 +26,21 @@ class AuthService {
 
   Future<void> logout() async {
     await _auth.signOut();
+  }
+
+  Future<String?> getUserRole(String uid) async {
+    final userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .get();
+    if (userDoc.exists) return 'user';
+
+    final lawyerDoc = await FirebaseFirestore.instance
+        .collection('lawyers')
+        .doc(uid)
+        .get();
+    if (!lawyerDoc.exists) return null;
+    return lawyerDoc.data()?['status'] != null ? 'lawyer' : null;
   }
 
   User? get currentUser => _auth.currentUser;
