@@ -208,7 +208,7 @@ class PersonalInfoForm extends StatelessWidget {
                         children: [
                           Expanded(
                             child: RadioListTile<String>(
-                              value: 'male',
+                              value: 'ذكر',
                               groupValue: value,
                               onChanged: (val) {
                                 PersonalInfoControllers.gender.value = val;
@@ -220,7 +220,7 @@ class PersonalInfoForm extends StatelessWidget {
                           ),
                           Expanded(
                             child: RadioListTile<String>(
-                              value: 'female',
+                              value: 'أنثى',
                               groupValue: value,
                               onChanged: (val) {
                                 PersonalInfoControllers.gender.value = val;
@@ -330,13 +330,6 @@ class PersonalInfoForm extends StatelessWidget {
                           },
                         ),
                         if (value != null) ...[
-                          const SizedBox(height: 10),
-                          Text(
-                            value,
-                            style: AppText.bodySmall.copyWith(
-                              color: AppColor.dark,
-                            ),
-                          ),
                           const SizedBox(height: 10),
                           ClipRRect(
                             borderRadius: BorderRadius.circular(8),

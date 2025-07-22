@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class LawyerModel {
   final String uid;
   final String email;
   final String phone;
   final String role;
   final String status;
+  final List<String>? rejectionReasons;
 
   final String? fullName;
   final String? nationalId;
@@ -39,6 +42,7 @@ class LawyerModel {
     required this.phone,
     this.role = 'lawyer',
     this.status = 'pending',
+    this.rejectionReasons,
     this.fullName,
     this.nationalId,
     this.governorate,
@@ -70,16 +74,17 @@ class LawyerModel {
       phone: json['phone'],
       role: json['role'],
       status: json['status'],
+      rejectionReasons: List<String>.from(json['rejectionReasons'] ?? []),
       fullName: json['fullName'],
       nationalId: json['nationalId'],
       governorate: json['governorate'],
       address: json['address'],
-      dateOfBirth: json['dateOfBirth'],
+      dateOfBirth: (json['dateOfBirth'] as Timestamp).toDate(),
       gender: json['gender'],
       profilePictureUrl: json['profilePictureUrl'],
       bio: json['bio'],
       registrationNumber: json['registrationNumber'],
-      registrationDate: json['registrationDate'],
+      registrationDate: (json['registrationDate'] as Timestamp).toDate(),
       specialty: List<String>.from(json['specialty'] ?? []),
       cardImageUrl: json['cardImageUrl'],
       bankName: json['bankName'],
@@ -91,10 +96,18 @@ class LawyerModel {
       officePrice: (json['officePrice'] as num?)?.toDouble(),
       subscriptionType: json['subscriptionType'] ?? 'free',
       subscriptionStart: json['subscriptionStart'] != null
-          ? DateTime.parse(json['subscriptionStart'])
+          ? DateTime(
+              (json['subscriptionStart'] as Timestamp).toDate().year,
+              (json['subscriptionStart'] as Timestamp).toDate().month,
+              (json['subscriptionStart'] as Timestamp).toDate().day,
+            )
           : null,
       subscriptionEnd: json['subscriptionEnd'] != null
-          ? DateTime.parse(json['subscriptionEnd'])
+          ? DateTime(
+              (json['subscriptionEnd'] as Timestamp).toDate().year,
+              (json['subscriptionEnd'] as Timestamp).toDate().month,
+              (json['subscriptionEnd'] as Timestamp).toDate().day,
+            )
           : null,
     );
   }
@@ -106,6 +119,7 @@ class LawyerModel {
       'phone': phone,
       'role': role,
       'status': status,
+      'rejectionReasons': rejectionReasons,
       'fullName': fullName,
       'nationalId': nationalId,
       'governorate': governorate,
@@ -126,8 +140,8 @@ class LawyerModel {
       'offersOffice': offersOffice,
       'officePrice': officePrice,
       'subscriptionType': subscriptionType,
-      'subscriptionStart': subscriptionStart?.toIso8601String(),
-      'subscriptionEnd': subscriptionEnd?.toIso8601String(),
+      'subscriptionStart': subscriptionStart,
+      'subscriptionEnd': subscriptionEnd,
     };
   }
 }

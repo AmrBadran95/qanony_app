@@ -3,8 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/core/styles/padding.dart';
 import 'package:qanony/core/styles/text.dart';
+import 'package:qanony/presentation/screens/alaa.dart';
 import 'package:qanony/presentation/screens/choose_role_screen.dart';
 import 'package:qanony/presentation/screens/onboarding_screen.dart';
+import 'package:qanony/presentation/screens/sign_in.dart';
+import 'package:qanony/presentation/screens/user_home_screen.dart';
+import 'package:qanony/presentation/screens/waiting_page.dart';
 import 'package:qanony/services/cubits/onboarding/onboarding_cubit.dart';
 import 'package:qanony/services/cubits/splash/splash_cubit.dart';
 
@@ -14,39 +18,52 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     context.read<SplashCubit>().initializeApp();
+
     return BlocListener<SplashCubit, SplashState>(
       listener: (context, state) {
         if (state is SplashFirstLaunch) {
-          Navigator.pushReplacement(
+          Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (BuildContext context) => BlocProvider(
-                create: (context) => OnboardingCubit(),
+              builder: (_) => BlocProvider(
+                create: (_) => OnboardingCubit(),
                 child: const OnboardingScreen(),
               ),
             ),
+            (route) => false,
           );
         } else if (state is SplashChooseRole) {
-          Navigator.pushReplacement(
+          Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(
-              builder: (BuildContext context) => const ChooseRoleScreen(),
-            ),
+            MaterialPageRoute(builder: (_) => const ChooseRoleScreen()),
+            (route) => false,
           );
         } else if (state is SplashLoggedInUser) {
-          // Navigator.pushReplacement(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (BuildContext context) => const ChooseRoleScreen(),
-          //   ),
-          // ); Navigate to User homepage
-        } else if (state is SplashLoggedInLawyer) {
-          // Navigator.pushReplacement(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (BuildContext context) => const ChooseRoleScreen(),
-          //   ),
-          // ); Navigate to Lawyer homepage
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (_) => const UserHomeScreen()),
+            (route) => false,
+          );
+        } else if (state is SplashLoggedInLawyerPending) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (_) => const WaitingPage()),
+            (route) => false,
+          );
+        } else if (state is SplashLoggedInLawyerAccepted) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const Alaa(),
+            ), // ha3ml navigation l lawyer page
+            (route) => false,
+          );
+        } else if (state is SplashLoggedInLawyerRejected) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (_) => const SignInScreen()),
+            (route) => false,
+          );
         } else if (state is SplashError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -79,8 +96,8 @@ class SplashScreen extends StatelessWidget {
       },
       child: Scaffold(
         body: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
+          width: double.infinity,
+          height: double.infinity,
           padding: AppPadding.paddingExtraLarge,
           decoration: BoxDecoration(color: AppColor.primary),
           child: Column(

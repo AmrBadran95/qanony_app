@@ -117,7 +117,13 @@ class LawyermentInfoForm extends StatelessWidget {
                       return StatefulBuilder(
                         builder: (context, setState) {
                           return AlertDialog(
-                            title: Text("اختر التخصصات"),
+                            backgroundColor: AppColor.grey,
+                            title: Text(
+                              "اختر التخصصات",
+                              style: AppText.bodyLarge.copyWith(
+                                color: AppColor.dark,
+                              ),
+                            ),
                             content: SingleChildScrollView(
                               child: Column(
                                 children: lawyerSpecializations.map((item) {
@@ -125,8 +131,15 @@ class LawyermentInfoForm extends StatelessWidget {
                                     item,
                                   );
                                   return CheckboxListTile(
+                                    activeColor: AppColor.green,
+                                    checkColor: AppColor.light,
                                     value: isSelected,
-                                    title: Text(item),
+                                    title: Text(
+                                      item,
+                                      style: AppText.bodyLarge.copyWith(
+                                        color: AppColor.dark,
+                                      ),
+                                    ),
                                     onChanged: (value) {
                                       setState(() {
                                         if (value == true) {
@@ -142,12 +155,22 @@ class LawyermentInfoForm extends StatelessWidget {
                             ),
                             actions: [
                               TextButton(
-                                child: Text("إلغاء"),
+                                child: Text(
+                                  "إلغاء",
+                                  style: AppText.bodyLarge.copyWith(
+                                    color: AppColor.dark,
+                                  ),
+                                ),
                                 onPressed: () =>
                                     Navigator.pop(context, selectedList),
                               ),
                               TextButton(
-                                child: Text("تم"),
+                                child: Text(
+                                  "تم",
+                                  style: AppText.bodyLarge.copyWith(
+                                    color: AppColor.dark,
+                                  ),
+                                ),
                                 onPressed: () =>
                                     Navigator.pop(context, tempSelections),
                               ),
@@ -292,13 +315,6 @@ class LawyermentInfoForm extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         if (value != null) ...[
-                          Text(
-                            value,
-                            style: AppText.bodySmall.copyWith(
-                              color: AppColor.dark,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
                           Center(
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8),

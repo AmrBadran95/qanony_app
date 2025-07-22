@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:qanony/Core/shared/app_cache.dart';
 import 'package:qanony/services/auth/auth_service.dart';
@@ -24,7 +25,41 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoading());
     try {
       final user = await _authService.loginWithEmail(email, password);
-      emit(AuthLoggedIn(user!.uid));
+      if (user == null) throw Exception('User not found');
+
+      final lawyerDoc = await FirebaseFirestore.instance
+          .collection('lawyers')
+          .doc(user.uid)
+          .get();
+
+      if (lawyerDoc.exists) {
+        final status = lawyerDoc.data()?['status'] ?? 'pending';
+
+        await AppCache.setIsLawyer(true);
+        await AppCache.setLoggedIn(true);
+        emit(AuthLoggedInWithStatus(user.uid, status));
+      } else {
+        final userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get();
+
+        if (userDoc.exists) {
+          await AppCache.setIsLawyer(false);
+          await AppCache.setLoggedIn(true);
+          emit(AuthLoggedIn(user.uid));
+        } else {
+          await AppCache.setIsLawyer(true);
+          await AppCache.setLoggedIn(true);
+          emit(
+            AuthLawyerNeedsInfo(
+              user.uid,
+              user.email ?? '',
+              user.phoneNumber ?? AppCache.getPhone() ?? '',
+            ),
+          );
+        }
+      }
     } catch (e) {
       emit(AuthError(e.toString()));
     }
