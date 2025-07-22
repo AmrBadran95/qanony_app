@@ -68,6 +68,13 @@ class LawyerModel {
   });
 
   factory LawyerModel.fromJson(Map<String, dynamic> json) {
+    DateTime? parseDate(dynamic value) {
+      if (value == null) return null;
+      if (value is Timestamp) return value.toDate();
+      if (value is String) return DateTime.tryParse(value);
+      return null;
+    }
+
     return LawyerModel(
       uid: json['uid'],
       email: json['email'],
@@ -111,6 +118,7 @@ class LawyerModel {
           : null,
     );
   }
+
 
   Map<String, dynamic> toJson() {
     return {
