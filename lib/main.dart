@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:qanony/firebase_options.dart';
-import 'package:qanony/presentation/screens/lawer_account.dart'
-    show AccountLawyerScreen;
+import 'package:qanony/presentation/screens/lawyer_account.dart';
 import 'package:qanony/services/cubits/auth_cubit/auth_cubit.dart';
+import 'package:qanony/services/cubits/lawyer/lawyer_cubit.dart';
 import 'package:qanony/services/cubits/role/role_cubit.dart';
+import 'package:qanony/services/cubits/splash/splash_cubit.dart';
+import 'package:qanony/services/firestore/lawyer_firestore_service.dart';
 
 import 'Core/shared/app_cache.dart';
-import 'services/cubits/splash/splash_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +29,9 @@ class QanonyApp extends StatelessWidget {
         BlocProvider(create: (context) => SplashCubit()),
         BlocProvider(create: (_) => RoleCubit()..loadSavedRole()),
         BlocProvider(create: (context) => AuthCubit()),
+        BlocProvider(
+          create: (context) => LawyerCubit(LawyerFirestoreService()),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -48,8 +52,9 @@ class QanonyApp extends StatelessWidget {
             child: child!,
           );
         },
-
-        home: AccountLawyerScreen(),
+        home: const AccountLawyerScreen(
+          lawyerId: 'EI9zXLuMKpNTGjledGy330bJDHE2',
+        ),
       ),
     );
   }
