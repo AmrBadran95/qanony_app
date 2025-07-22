@@ -70,11 +70,12 @@ class LawyerInformation extends StatelessWidget {
                         }
 
                         if (state is LawyerConfirmationSubmitted) {
-                          Navigator.pushReplacement(
+                          Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
                               builder: (_) => const WaitingPage(),
                             ),
+                            (route) => false,
                           );
                         }
 
@@ -186,7 +187,7 @@ class LawyerInformation extends StatelessWidget {
                               const SizedBox(height: 16),
                               CustomButton(
                                 text: isLoading
-                                    ? "جاري الإرسال..."
+                                    ? "جارٍ الإرسال..."
                                     : "تأكيد البيانات",
                                 onTap: () {
                                   if (isLoading) return;

@@ -31,12 +31,13 @@ class SignUpScreen extends StatelessWidget {
             final uid = state.uid;
             final email = SignUpControllers.emailController.text.trim();
             final phone = SignUpControllers.phoneController.text.trim();
+            AppCache.savePhone(SignUpControllers.phoneController.text.trim());
 
             if (AppCache.isLawyer) {
               final dateOfBirthCubit = DateOfBirthCubit();
               final registrationDateCubit = RegistrationDateCubit();
 
-              Navigator.pushReplacement(
+              Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
                   builder: (_) => MultiBlocProvider(
@@ -64,6 +65,7 @@ class SignUpScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                (route) => false,
               );
             } else {
               final userCubit = UserConfirmationCubit(
@@ -74,7 +76,7 @@ class SignUpScreen extends StatelessWidget {
 
               userCubit.submitUserData(uid: uid, email: email, phone: phone);
 
-              Navigator.pushReplacement(
+              Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
                   builder: (_) => BlocProvider.value(
@@ -82,6 +84,7 @@ class SignUpScreen extends StatelessWidget {
                     child: const UserHomeScreen(),
                   ),
                 ),
+                (route) => false,
               );
             }
           } else if (state is AuthError) {
@@ -89,7 +92,7 @@ class SignUpScreen extends StatelessWidget {
               SnackBar(
                 content: Text(
                   state.message,
-                  style: AppText.bodyLarge.copyWith(color: AppColor.primary),
+                  style: AppText.bodySmall.copyWith(color: AppColor.primary),
                 ),
                 backgroundColor: AppColor.grey,
               ),
@@ -97,6 +100,8 @@ class SignUpScreen extends StatelessWidget {
           }
         },
         builder: (context, state) {
+          final isLoading = state is AuthLoading;
+
           return Scaffold(
             backgroundColor: AppColor.grey,
             body: SafeArea(
@@ -211,7 +216,9 @@ class SignUpScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 30),
                               CustomButton(
-                                text: 'تسجيل الحساب',
+                                text: isLoading
+                                    ? '...جارٍ تسجيل الحساب'
+                                    : 'تسجيل الحساب',
                                 onTap: () {
                                   if (SignUpFormKey.formKey.currentState!
                                       .validate()) {

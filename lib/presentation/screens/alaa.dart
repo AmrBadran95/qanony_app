@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/core/styles/color.dart';
 
-class Placeholder extends StatelessWidget {
-  const Placeholder({super.key});
+class Alaa extends StatelessWidget {
+  const Alaa({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -14,7 +14,7 @@ class ContactValidators {
       return 'يرجى إدخال رقم صحيح أو عشري';
     }
 
-    final converted = _convertArabicNumbersToEnglish(trimmed);
+    final converted = convertArabicNumbersToEnglish(trimmed);
 
     final parsed = double.tryParse(converted);
     if (parsed == null || parsed <= 0) {
@@ -24,7 +24,7 @@ class ContactValidators {
     return null;
   }
 
-  static String _convertArabicNumbersToEnglish(String input) {
+  static String convertArabicNumbersToEnglish(String input) {
     const arabicNums = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
     const englishNums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
