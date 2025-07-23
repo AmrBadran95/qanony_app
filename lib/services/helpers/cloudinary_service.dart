@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
 
@@ -6,8 +7,8 @@ class CloudinaryService {
   final ImagePicker _picker = ImagePicker();
   final Dio _dio = Dio();
 
-  final String _cloudName = 'qanony-app';
-  final String _uploadPreset = 'lawyers';
+  final String _cloudName = dotenv.env['CLOUDINARY_CLOUD_NAME']!;
+  final String _uploadPreset = dotenv.env['CLOUDINARY_UPLOAD_PRESET']!;
 
   Future<File?> pickImage({required bool fromCamera}) async {
     final picked = await _picker.pickImage(
