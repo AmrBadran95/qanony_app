@@ -6,14 +6,27 @@ import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/presentation/screens/notification-screen.dart';
 import 'package:qanony/services/cubits/notification/cubit/notification_cubit.dart';
 
+import '../screens/user_home_screen.dart';
+
 class UserBaseScreen extends StatelessWidget {
   final Widget body;
-  const UserBaseScreen({super.key, required this.body});
+  final Color HomeColor;
+  final Color SearchColor;
+  final Color AppointmentsColor;
+  final Color RequestsColor;
+
+  const UserBaseScreen({super.key, required this.body,
+    this.HomeColor=AppColor.light,
+    this.SearchColor=AppColor.light,
+    this.AppointmentsColor=AppColor.light,
+    this.RequestsColor=AppColor.light
+
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.grey,
+      backgroundColor: AppColor.light,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: AppBar(
@@ -27,14 +40,14 @@ class UserBaseScreen extends StatelessWidget {
                 },
                 child: CircleAvatar(
                   radius: 40,
-                  backgroundImage: AssetImage('assets/images/lawyer 1.png'),
+                  // backgroundImage: AssetImage('assets/images/lawyer 1.png'),
                 ),
               ),
             ),
           ),
           title: Padding(
             padding: EdgeInsets.only(
-              left: MediaQuery.of(context).size.width * 0.01,
+
               right: MediaQuery.of(context).size.width * 0.01,
               bottom: MediaQuery.of(context).size.height * 0.01,
             ),
@@ -45,6 +58,7 @@ class UserBaseScreen extends StatelessWidget {
                   "قانوني",
                   style: AppText.headingMedium.copyWith(color: AppColor.light),
                 ),
+
                 Stack(
                   children: [
                     IconButton(
@@ -67,7 +81,7 @@ class UserBaseScreen extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(right: 4, top: 4),
+                      padding: EdgeInsets.only(right: 12, top: 13),
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.03,
                         height: MediaQuery.of(context).size.width * 0.03,
@@ -130,20 +144,22 @@ class UserBaseScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>UserHomeScreen()));
+                    },
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.home_sharp,
                           size: 20,
-                          color: AppColor.light,
+                          color: HomeColor,
                         ),
                         const SizedBox(height: 4),
                         Text(
                           "الرئيسية",
                           style: AppText.labelSmall.copyWith(
-                            color: AppColor.light,
+                            color: HomeColor,
                           ),
                         ),
                       ],
@@ -154,16 +170,16 @@ class UserBaseScreen extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(
+                         Icon(
                           Icons.search,
                           size: 20,
-                          color: AppColor.light,
+                          color: SearchColor,
                         ),
                         const SizedBox(height: 4),
                         Text(
                           "البحث",
                           style: AppText.labelSmall.copyWith(
-                            color: AppColor.light,
+                            color: SearchColor,
                           ),
                         ),
                       ],
@@ -174,16 +190,16 @@ class UserBaseScreen extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(
+                         Icon(
                           Icons.access_alarm_sharp,
                           size: 20,
-                          color: AppColor.light,
+                          color:AppointmentsColor
                         ),
                         const SizedBox(height: 4),
                         Text(
                           "مواعيدي",
                           style: AppText.labelSmall.copyWith(
-                            color: AppColor.light,
+                              color:AppointmentsColor
                           ),
                         ),
                       ],
@@ -194,16 +210,16 @@ class UserBaseScreen extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(
+                         Icon(
                           Icons.assignment_sharp,
                           size: 20,
-                          color: AppColor.light,
+                          color: RequestsColor,
                         ),
                         const SizedBox(height: 4),
                         Text(
                           "طلباتي",
                           style: AppText.labelSmall.copyWith(
-                            color: AppColor.light,
+                            color: RequestsColor,
                           ),
                         ),
                       ],

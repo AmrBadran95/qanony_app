@@ -68,12 +68,16 @@ class LawyerModel {
   });
 
   factory LawyerModel.fromJson(Map<String, dynamic> json) {
+
     DateTime? parseDate(dynamic value) {
       if (value == null) return null;
       if (value is Timestamp) return value.toDate();
       if (value is String) return DateTime.tryParse(value);
       return null;
     }
+    final parsedSubscriptionStart = parseDate(json['subscriptionStart']);
+    final parsedSubscriptionEnd = parseDate(json['subscriptionEnd']);
+
 
     return LawyerModel(
       uid: json['uid'],
@@ -86,12 +90,12 @@ class LawyerModel {
       nationalId: json['nationalId'],
       governorate: json['governorate'],
       address: json['address'],
-      dateOfBirth: (json['dateOfBirth'] as Timestamp).toDate(),
+      dateOfBirth: parseDate(json['dateOfBirth']),
       gender: json['gender'],
       profilePictureUrl: json['profilePictureUrl'],
       bio: json['bio'],
       registrationNumber: json['registrationNumber'],
-      registrationDate: (json['registrationDate'] as Timestamp).toDate(),
+      registrationDate: parseDate(json['registrationDate']),
       specialty: List<String>.from(json['specialty'] ?? []),
       cardImageUrl: json['cardImageUrl'],
       bankName: json['bankName'],
@@ -102,20 +106,13 @@ class LawyerModel {
       offersOffice: json['offersOffice'],
       officePrice: (json['officePrice'] as num?)?.toDouble(),
       subscriptionType: json['subscriptionType'] ?? 'free',
-      subscriptionStart: json['subscriptionStart'] != null
-          ? DateTime(
-              (json['subscriptionStart'] as Timestamp).toDate().year,
-              (json['subscriptionStart'] as Timestamp).toDate().month,
-              (json['subscriptionStart'] as Timestamp).toDate().day,
-            )
+      subscriptionStart: parsedSubscriptionStart != null
+          ? DateTime(parsedSubscriptionStart.year, parsedSubscriptionStart.month, parsedSubscriptionStart.day)
           : null,
-      subscriptionEnd: json['subscriptionEnd'] != null
-          ? DateTime(
-              (json['subscriptionEnd'] as Timestamp).toDate().year,
-              (json['subscriptionEnd'] as Timestamp).toDate().month,
-              (json['subscriptionEnd'] as Timestamp).toDate().day,
-            )
+      subscriptionEnd: parsedSubscriptionEnd != null
+          ? DateTime(parsedSubscriptionEnd.year, parsedSubscriptionEnd.month, parsedSubscriptionEnd.day)
           : null,
+
     );
   }
 

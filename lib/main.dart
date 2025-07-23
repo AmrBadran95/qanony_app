@@ -7,6 +7,7 @@ import 'package:qanony/firebase_options.dart';
 
 import 'package:qanony/presentation/screens/splash_screen.dart';
 import 'package:qanony/presentation/screens/subscription_screen.dart';
+import 'package:qanony/presentation/screens/user_home_screen.dart';
 import 'package:qanony/services/cubits/auth_cubit/auth_cubit.dart';
 import 'package:qanony/services/cubits/role/role_cubit.dart';
 import 'package:qanony/services/cubits/splash/splash_cubit.dart';
@@ -59,7 +60,7 @@ class QanonyApp extends StatelessWidget {
           );
         },
 
-        home:SubscriptionScreen(),
+        home:UserHomeScreen(),
       ),
     );
   }

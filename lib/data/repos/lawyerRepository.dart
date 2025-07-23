@@ -19,4 +19,26 @@ class LawyerRepository {
       rethrow;
     }
   }
+  Future<List<LawyerModel>> fetchAllLawyers() async {
+    try {
+      final snapshot = await _firestore.collection('lawyers').get();
+      return snapshot.docs
+          .map((doc) => LawyerModel.fromJson(doc.data()))
+          .toList();
+    } catch (e) {
+      throw Exception(' فشل تحميل المحامين المميزين: $e');
+    }
+  }
+  Future<List<LawyerModel>> fetchPremiumLawyers() async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('lawyers')
+        .where('subscriptionType', isNotEqualTo: 'free')
+        .get();
+
+    return snapshot.docs
+        .map((doc) => LawyerModel.fromJson(doc.data()))
+        .toList();
+  }
+
+
 }
