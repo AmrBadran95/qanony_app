@@ -6,7 +6,7 @@ import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/data/static/questionList.dart';
 
 import '../../data/repos/lawyerRepository.dart';
-import '../../data/static/anuncios.dart';
+import '../../data/static/Advertisements.dart';
 import '../../services/cubits/Lawyer/lawyer_cubit.dart';
 import '../pages/user_base_screen.dart';
 
