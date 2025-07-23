@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:qanony/firebase_options.dart';
-
 import 'package:qanony/presentation/screens/splash_screen.dart';
 import 'package:qanony/presentation/screens/subscription_screen.dart';
 import 'package:qanony/services/cubits/auth_cubit/auth_cubit.dart';
@@ -15,9 +15,10 @@ import 'Core/shared/app_cache.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: "assets/env/.env");
   await AppCache.init();
 
-  final key ="pk_test_51RmfujBCYVFzcUuX9HnRrvPp4PQkTb30GuFpqnQu7uHfGYGJzHIiiw0eUD9HYu6fg6SZu5MTxCYiNnGpP4TOM2ki00WIIZy1Fu";
+  final key = dotenv.env['STRIPE_PUBLISHABLE_KEY']!;
   try {
     Stripe.publishableKey = key;
   } catch (e) {
@@ -59,7 +60,7 @@ class QanonyApp extends StatelessWidget {
           );
         },
 
-        home:SubscriptionScreen(),
+        home: SplashScreen(),
       ),
     );
   }
