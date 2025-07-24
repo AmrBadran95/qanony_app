@@ -32,11 +32,7 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
     _lawyerCubit.getLawyerById(lawyerId ?? '');
   }
 
-  @override
-  // void dispose() {
-  //   _lawyerCubit.close();
-  //   super.dispose();
-  // }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(

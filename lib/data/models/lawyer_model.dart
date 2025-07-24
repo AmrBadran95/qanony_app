@@ -70,13 +70,6 @@ class LawyerModel {
   });
 
   factory LawyerModel.fromJson(Map<String, dynamic> json) {
-    DateTime? parseDate(dynamic value) {
-      if (value == null) return null;
-      if (value is Timestamp) return value.toDate();
-      if (value is String) return DateTime.tryParse(value);
-      return null;
-    }
-
     return LawyerModel(
       uid: json['uid'],
       email: json['email'],
@@ -88,12 +81,12 @@ class LawyerModel {
       nationalId: json['nationalId'],
       governorate: json['governorate'],
       address: json['address'],
-      dateOfBirth: (json['dateOfBirth'] as Timestamp).toDate(),
+      dateOfBirth: (json['dateOfBirth']),
       gender: json['gender'],
       profilePictureUrl: json['profilePictureUrl'],
       bio: json['bio'],
       registrationNumber: json['registrationNumber'],
-      registrationDate: (json['registrationDate'] as Timestamp).toDate(),
+      registrationDate: (json['registrationDate']),
       specialty: List<String>.from(json['specialty'] ?? []),
       cardImageUrl: json['cardImageUrl'],
       bankName: json['bankName'],
@@ -104,7 +97,7 @@ class LawyerModel {
       offersOffice: json['offersOffice'],
       officePrice: (json['officePrice'] as num?)?.toDouble(),
       subscriptionType: json['subscriptionType'] ?? 'free',
-      subscriptionStart: json['subscriptionStart'] != null
+      subscriptionStart:  json['subscriptionStart'] != null
           ? DateTime(
               (json['subscriptionStart'] as Timestamp).toDate().year,
               (json['subscriptionStart'] as Timestamp).toDate().month,
@@ -121,8 +114,7 @@ class LawyerModel {
       availableAppointments: json['availableAppointments'] != null
           ? List<DateTime>.from(
               (json['availableAppointments'] as List<dynamic>).map(
-                (e) =>
-                    (e as Timestamp).toDate(), // Explicit Timestamp conversion
+                (e) => (e as Timestamp).toDate(),
               ),
             )
           : [],

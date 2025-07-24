@@ -26,6 +26,7 @@ dependencies:
   cloud_firestore: ^5.6.11
   dio: ^5.8.0+1
   flutter_stripe: ^11.5.0
+  flutter_dotenv: ^5.2.1
 
 dev_dependencies:
   flutter_test:
@@ -38,6 +39,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
+    - assets/env/
 
   fonts:
     - family: Cairo

@@ -36,12 +36,10 @@ class LawyerInfoCubit extends Cubit<LawyerInfoState> {
         return;
       }
     } catch (e) {
-      print("🔥 Exception caught while fetching lawyer: $e");
       emit(LawyerError("فشل في تحميل بيانات المحامي"));
       return;
     }
 
-    // ✅ الاشتراك في التحديثات بعد أول تحميل
     _lawyerStreamSubscription = FirebaseFirestore.instance
         .collection('lawyers')
         .doc(lawyerId)
@@ -74,7 +72,6 @@ class LawyerInfoCubit extends Cubit<LawyerInfoState> {
     emit(LawyerUpdating());
     _isLocalUpdate = true;
     try {
-      // 1. أولاً: تحديث البيانات المحلية
       if (_currentLawyer != null) {
         _currentLawyer = _currentLawyer!.copyWith(
           specialty: updatedData['specialty'],
@@ -82,7 +79,6 @@ class LawyerInfoCubit extends Cubit<LawyerInfoState> {
         emit(LawyerLoaded(_currentLawyer!));
       }
 
-      // ثم تحديث Firestore
       await FirebaseFirestore.instance
           .collection('lawyers')
           .doc(lawyerId)

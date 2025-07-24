@@ -1,215 +1,267 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
-import 'package:qanony/presentation/pages/user_base_screen.dart';
+import 'package:qanony/data/repos/lawyer_repository.dart';
+import 'package:qanony/data/static/questionList.dart';
+import 'package:qanony/presentation/pages/ai_chat_screen.dart';
+import '../../data/static/Advertisements.dart';
+import '../../services/cubits/Lawyer/lawyer_cubit.dart';
+import '../pages/user_base_screen.dart';
 
 class UserHomeScreen extends StatelessWidget {
   const UserHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return UserBaseScreen(
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // PageView
-            SizedBox(
-              height: 200,
-              child: PageView(
+    return BlocProvider(
+      create: (_) => LawyerCubit(LawyerRepository())..getPremiumLawyers(),
+
+      child: UserBaseScreen(
+        HomeColor: AppColor.secondary,
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.asset('assets/images/Logo.png', fit: BoxFit.cover),
-                  Image.asset('assets/images/p1.png', fit: BoxFit.cover),
-                  Image.asset('assets/images/court 1.png', fit: BoxFit.cover),
+                  SizedBox(
+                    height: 160,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: adsList.length,
+
+                      itemBuilder: (context, index) {
+                        final ad = adsList[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(left: 5),
+                          child: Container(
+                            width: 300,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage("${ad['image']}"),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: double.infinity,
+                                  color: AppColor.dark.withOpacity(.5),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Padding(
+                                        padding: AppPadding.horizontalSmall,
+                                        child: Text(
+                                          ad['title']!,
+                                          style: AppText.title.copyWith(
+                                            color: AppColor.light,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Padding(
+                                        padding: AppPadding.horizontalSmall,
+                                        child: Text(
+                                          ad['subtitle']!,
+                                          style: AppText.bodySmall.copyWith(
+                                            color: AppColor.light,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ],
               ),
-            ),
 
-            const SizedBox(height: 16),
+              const SizedBox(height: 5),
 
-            // Container clickable
-            GestureDetector(
-              onTap: () {},
-              child: Container(
-                width: double.infinity,
-                padding: AppPadding.paddingMedium,
-                color: AppColor.dark,
-                child: Row(
-                  textDirection: TextDirection.rtl, // النص يمين والأيقونة شمال
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'مساعدك القانوني الذكي\nأحصل على إجابات دقيقة وفورية على استفساراتك القانونية.',
-                        style: AppText.bodyMedium.copyWith(
-                          color: AppColor.light,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Transform(
-                      alignment: Alignment.center,
-                      transform: Matrix4.identity()
-                        ..scale(-1.0, 1.0), // يعكس الأيقونة
-                      child: Icon(
-                        Icons.psychology,
-                        size: 60,
-                        color: AppColor.light,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            // المحامون المميزون
-            Padding(
-              padding: AppPadding.paddingSmall,
-              child: Text(
-                'المحامون المميزون',
-                style: AppText.title.copyWith(color: AppColor.dark),
-              ),
-            ),
-            SizedBox(
-              height: 150,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  int rating = (index % 5) + 1;
-
-                  return Container(
-                    width: 120,
-                    padding: AppPadding.paddingSmall,
-                    decoration: BoxDecoration(
-                      color: AppColor.light,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundColor: AppColor.green,
-                          child: Icon(Icons.person, color: AppColor.dark),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Youssef Milad',
-                          style: AppText.bodySmall.copyWith(
-                            color: AppColor.dark,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        Text(
-                          'Developer',
-                          style: AppText.labelSmall.copyWith(
-                            color: AppColor.dark,
-                          ),
-                        ),
-
-                        const SizedBox(height: 4),
-
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: List.generate(5, (starIndex) {
-                            return Icon(
-                              Icons.star,
-                              size: 14,
-                              color: starIndex < rating
-                                  ? AppColor.secondary
-                                  : AppColor.grey,
-                            );
-                          }),
-                        ),
-                      ],
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => AiChatScreen(),
                     ),
                   );
                 },
-              ),
-            ),
+                child: Container(
+                  width: double.infinity,
 
-            const SizedBox(height: 16),
+                  decoration: BoxDecoration(
+                    color: AppColor.dark.withOpacity(.6),
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/image.png'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: Container(
+                    width: double.infinity,
+                    padding: AppPadding.paddingMedium,
+                    color: AppColor.dark.withOpacity(.3),
+                    child: Row(
+                      textDirection: TextDirection.rtl,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'مساعدك القانوني الذكي\nأحصل على إجابات دقيقة وفورية على استفساراتك القانونية.',
+                            style: AppText.bodyMedium.copyWith(
+                              color: AppColor.light,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Icon(
+                          Icons.chat_outlined,
+                          size: 60,
+                          color: AppColor.light,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
 
-            // الأسئلة الشائعة
-            Padding(
-              padding: AppPadding.paddingMedium,
-              child: Text(
-                'الأسئلة الشائعة',
-                style: AppText.title.copyWith(color: AppColor.dark),
-              ),
-            ),
-            ExpansionTile(
-              title: Text(
-                'ازاي اعمل توكيل؟',
-                style: AppText.bodyMedium.copyWith(color: AppColor.dark),
-              ),
-              children: [
-                Container(
-                  width: double.infinity,
-                  padding: AppPadding.paddingMedium,
-                  color: AppColor.grey,
-                  child: Text(
-                    'لازم تروح الشهر العقاري ومعاك بطاقتك وبطاقات الطرف الآخر.',
-                    style: AppText.bodySmall.copyWith(color: AppColor.dark),
+              const SizedBox(height: 5),
+
+              Padding(
+                padding: AppPadding.paddingSmall,
+                child: Text(
+                  'المحاميون المميزون',
+                  style: AppText.bodyMedium.copyWith(
+                    color: AppColor.dark,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ],
-            ),
-            ExpansionTile(
-              title: Text(
-                'سؤال تاني؟',
-                style: AppText.bodyMedium.copyWith(color: AppColor.dark),
               ),
-              children: [
-                Container(
-                  width: double.infinity,
-                  padding: AppPadding.paddingMedium,
-                  color: AppColor.grey,
-                  child: Text(
-                    'الإجابة هنا.',
-                    style: AppText.bodySmall.copyWith(color: AppColor.dark),
+              SizedBox(
+                height: 200,
+                child: BlocBuilder<LawyerCubit, LawyerState>(
+                  builder: (context, state) {
+                    if (state is LawyerLoading) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (state is LawyersMapedLoaded) {
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: state.lawyers.length,
+                        itemBuilder: (context, index) {
+                          final lawyer = state.lawyers[index];
+                          int rating = (index % 5) + 1;
+
+                          return Container(
+                            width: 130,
+                            padding: AppPadding.paddingSmall,
+                            decoration: BoxDecoration(color: AppColor.light),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CircleAvatar(
+                                  radius: 50,
+                                  backgroundImage:
+                                      lawyer.profilePictureUrl != null
+                                      ? NetworkImage(lawyer.profilePictureUrl!)
+                                      : null,
+                                  child: lawyer.profilePictureUrl == null
+                                      ? Icon(Icons.person)
+                                      : null,
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  lawyer.fullName ?? "غير معروف",
+                                  style: AppText.bodySmall.copyWith(
+                                    color: AppColor.dark,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                Text(
+                                  lawyer.role,
+                                  style: AppText.labelSmall.copyWith(
+                                    color: AppColor.dark,
+                                  ),
+                                ),
+
+                                const SizedBox(height: 4),
+
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: List.generate(5, (starIndex) {
+                                    return Icon(
+                                      Icons.star,
+                                      size: 14,
+                                      color: starIndex < rating
+                                          ? AppColor.secondary
+                                          : AppColor.grey,
+                                    );
+                                  }),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    }
+                    return Container();
+                  },
+                ),
+              ),
+
+              Padding(
+                padding: AppPadding.paddingMedium,
+                child: Text(
+                  'الأسئلة الشائعة',
+                  style: AppText.bodyLarge.copyWith(
+                    color: AppColor.dark,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ],
-            ),
-            ExpansionTile(
-              title: Text(
-                'سؤال تاني؟',
-                style: AppText.bodyMedium.copyWith(color: AppColor.dark),
               ),
-              children: [
-                Container(
-                  width: double.infinity,
-                  padding: AppPadding.paddingMedium,
-                  color: AppColor.grey,
-                  child: Text(
-                    'الإجابة هنا.',
-                    style: AppText.bodySmall.copyWith(color: AppColor.dark),
-                  ),
+              SizedBox(
+                height: 170,
+                child: ListView.builder(
+                  itemCount: questionList.length,
+                  itemBuilder: (context, index) {
+                    final question = questionList[index];
+                    return ExpansionTile(
+                      title: Text(
+                        question['question'] ?? '',
+                        style: AppText.bodySmall.copyWith(color: AppColor.dark),
+                      ),
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          padding: AppPadding.paddingMedium,
+                          color: AppColor.grey,
+                          child: Text(
+                            question['answer'] ?? '',
+                            style: AppText.bodySmall.copyWith(
+                              color: AppColor.dark,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
-              ],
-            ),
-            ExpansionTile(
-              title: Text(
-                'سؤال تاني؟',
-                style: AppText.bodyMedium.copyWith(color: AppColor.dark),
               ),
-              children: [
-                Container(
-                  width: double.infinity,
-                  padding: AppPadding.paddingMedium,
-                  color: AppColor.grey,
-                  child: Text(
-                    'الإجابة هنا.',
-                    style: AppText.bodySmall.copyWith(color: AppColor.dark),
-                  ),
-                ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
