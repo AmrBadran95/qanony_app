@@ -42,4 +42,6 @@ class LawyerCubit extends Cubit<LawyerState> {
       emit(LawyerError("حدث خطأ أثناء تحميل المحامين المميزين: $e"));
     }
   }
+
+
 }
