@@ -7,6 +7,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/firebase_options.dart';
 import 'package:qanony/presentation/screens/splash_screen.dart';
+import 'package:qanony/presentation/screens/user_home_screen.dart';
 import 'package:qanony/services/cubits/auth_cubit/auth_cubit.dart';
 import 'package:qanony/services/cubits/lawyer_info/lawyer_info_cubit.dart';
 import 'package:qanony/data/repos/gemini_repo.dart';
@@ -92,7 +93,10 @@ class QanonyApp extends StatelessWidget {
           );
         },
 
+
+
         home: SplashScreen(),
+
       ),
     );
   }

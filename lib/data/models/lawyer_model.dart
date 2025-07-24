@@ -81,12 +81,12 @@ class LawyerModel {
       nationalId: json['nationalId'],
       governorate: json['governorate'],
       address: json['address'],
-      dateOfBirth: (json['dateOfBirth'] as Timestamp).toDate(),
+      dateOfBirth: (json['dateOfBirth']),
       gender: json['gender'],
       profilePictureUrl: json['profilePictureUrl'],
       bio: json['bio'],
       registrationNumber: json['registrationNumber'],
-      registrationDate: (json['registrationDate'] as Timestamp).toDate(),
+      registrationDate: (json['registrationDate']),
       specialty: List<String>.from(json['specialty'] ?? []),
       cardImageUrl: json['cardImageUrl'],
       bankName: json['bankName'],
@@ -97,7 +97,7 @@ class LawyerModel {
       offersOffice: json['offersOffice'],
       officePrice: (json['officePrice'] as num?)?.toDouble(),
       subscriptionType: json['subscriptionType'] ?? 'free',
-      subscriptionStart: json['subscriptionStart'] != null
+      subscriptionStart:  json['subscriptionStart'] != null
           ? DateTime(
               (json['subscriptionStart'] as Timestamp).toDate().year,
               (json['subscriptionStart'] as Timestamp).toDate().month,

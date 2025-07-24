@@ -5,12 +5,10 @@ import 'dart:convert';
 import '../../data/models/payment_model.dart';
 
 class ApiService {
-  final String baseUrl = dotenv.env['BASE_URL']!;
 
-  Future<Map<String, dynamic>> createPaymentIntent(
-    int amount,
-    String email,
-  ) async {
+  final String baseUrl = 'https://bcd6606a442d.ngrok-free.app';
+
+  Future<Map<String, dynamic>> createPaymentIntent(int amount, String email) async {
     final url = Uri.parse('$baseUrl/create-payment-intent');
     final response = await http.post(
       url,

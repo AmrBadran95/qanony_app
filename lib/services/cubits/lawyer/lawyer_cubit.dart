@@ -22,4 +22,24 @@ class LawyerCubit extends Cubit<LawyerState> {
       emit(LawyerError("حدث خطأ: $e"));
     }
   }
+
+  Future<void> getAllLawyers() async {
+    emit(LawyerLoading());
+    try {
+      final lawyers = await _repository.fetchAllLawyers();
+      emit(LawyersMapedLoaded(lawyers));
+    } catch (e) {
+      emit(LawyerError("حدث خطأ أثناء جلب جميع المحامين: $e"));
+    }
+  }
+
+  Future<void> getPremiumLawyers() async {
+    emit(LawyerLoading());
+    try {
+      final lawyers = await _repository.fetchPremiumLawyers();
+      emit(LawyersMapedLoaded(lawyers));
+    } catch (e) {
+      emit(LawyerError("حدث خطأ أثناء تحميل المحامين المميزين: $e"));
+    }
+  }
 }
