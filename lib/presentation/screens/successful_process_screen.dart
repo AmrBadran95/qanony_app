@@ -7,7 +7,7 @@ import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/Core/widgets/custom_button.dart';
-import '../../data/repos/lawyerRepository.dart';
+import '../../data/repos/lawyer_repository.dart';
 import '../../services/cubits/Lawyer/lawyer_cubit.dart';
 
 class SuccessfulProcessScreen extends StatelessWidget {
