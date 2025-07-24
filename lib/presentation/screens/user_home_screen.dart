@@ -5,6 +5,7 @@ import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/data/repos/lawyer_repository.dart';
 import 'package:qanony/data/static/questionList.dart';
+import 'package:qanony/presentation/pages/ai_chat_screen.dart';
 import '../../data/static/Advertisements.dart';
 import '../../services/cubits/Lawyer/lawyer_cubit.dart';
 import '../pages/user_base_screen.dart';
@@ -90,10 +91,16 @@ class UserHomeScreen extends StatelessWidget {
               ),
 
               const SizedBox(height: 5),
-              // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-              // Ai Chat
+
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => AiChatScreen(),
+                    ),
+                  );
+                },
                 child: Container(
                   width: double.infinity,
 
@@ -133,8 +140,7 @@ class UserHomeScreen extends StatelessWidget {
               ),
 
               const SizedBox(height: 5),
-              //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-              // المحامون المميزون
+
               Padding(
                 padding: AppPadding.paddingSmall,
                 child: Text(
@@ -152,7 +158,6 @@ class UserHomeScreen extends StatelessWidget {
                     if (state is LawyerLoading) {
                       return Center(child: CircularProgressIndicator());
                     } else if (state is LawyersMapedLoaded) {
-                      // print("test${state.lawyers}");
                       return ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: state.lawyers.length,
@@ -217,9 +222,6 @@ class UserHomeScreen extends StatelessWidget {
                 ),
               ),
 
-              // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-              // الأسئلة الشائعة
               Padding(
                 padding: AppPadding.paddingMedium,
                 child: Text(
