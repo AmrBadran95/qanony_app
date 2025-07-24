@@ -5,7 +5,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/firebase_options.dart';
-import 'package:qanony/presentation/screens/splash_screen.dart';
+import 'package:qanony/presentation/pages/lawyer_base_screen.dart';
+import 'package:qanony/presentation/screens/appointment_lawyer.dart';
+import 'package:qanony/services/cubits/appointments/appointments_cubit.dart';
 import 'package:qanony/services/cubits/auth_cubit/auth_cubit.dart';
 import 'package:qanony/services/cubits/lawyer_info/lawyer_info_cubit.dart';
 import 'package:qanony/services/cubits/role/role_cubit.dart';
@@ -43,6 +45,7 @@ class QanonyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => LawyerInfoCubit(LawyerFirestoreService()),
         ),
+        BlocProvider(create: (_) => AppointmentsCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -92,7 +95,7 @@ class QanonyApp extends StatelessWidget {
           );
         },
 
-        home: SplashScreen(),
+        home: LawyerBaseScreen(body: AppointmentLawyer(), selectedIndex: 2),
       ),
     );
   }
