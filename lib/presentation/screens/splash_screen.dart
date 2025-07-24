@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/core/styles/padding.dart';
 import 'package:qanony/core/styles/text.dart';
-import 'package:qanony/presentation/screens/alaa.dart';
+import 'package:qanony/presentation/pages/lawyer_base_screen.dart';
 import 'package:qanony/presentation/screens/choose_role_screen.dart';
+import 'package:qanony/presentation/screens/lawyer_account.dart';
 import 'package:qanony/presentation/screens/onboarding_screen.dart';
 import 'package:qanony/presentation/screens/sign_in.dart';
 import 'package:qanony/presentation/screens/user_home_screen.dart';
@@ -54,8 +55,11 @@ class SplashScreen extends StatelessWidget {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (_) => const Alaa(),
-            ), // ha3ml navigation l lawyer page
+              builder: (_) => LawyerBaseScreen(
+                body: AccountLawyerScreen(),
+                selectedIndex: 0,
+              ),
+            ),
             (route) => false,
           );
         } else if (state is SplashLoggedInLawyerRejected) {

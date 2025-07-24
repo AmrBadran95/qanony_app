@@ -35,6 +35,7 @@ class LawyerModel {
   final String subscriptionType;
   final DateTime? subscriptionStart;
   final DateTime? subscriptionEnd;
+  final List<DateTime> availableAppointments;
 
   LawyerModel({
     required this.uid,
@@ -65,20 +66,10 @@ class LawyerModel {
     this.subscriptionType = 'free',
     this.subscriptionStart,
     this.subscriptionEnd,
+    this.availableAppointments = const [],
   });
 
   factory LawyerModel.fromJson(Map<String, dynamic> json) {
-
-    DateTime? parseDate(dynamic value) {
-      if (value == null) return null;
-      if (value is Timestamp) return value.toDate();
-      if (value is String) return DateTime.tryParse(value);
-      return null;
-    }
-    final parsedSubscriptionStart = parseDate(json['subscriptionStart']);
-    final parsedSubscriptionEnd = parseDate(json['subscriptionEnd']);
-
-
     return LawyerModel(
       uid: json['uid'],
       email: json['email'],
@@ -90,12 +81,12 @@ class LawyerModel {
       nationalId: json['nationalId'],
       governorate: json['governorate'],
       address: json['address'],
-      dateOfBirth: parseDate(json['dateOfBirth']),
+      dateOfBirth: (json['dateOfBirth']),
       gender: json['gender'],
       profilePictureUrl: json['profilePictureUrl'],
       bio: json['bio'],
       registrationNumber: json['registrationNumber'],
-      registrationDate: parseDate(json['registrationDate']),
+      registrationDate: (json['registrationDate']),
       specialty: List<String>.from(json['specialty'] ?? []),
       cardImageUrl: json['cardImageUrl'],
       bankName: json['bankName'],
@@ -106,16 +97,29 @@ class LawyerModel {
       offersOffice: json['offersOffice'],
       officePrice: (json['officePrice'] as num?)?.toDouble(),
       subscriptionType: json['subscriptionType'] ?? 'free',
-      subscriptionStart: parsedSubscriptionStart != null
-          ? DateTime(parsedSubscriptionStart.year, parsedSubscriptionStart.month, parsedSubscriptionStart.day)
+      subscriptionStart:  json['subscriptionStart'] != null
+          ? DateTime(
+              (json['subscriptionStart'] as Timestamp).toDate().year,
+              (json['subscriptionStart'] as Timestamp).toDate().month,
+              (json['subscriptionStart'] as Timestamp).toDate().day,
+            )
           : null,
-      subscriptionEnd: parsedSubscriptionEnd != null
-          ? DateTime(parsedSubscriptionEnd.year, parsedSubscriptionEnd.month, parsedSubscriptionEnd.day)
+      subscriptionEnd: json['subscriptionEnd'] != null
+          ? DateTime(
+              (json['subscriptionEnd'] as Timestamp).toDate().year,
+              (json['subscriptionEnd'] as Timestamp).toDate().month,
+              (json['subscriptionEnd'] as Timestamp).toDate().day,
+            )
           : null,
-
+      availableAppointments: json['availableAppointments'] != null
+          ? List<DateTime>.from(
+              (json['availableAppointments'] as List<dynamic>).map(
+                (e) => (e as Timestamp).toDate(),
+              ),
+            )
+          : [],
     );
   }
-
 
   Map<String, dynamic> toJson() {
     return {
@@ -147,6 +151,128 @@ class LawyerModel {
       'subscriptionType': subscriptionType,
       'subscriptionStart': subscriptionStart,
       'subscriptionEnd': subscriptionEnd,
+      'availableAppointments': availableAppointments,
     };
+  }
+
+  Map<String, dynamic> toUpdateJson() {
+    final Map<String, dynamic> data = {};
+
+    if (email.isNotEmpty) data['email'] = email;
+    if (phone.isNotEmpty) data['phone'] = phone;
+    if (gender != null) data['gender'] = gender;
+    if (governorate != null) data['governorate'] = governorate;
+    if (fullName != null) data['fullName'] = fullName;
+    if (nationalId != null) data['nationalId'] = nationalId;
+    if (address != null) data['address'] = address;
+
+    if (dateOfBirth != null) {
+      data['dateOfBirth'] = dateOfBirth;
+    }
+
+    if (profilePictureUrl != null) {
+      data['profilePictureUrl'] = profilePictureUrl;
+    }
+    if (bio != null) data['bio'] = bio;
+    if (registrationNumber != null) {
+      data['registrationNumber'] = registrationNumber;
+    }
+
+    if (registrationDate != null) {
+      data['registrationDate'] = registrationDate;
+    }
+
+    if (specialty != null) data['specialty'] = specialty;
+    if (cardImageUrl != null) data['cardImageUrl'] = cardImageUrl;
+    if (bankName != null) data['bankName'] = bankName;
+    if (accountHolderName != null) {
+      data['accountHolderName'] = accountHolderName;
+    }
+    if (accountNumber != null) data['accountNumber'] = accountNumber;
+
+    if (offersCall != null) data['offersCall'] = offersCall;
+    if (callPrice != null) data['callPrice'] = callPrice;
+    if (offersOffice != null) data['offersOffice'] = offersOffice;
+    if (officePrice != null) data['officePrice'] = officePrice;
+
+    data['subscriptionType'] = subscriptionType;
+    if (subscriptionStart != null) {
+      data['subscriptionStart'] = subscriptionStart;
+    }
+    if (subscriptionEnd != null) {
+      data['subscriptionEnd'] = subscriptionEnd;
+    }
+
+    data['status'] = status;
+    if (availableAppointments.isNotEmpty) {
+      data['availableAppointments'] = availableAppointments;
+    }
+
+    return data;
+  }
+
+  LawyerModel copyWith({
+    String? uid,
+    String? email,
+    String? phone,
+    String? role,
+    String? status,
+    List<String>? rejectionReasons,
+    String? fullName,
+    String? nationalId,
+    String? governorate,
+    String? address,
+    DateTime? dateOfBirth,
+    String? gender,
+    String? profilePictureUrl,
+    String? bio,
+    String? registrationNumber,
+    DateTime? registrationDate,
+    List<String>? specialty,
+    String? cardImageUrl,
+    String? bankName,
+    String? accountHolderName,
+    String? accountNumber,
+    bool? offersCall,
+    double? callPrice,
+    bool? offersOffice,
+    double? officePrice,
+    String? subscriptionType,
+    DateTime? subscriptionStart,
+    DateTime? subscriptionEnd,
+    List<DateTime>? availableAppointments,
+  }) {
+    return LawyerModel(
+      uid: uid ?? this.uid,
+      email: email ?? this.email,
+      phone: phone ?? this.phone,
+      role: role ?? this.role,
+      status: status ?? this.status,
+      rejectionReasons: rejectionReasons ?? this.rejectionReasons,
+      fullName: fullName ?? this.fullName,
+      nationalId: nationalId ?? this.nationalId,
+      governorate: governorate ?? this.governorate,
+      address: address ?? this.address,
+      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+      gender: gender ?? this.gender,
+      profilePictureUrl: profilePictureUrl ?? this.profilePictureUrl,
+      bio: bio ?? this.bio,
+      registrationNumber: registrationNumber ?? this.registrationNumber,
+      registrationDate: registrationDate ?? this.registrationDate,
+      specialty: specialty ?? this.specialty,
+      cardImageUrl: cardImageUrl ?? this.cardImageUrl,
+      bankName: bankName ?? this.bankName,
+      accountHolderName: accountHolderName ?? this.accountHolderName,
+      accountNumber: accountNumber ?? this.accountNumber,
+      offersCall: offersCall ?? this.offersCall,
+      callPrice: callPrice ?? this.callPrice,
+      offersOffice: offersOffice ?? this.offersOffice,
+      officePrice: officePrice ?? this.officePrice,
+      subscriptionType: subscriptionType ?? this.subscriptionType,
+      subscriptionStart: subscriptionStart ?? this.subscriptionStart,
+      subscriptionEnd: subscriptionEnd ?? this.subscriptionEnd,
+      availableAppointments:
+          availableAppointments ?? this.availableAppointments,
+    );
   }
 }

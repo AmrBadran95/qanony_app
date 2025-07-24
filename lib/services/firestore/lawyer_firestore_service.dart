@@ -24,7 +24,17 @@ class LawyerFirestoreService {
     await _firestore
         .collection(_collection)
         .doc(lawyer.uid)
-        .update(lawyer.toJson());
+        .update(lawyer.toUpdateJson());
+  }
+
+  Future<void> editLawyerData(
+    String lawyerId,
+    Map<String, dynamic> updatedData,
+  ) async {
+    await FirebaseFirestore.instance
+        .collection('lawyers')
+        .doc(lawyerId)
+        .update(updatedData);
   }
 
   Future<void> deleteLawyer(String uid) async {
