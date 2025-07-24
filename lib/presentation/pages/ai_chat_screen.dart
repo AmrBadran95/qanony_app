@@ -4,9 +4,7 @@ import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/core/styles/text.dart';
 import 'package:qanony/data/models/chat_message_model.dart';
-import 'package:qanony/presentation/screens/notification-screen.dart';
 import 'package:qanony/services/cubits/gemini/gemini_cubit.dart';
-import 'package:qanony/services/cubits/notification/cubit/notification_cubit.dart';
 
 class AiChatScreen extends StatelessWidget {
   AiChatScreen({super.key});

@@ -70,13 +70,6 @@ class LawyerModel {
   });
 
   factory LawyerModel.fromJson(Map<String, dynamic> json) {
-    DateTime? parseDate(dynamic value) {
-      if (value == null) return null;
-      if (value is Timestamp) return value.toDate();
-      if (value is String) return DateTime.tryParse(value);
-      return null;
-    }
-
     return LawyerModel(
       uid: json['uid'],
       email: json['email'],
@@ -121,8 +114,7 @@ class LawyerModel {
       availableAppointments: json['availableAppointments'] != null
           ? List<DateTime>.from(
               (json['availableAppointments'] as List<dynamic>).map(
-                (e) =>
-                    (e as Timestamp).toDate(), // Explicit Timestamp conversion
+                (e) => (e as Timestamp).toDate(),
               ),
             )
           : [],

@@ -10,9 +10,6 @@ import 'package:qanony/presentation/screens/splash_screen.dart';
 import 'package:qanony/services/cubits/auth_cubit/auth_cubit.dart';
 import 'package:qanony/services/cubits/lawyer_info/lawyer_info_cubit.dart';
 import 'package:qanony/data/repos/gemini_repo.dart';
-import 'package:qanony/firebase_options.dart';
-import 'package:qanony/presentation/screens/splash_screen.dart';
-import 'package:qanony/services/cubits/auth_cubit/auth_cubit.dart';
 import 'package:qanony/services/cubits/gemini/gemini_cubit.dart';
 import 'package:qanony/services/cubits/role/role_cubit.dart';
 import 'package:qanony/services/cubits/splash/splash_cubit.dart';
@@ -24,7 +21,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: "assets/env/.env");
   await AppCache.init();
-
 
   final key = dotenv.env['STRIPE_PUBLISHABLE_KEY']!;
   Stripe.publishableKey = key;

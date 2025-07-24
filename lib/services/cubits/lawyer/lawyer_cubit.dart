@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/models/lawyer_model.dart';
-import '../../../data/repos/lawyerRepository.dart';
+import '../../../data/repos/lawyer_repository.dart';
 
 part 'lawyer_state.dart';
 
