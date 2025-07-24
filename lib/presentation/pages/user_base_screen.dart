@@ -6,6 +6,8 @@ import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/presentation/screens/notification-screen.dart';
 import 'package:qanony/services/cubits/notification/cubit/notification_cubit.dart';
 
+import '../../services/auth/auth_service.dart';
+import '../screens/sign_in.dart';
 import '../screens/user_home_screen.dart';
 
 class UserBaseScreen extends StatelessWidget {
@@ -31,20 +33,7 @@ class UserBaseScreen extends StatelessWidget {
         preferredSize: const Size.fromHeight(60),
         child: AppBar(
           backgroundColor: AppColor.primary,
-          leading: Builder(
-            builder: (context) => Padding(
-              padding: const EdgeInsets.all(AppPadding.small),
-              child: GestureDetector(
-                onTap: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                child: CircleAvatar(
-                  radius: 40,
-                  // backgroundImage: AssetImage('assets/images/lawyer 1.png'),
-                ),
-              ),
-            ),
-          ),
+
           title: Padding(
             padding: EdgeInsets.only(
 
@@ -100,36 +89,7 @@ class UserBaseScreen extends StatelessWidget {
         ),
       ),
 
-      drawer: Drawer(
-        backgroundColor: AppColor.light,
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(color: AppColor.primary),
-              child: Text(
-                'حسابي',
-                style: AppText.headingLarge.copyWith(color: AppColor.light),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('الملف الشخصي'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('الإعدادات'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('تسجيل الخروج'),
-              onTap: () {},
-            ),
-          ],
-        ),
-      ),
+
 
       bottomNavigationBar: Container(
         padding: AppPadding.paddingSmall,
@@ -185,26 +145,7 @@ class UserBaseScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                         Icon(
-                          Icons.access_alarm_sharp,
-                          size: 20,
-                          color:AppointmentsColor
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          "مواعيدي",
-                          style: AppText.labelSmall.copyWith(
-                              color:AppointmentsColor
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+
                   GestureDetector(
                     onTap: () {},
                     child: Column(
@@ -220,6 +161,34 @@ class UserBaseScreen extends StatelessWidget {
                           "طلباتي",
                           style: AppText.labelSmall.copyWith(
                             color: RequestsColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      final authService = AuthService();
+                      await authService.logout();
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => const SignInScreen()),
+                            (route) => false,
+                      );
+
+                    },
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                            Icons.logout,
+                            size: 20,
+                            color:AppointmentsColor
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          "تسجيل الخروج",
+                          style: AppText.labelSmall.copyWith(
+                              color:AppointmentsColor
                           ),
                         ),
                       ],
