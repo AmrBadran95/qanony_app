@@ -1,21 +1,21 @@
 part of 'lawyer_info_cubit.dart';
 
 @immutable
-abstract class LawyerState {}
+abstract class LawyerInfoState {}
 
-class LawyerInitial extends LawyerState {}
+class LawyerInitial extends LawyerInfoState {}
 
-class LawyerLoading extends LawyerState {}
+class LawyerLoading extends LawyerInfoState {}
 
-class LawyerLoaded extends LawyerState {
+class LawyerLoaded extends LawyerInfoState {
   final LawyerModel lawyer;
 
   LawyerLoaded(this.lawyer);
 }
 
-class LawyerUpdating extends LawyerState {}
+class LawyerUpdating extends LawyerInfoState {}
 
-class LawyerError extends LawyerState {
+class LawyerError extends LawyerInfoState {
   final String message;
 
   LawyerError(this.message);

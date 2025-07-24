@@ -203,7 +203,7 @@ class LawyerModel {
     if (offersOffice != null) data['offersOffice'] = offersOffice;
     if (officePrice != null) data['officePrice'] = officePrice;
 
-    if (subscriptionType != null) data['subscriptionType'] = subscriptionType;
+    data['subscriptionType'] = subscriptionType;
     if (subscriptionStart != null) {
       data['subscriptionStart'] = subscriptionStart;
     }
@@ -211,7 +211,7 @@ class LawyerModel {
       data['subscriptionEnd'] = subscriptionEnd;
     }
 
-    if (status != null) data['status'] = status;
+    data['status'] = status;
     if (availableAppointments.isNotEmpty) {
       data['availableAppointments'] = availableAppointments;
     }

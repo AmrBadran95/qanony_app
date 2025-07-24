@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:qanony/core/styles/color.dart';
 
 part 'caleder_state.dart';
 
@@ -41,6 +42,29 @@ class LawyerScheduleCubit extends Cubit<LawyerScheduleState> {
     final time = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.fromDateTime(initial),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            timePickerTheme: const TimePickerThemeData(
+              confirmButtonStyle: ButtonStyle(
+                foregroundColor: WidgetStatePropertyAll(AppColor.green),
+              ),
+              dayPeriodColor: AppColor.secondary,
+              backgroundColor: AppColor.grey, // خلفية الدايلوج
+              hourMinuteTextColor: AppColor.light, // لون الأرقام
+              dialHandColor: AppColor.primary, // لون عقرب الاختيار
+              dialBackgroundColor: AppColor.secondary, // خلفية الدائرة
+              dialTextColor: AppColor.light, // لون الأرقام داخل الدائرة
+              entryModeIconColor: AppColor.dark, // لون أيقونة الكتابة
+            ),
+            colorScheme: const ColorScheme.dark(
+              primary: AppColor.primary, // لون الساعة المختارة والزراير
+              onSurface: AppColor.secondary, // لون النصوص العادية
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
 
     if (time != null) {

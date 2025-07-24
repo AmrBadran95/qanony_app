@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:qanony/Core/styles/color.dart';
+import 'package:qanony/core/styles/text.dart';
 import 'package:qanony/services/cubits/lawyer_caleder/calender_cubit.dart';
 
 class WeeklyCalendarWidget extends StatelessWidget {
@@ -26,18 +28,21 @@ class WeeklyCalendarWidget extends StatelessWidget {
                   children: [
                     Text(
                       "${cubit.selectedDate.day} ${DateFormat.MMMM('ar').format(cubit.selectedDate)}",
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: AppText.title.copyWith(color: AppColor.dark),
                     ),
                     const Spacer(),
                     IconButton(
-                      icon: const Icon(Icons.chevron_left),
+                      icon: const Icon(
+                        Icons.chevron_left,
+                        color: AppColor.dark,
+                      ),
                       onPressed: () => cubit.changeWeek(-1),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.chevron_right),
+                      icon: const Icon(
+                        Icons.chevron_right,
+                        color: AppColor.dark,
+                      ),
                       onPressed: () => cubit.changeWeek(1),
                     ),
                   ],
@@ -65,7 +70,9 @@ class WeeklyCalendarWidget extends StatelessWidget {
                         width: 60,
                         margin: const EdgeInsets.symmetric(horizontal: 6),
                         decoration: BoxDecoration(
-                          color: isSelected ? Colors.blue : Colors.transparent,
+                          color: isSelected
+                              ? AppColor.primary
+                              : Colors.transparent,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Column(
@@ -74,17 +81,19 @@ class WeeklyCalendarWidget extends StatelessWidget {
                             Text(
                               DateFormat.EEEE('ar').format(date),
                               style: TextStyle(
-                                color: isSelected ? Colors.white : Colors.grey,
+                                color: isSelected
+                                    ? AppColor.light
+                                    : AppColor.darkgrey,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                             const SizedBox(height: 6),
                             Text(
                               '${date.day}',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: isSelected ? Colors.white : Colors.black,
+                              style: AppText.title.copyWith(
+                                color: isSelected
+                                    ? AppColor.light
+                                    : AppColor.dark,
                               ),
                             ),
                           ],
@@ -109,23 +118,29 @@ class WeeklyCalendarWidget extends StatelessWidget {
                   ),
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.lightBlue[50],
+                    color: AppColor.grey,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.calendar_today, size: 20),
+                      const Icon(
+                        Icons.calendar_today,
+                        size: 20,
+                        color: AppColor.dark,
+                      ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
                           '${DateFormat.yMMMMEEEEd('ar').format(dateTime)} - ${DateFormat.jm('ar').format(dateTime)}',
-                          style: const TextStyle(fontSize: 14),
+                          style: AppText.bodySmall.copyWith(
+                            color: AppColor.dark,
+                          ),
                         ),
                       ),
                       IconButton(
                         icon: const Icon(
                           Icons.edit,
-                          color: Colors.grey,
+                          color: AppColor.dark,
                           size: 20,
                         ),
                         onPressed: () => cubit.selectDate(
@@ -138,7 +153,7 @@ class WeeklyCalendarWidget extends StatelessWidget {
                       IconButton(
                         icon: const Icon(
                           Icons.delete,
-                          color: Colors.red,
+                          color: AppColor.primary,
                           size: 20,
                         ),
                         onPressed: () =>

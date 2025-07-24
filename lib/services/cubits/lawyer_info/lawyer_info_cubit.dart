@@ -8,15 +8,15 @@ import 'package:qanony/services/firestore/lawyer_firestore_service.dart';
 
 part 'lawyer_info_state.dart';
 
-class LawyerCubit extends Cubit<LawyerState> {
+class LawyerInfoCubit extends Cubit<LawyerInfoState> {
   final LawyerFirestoreService _service;
   LawyerModel? _currentLawyer;
   bool _isLocalUpdate = false;
 
   StreamSubscription? _lawyerStreamSubscription;
-  bool _ignoreNextUpdate = false;
+  final bool _ignoreNextUpdate = false;
 
-  LawyerCubit(this._service) : super(LawyerInitial());
+  LawyerInfoCubit(this._service) : super(LawyerInitial());
 
   void getLawyerById(String lawyerId) async {
     emit(LawyerLoading());

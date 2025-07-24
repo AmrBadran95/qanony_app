@@ -1,31 +1,35 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:qanony/Core/shared/app_cache.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/widgets/Lawyer_calender.dart';
 import 'package:qanony/core/styles/text.dart';
 import 'package:qanony/data/models/lawyer_model.dart';
 import 'package:qanony/data/static/egypt_governorates.dart';
-import 'package:qanony/presentation/pages/lawyer_base_screen.dart';
+import 'package:qanony/data/static/lawyer_specializations.dart';
+import 'package:qanony/presentation/screens/choose_role_screen.dart';
+import 'package:qanony/presentation/screens/subscription_screen.dart';
+import 'package:qanony/services/auth/auth_service.dart';
 import 'package:qanony/services/cubits/lawyer_info/lawyer_info_cubit.dart';
 import 'package:qanony/services/firestore/lawyer_firestore_service.dart';
 
 class AccountLawyerScreen extends StatefulWidget {
-  final String lawyerId;
-  const AccountLawyerScreen({super.key, required this.lawyerId});
-
+  const AccountLawyerScreen({super.key});
   @override
   State<AccountLawyerScreen> createState() => _AccountLawyerScreenState();
 }
 
 class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
-  late LawyerCubit _lawyerCubit;
+  late LawyerInfoCubit _lawyerCubit;
+  final lawyerId = AuthService().currentUser?.uid;
 
   @override
   void initState() {
     super.initState();
-    _lawyerCubit = LawyerCubit(LawyerFirestoreService());
-    _lawyerCubit.getLawyerById(widget.lawyerId);
+    _lawyerCubit = LawyerInfoCubit(LawyerFirestoreService());
+
+    _lawyerCubit.getLawyerById(lawyerId ?? '');
   }
 
   @override
@@ -37,203 +41,186 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: _lawyerCubit,
-      child: LawyerBaseScreen(
-        body: BlocBuilder<LawyerCubit, LawyerState>(
-          builder: (context, state) {
-            if (state is LawyerInitial) {
-              return Center(child: Text('الرجاء انتظار تحميل البيانات...'));
-            }
-            if (state is LawyerLoading || state is LawyerUpdating) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state is LawyerLoaded) {
-              final lawyer = state.lawyer;
+      child: BlocBuilder<LawyerInfoCubit, LawyerInfoState>(
+        builder: (context, state) {
+          if (state is LawyerInitial) {
+            return Center(child: Text('الرجاء انتظار تحميل البيانات...'));
+          }
+          if (state is LawyerLoading || state is LawyerUpdating) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is LawyerLoaded) {
+            final lawyer = state.lawyer;
+            final dateOfBirth = lawyer.dateOfBirth;
+            String dateOfBirthText;
 
-              if (lawyer == null) {
-                return const Center(
-                  child: Text("لم يتم العثور على بيانات المحامي"),
-                );
-              }
-              final dateOfBirth = lawyer.dateOfBirth;
-              String dateOfBirthText;
+            dateOfBirthText =
+                (lawyer.dateOfBirth != null && lawyer.dateOfBirth is Timestamp)
+                ? (lawyer.dateOfBirth as Timestamp).toDate().toString().split(
+                    ' ',
+                  )[0]
+                : 'غير متوفر';
 
-              dateOfBirthText =
-                  (lawyer.dateOfBirth != null &&
-                      lawyer.dateOfBirth is Timestamp)
-                  ? (lawyer.dateOfBirth as Timestamp).toDate().toString().split(
-                      ' ',
-                    )[0]
-                  : 'غير متوفر';
-
-              return SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Column(
-                      children: [
-                        CircleAvatar(
-                          radius: 40,
-                          backgroundImage:
-                              (lawyer.profilePictureUrl != null &&
-                                  lawyer.profilePictureUrl!.isNotEmpty)
-                              ? NetworkImage(lawyer.profilePictureUrl!)
-                              : const AssetImage(
-                                      'assets/images/default_profile.png',
-                                    )
-                                    as ImageProvider,
-                        ),
-                        const SizedBox(height: 8),
-                        Text(lawyer.fullName ?? '', style: AppText.title),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-
-                    sectionCard(
-                      title: "البيانات الشخصية",
-                      icon: Icons.edit,
-                      onPressed: () {
-                        showEditProfileDialog(context, lawyer);
-                      },
-                      children: [
-                        infoRow(
-                          "رقم الهاتف",
-                          lawyer.phone.isNotEmpty ? lawyer.phone : 'غير متوفر',
-                        ),
-                        infoRow(
-                          "البريد الإلكتروني",
-                          lawyer.email.isNotEmpty ? lawyer.email : 'غير متوفر',
-                        ),
-                        infoRow(" النوع", lawyer.gender ?? 'غير متوفر'),
-                        infoRow(" المحافظه", lawyer.governorate ?? 'غير متوفر'),
-                      ],
-                    ),
-
-                    if (lawyer.specialty != null &&
-                        lawyer.specialty!.isNotEmpty)
-                      sectionCard(
-                        title: "التخصص",
-                        icon: Icons.edit,
-                        onPressed: () {},
-                        children: [
-                          BlocSelector<LawyerCubit, LawyerState, List<String>>(
-                            selector: (state) {
-                              return state is LawyerLoaded
-                                  ? state.lawyer.specialty ?? []
-                                  : [];
-                            },
-                            builder: (context, specialties) {
-                              return Wrap(
-                                spacing: 10,
-                                children: specialties
-                                    .map((e) => chip(e))
-                                    .toList(),
-                              );
-                            },
-                          ),
-                          // Wrap(
-                          //   spacing: 10,
-                          //   children: lawyer.specialty!
-                          //       .map((e) => chip(e))
-                          //       .toList(),
-                          // ),
-                        ],
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Column(
+                    children: [
+                      CircleAvatar(
+                        radius: 40,
+                        backgroundImage:
+                            (lawyer.profilePictureUrl != null &&
+                                lawyer.profilePictureUrl!.isNotEmpty)
+                            ? NetworkImage(lawyer.profilePictureUrl!)
+                            : const AssetImage(
+                                    'assets/images/default_profile.png',
+                                  )
+                                  as ImageProvider,
                       ),
-                    sectionCard(
-                      title: " نبذة عني",
-                      icon: Icons.edit,
-                      onPressed: () {},
-                      children: [
-                        Text(
-                          lawyer.bio ?? 'لا توجد معلومات متاحة',
-                          style: const TextStyle(color: AppColor.dark),
-                        ),
-                      ],
-                    ),
-                    sectionCard(
-                      title: "طرق التواصل",
-                      icon: Icons.edit,
-                      onPressed: () {},
-                      children: [
-                        infoRow(
-                          lawyer.offersCall == true ? 'مكالمه فيديو/صوت' : '',
-                          lawyer.offersCall == true
-                              ? lawyer.callPrice?.toString() ?? ''
-                              : '',
-                        ),
-                        infoRow(
-                          lawyer.offersOffice == true ? 'جلسة بالمكتب' : '',
-                          lawyer.offersOffice == true
-                              ? lawyer.officePrice?.toString() ?? ''
-                              : '',
-                        ),
-                      ],
-                    ),
-                    sectionCard(
-                      title: "نوع الاشتراك",
-                      icon: Icons.edit,
-                      onPressed: () {},
-                      children: [
-                        infoRow(
-                          "النوع",
-                          lawyer.subscriptionType ?? 'غير متوفر',
-                        ),
-                        infoRow(
-                          "بداية",
-                          lawyer.subscriptionStart?.toLocal().toString().split(
-                                ' ',
-                              )[0] ??
-                              'غير متوفر',
-                        ),
-                        infoRow(
-                          "نهاية",
-                          lawyer.subscriptionEnd?.toLocal().toString().split(
-                                ' ',
-                              )[0] ??
-                              'غير متوفر',
-                        ),
-                      ],
-                    ),
-                    sectionCard(
-                      title: 'المواعيد المتاحه',
-                      children: [WeeklyCalendarWidget(lawyerId: lawyer.uid!)],
-                    ),
+                      SizedBox(height: 8),
+                      Text(
+                        lawyer.fullName ?? '',
+                        style: AppText.title.copyWith(color: AppColor.dark),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
 
+                  sectionCard(
+                    title: "البيانات الشخصية",
+                    icon: Icons.edit,
+                    onPressed: () {
+                      showEditProfileDialog(context, lawyer);
+                    },
+                    children: [
+                      infoRow(
+                        "رقم الهاتف",
+                        lawyer.phone.isNotEmpty ? lawyer.phone : 'غير متوفر',
+                      ),
+                      infoRow(
+                        "البريد الإلكتروني",
+                        lawyer.email.isNotEmpty ? lawyer.email : 'غير متوفر',
+                      ),
+                      infoRow(" المحافظه", lawyer.governorate ?? 'غير متوفر'),
+                    ],
+                  ),
+
+                  if (lawyer.specialty != null && lawyer.specialty!.isNotEmpty)
                     sectionCard(
-                      title: 'معلومات اضافيه',
+                      title: "التخصص",
+                      icon: Icons.edit,
+                      onPressed: () => _showSpecialtyDialog(context, lawyer),
                       children: [
-                        TextButton(
-                          onPressed: () {},
-                          child: Text('تغيير كلمة المرور'),
-                        ),
-                        TextButton(
-                          onPressed: () {},
-                          child: Text('  حذف الحساب'),
+                        BlocSelector<
+                          LawyerInfoCubit,
+                          LawyerInfoState,
+                          List<String>
+                        >(
+                          selector: (state) {
+                            return state is LawyerLoaded
+                                ? state.lawyer.specialty ?? []
+                                : [];
+                          },
+                          builder: (context, specialties) {
+                            return Wrap(
+                              spacing: 10,
+                              children: specialties
+                                  .map((e) => chip(e))
+                                  .toList(),
+                            );
+                          },
                         ),
                       ],
                     ),
-                  ],
-                ),
-              );
-            } else if (state is LawyerError) {
-              return Center(child: Text(state.message));
-            }
-            return const SizedBox();
-          },
-        ),
+                  sectionCard(
+                    title: " نبذة عني",
+                    icon: Icons.edit,
+                    onPressed: () => _showBioDialog(context, lawyer),
+                    children: [
+                      Text(
+                        lawyer.bio ?? 'لا توجد معلومات متاحة',
+                        style: const TextStyle(color: AppColor.dark),
+                      ),
+                    ],
+                  ),
+                  sectionCard(
+                    title: "طرق التواصل",
+                    icon: Icons.edit,
+                    onPressed: () => _showCommunicationDialog(context, lawyer),
+                    children: [
+                      infoRow(
+                        lawyer.offersCall == true ? 'مكالمه فيديو/صوت' : '',
+                        lawyer.offersCall == true
+                            ? lawyer.callPrice?.toString() ?? ''
+                            : '',
+                      ),
+                      infoRow(
+                        lawyer.offersOffice == true ? 'جلسة بالمكتب' : '',
+                        lawyer.offersOffice == true
+                            ? lawyer.officePrice?.toString() ?? ''
+                            : '',
+                      ),
+                    ],
+                  ),
+                  sectionCard(
+                    title: "نوع الاشتراك",
+                    icon: Icons.edit,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SubscriptionScreen(),
+                        ),
+                      );
+                    },
+                    children: [
+                      infoRow("النوع", lawyer.subscriptionType ?? 'غير متوفر'),
+                      infoRow(
+                        "بداية",
+                        lawyer.subscriptionStart?.toLocal().toString().split(
+                              ' ',
+                            )[0] ??
+                            'غير متوفر',
+                      ),
+                      infoRow(
+                        "نهاية",
+                        lawyer.subscriptionEnd?.toLocal().toString().split(
+                              ' ',
+                            )[0] ??
+                            'غير متوفر',
+                      ),
+                    ],
+                  ),
+                  sectionCard(
+                    title: 'المواعيد المتاحه',
+                    children: [WeeklyCalendarWidget(lawyerId: lawyer.uid)],
+                  ),
+
+                  sectionCard(
+                    title: 'معلومات اضافيه',
+                    children: [
+                      TextButton(
+                        onPressed: () =>
+                            _showDeleteAccountDialog(context, lawyer.uid),
+                        child: Text(
+                          '  حذف الحساب',
+                          style: AppText.bodyMedium.copyWith(
+                            color: AppColor.dark,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          } else if (state is LawyerError) {
+            return Center(child: Text(state.message));
+          }
+          return const SizedBox();
+        },
       ),
     );
-  }
-
-  String _getStatusArabic(String status) {
-    switch (status) {
-      case 'pending':
-        return "قيد الانتظار";
-      case 'approved':
-        return "مقبول";
-      case 'rejected':
-        return "مرفوض";
-      default:
-        return "غير معروف";
-    }
   }
 
   Widget sectionCard({
@@ -255,14 +242,11 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: AppText.title.copyWith(color: AppColor.dark),
                 ),
                 if (icon != null)
                   IconButton(
-                    icon: Icon(icon, color: Colors.grey),
+                    icon: Icon(icon, color: AppColor.darkgrey),
                     onPressed: onPressed,
                   ),
               ],
@@ -281,12 +265,15 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
       child: Row(
         children: [
           Expanded(
-            child: Text(label, style: TextStyle(color: Colors.grey[700])),
+            child: Text(
+              label,
+              style: AppText.bodyMedium.copyWith(color: AppColor.primary),
+            ),
           ),
           Expanded(
             child: Text(
               value,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: AppText.bodySmall.copyWith(color: AppColor.dark),
             ),
           ),
         ],
@@ -295,7 +282,10 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
   }
 
   Widget chip(String label) {
-    return Chip(label: Text(label), backgroundColor: Colors.red[100]);
+    return Chip(
+      label: Text(label, style: TextStyle(color: AppColor.light)),
+      backgroundColor: AppColor.primary,
+    );
   }
 
   void showEditProfileDialog(BuildContext context, LawyerModel userData) {
@@ -314,36 +304,33 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('تعديل البيانات الشخصية'),
+          title: Text(
+            'تعديل البيانات الشخصية',
+            style: AppText.headingMedium.copyWith(color: AppColor.dark),
+          ),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextFormField(
                   controller: phoneController,
-                  decoration: const InputDecoration(labelText: 'رقم الهاتف'),
+                  decoration: InputDecoration(
+                    labelText: 'رقم الهاتف',
+                    labelStyle: AppText.title.copyWith(color: AppColor.dark),
+                  ),
+                  style: AppText.bodyLarge.copyWith(color: AppColor.dark),
                   keyboardType: TextInputType.phone,
                 ),
                 TextFormField(
                   controller: emailController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'البريد الالكتروني',
+                    labelStyle: AppText.title.copyWith(color: AppColor.dark),
                   ),
+                  style: AppText.bodyLarge.copyWith(color: AppColor.dark),
                   keyboardType: TextInputType.emailAddress,
                 ),
-                DropdownButtonFormField<String>(
-                  value: selectedGender.isNotEmpty ? selectedGender : null,
-                  items: genderOptions.map((String gender) {
-                    return DropdownMenuItem<String>(
-                      value: gender,
-                      child: Text(gender),
-                    );
-                  }).toList(),
-                  decoration: const InputDecoration(labelText: 'النوع'),
-                  onChanged: (String? newValue) {
-                    if (newValue != null) selectedGender = newValue;
-                  },
-                ),
+
                 DropdownButtonFormField<String>(
                   value: selectedGovernorate.isNotEmpty
                       ? selectedGovernorate
@@ -351,10 +338,16 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
                   items: egyptGovernorates.map((String gov) {
                     return DropdownMenuItem<String>(
                       value: gov,
-                      child: Text(gov),
+                      child: Text(
+                        gov,
+                        style: AppText.bodyLarge.copyWith(color: AppColor.dark),
+                      ),
                     );
                   }).toList(),
-                  decoration: const InputDecoration(labelText: 'المحافظة'),
+                  decoration: InputDecoration(
+                    labelText: 'المحافظة',
+                    labelStyle: AppText.title.copyWith(color: AppColor.dark),
+                  ),
                   onChanged: (String? newValue) {
                     if (newValue != null) selectedGovernorate = newValue;
                   },
@@ -365,24 +358,280 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('إلغاء'),
+              child: Text(
+                'إلغاء',
+                style: AppText.bodyMedium.copyWith(color: AppColor.primary),
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
                 final updatedData = {
                   'phone': phoneController.text,
                   'email': emailController.text,
-                  'gender': selectedGender,
                   'governorate': selectedGovernorate,
                 };
 
-                context.read<LawyerCubit>().editLawyerData(
+                context.read<LawyerInfoCubit>().editLawyerData(
                   userData.uid,
                   updatedData,
                 );
                 Navigator.pop(context);
               },
-              child: const Text('حفظ'),
+              child: Text(
+                'حفظ',
+                style: AppText.bodyMedium.copyWith(color: AppColor.green),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showSpecialtyDialog(BuildContext context, LawyerModel lawyer) {
+    List<String> selectedSpecialties = List.from(lawyer.specialty ?? []);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('اختر التخصصات'),
+              content: SingleChildScrollView(
+                child: Column(
+                  children: lawyerSpecializations.map((specialty) {
+                    return CheckboxListTile(
+                      activeColor: AppColor.green,
+                      checkColor: AppColor.light,
+                      title: Text(specialty),
+                      value: selectedSpecialties.contains(specialty),
+                      onChanged: (bool? value) {
+                        setState(() {
+                          if (value == true) {
+                            selectedSpecialties.add(specialty);
+                          } else {
+                            selectedSpecialties.remove(specialty);
+                          }
+                        });
+                      },
+                    );
+                  }).toList(),
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    'إلغاء',
+                    style: AppText.bodyMedium.copyWith(color: AppColor.primary),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    context.read<LawyerInfoCubit>().editLawyerData(lawyer.uid, {
+                      'specialty': selectedSpecialties,
+                    });
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'حفظ',
+                    style: AppText.bodyMedium.copyWith(color: AppColor.green),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showBioDialog(BuildContext context, LawyerModel lawyer) {
+    TextEditingController bioController = TextEditingController(
+      text: lawyer.bio ?? '',
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'تعديل السيرة الذاتية',
+            style: AppText.headingMedium.copyWith(color: AppColor.dark),
+          ),
+          content: TextField(
+            controller: bioController,
+            maxLines: 5,
+            decoration: InputDecoration(
+              hintText: 'اكتب نبذة عنك هنا...',
+              hintStyle: AppText.title.copyWith(color: AppColor.dark),
+              border: OutlineInputBorder(),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(
+                'إلغاء',
+                style: AppText.bodyMedium.copyWith(color: AppColor.primary),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                context.read<LawyerInfoCubit>().editLawyerData(lawyer.uid, {
+                  'bio': bioController.text.trim(),
+                });
+                Navigator.pop(context);
+              },
+              child: Text(
+                'حفظ',
+                style: AppText.bodyMedium.copyWith(color: AppColor.green),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showCommunicationDialog(BuildContext context, LawyerModel lawyer) {
+    bool offersCall = lawyer.offersCall ?? false;
+    bool offersOffice = lawyer.offersOffice ?? false;
+    TextEditingController callPriceController = TextEditingController(
+      text: lawyer.callPrice?.toString() ?? '',
+    );
+    TextEditingController officePriceController = TextEditingController(
+      text: lawyer.officePrice?.toString() ?? '',
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('تعديل طرق التواصل'),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CheckboxListTile(
+                      title: const Text('مكالمة فيديو/صوت'),
+                      value: offersCall,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          offersCall = value ?? false;
+                        });
+                      },
+                    ),
+                    if (offersCall)
+                      TextField(
+                        controller: callPriceController,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                          labelText: 'سعر المكالمة',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    const SizedBox(height: 12),
+                    CheckboxListTile(
+                      title: const Text('جلسة بالمكتب'),
+                      value: offersOffice,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          offersOffice = value ?? false;
+                        });
+                      },
+                    ),
+                    if (offersOffice)
+                      TextField(
+                        controller: officePriceController,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                          labelText: 'سعر الجلسة بالمكتب',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('إلغاء'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    context.read<LawyerInfoCubit>().editLawyerData(lawyer.uid, {
+                      'offersCall': offersCall,
+                      'callPrice': offersCall
+                          ? double.tryParse(callPriceController.text.trim()) ??
+                                0
+                          : null,
+                      'offersOffice': offersOffice,
+                      'officePrice': offersOffice
+                          ? double.tryParse(
+                                  officePriceController.text.trim(),
+                                ) ??
+                                0
+                          : null,
+                    });
+                    Navigator.pop(context);
+                  },
+                  child: const Text('حفظ'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showDeleteAccountDialog(BuildContext context, String lawyerId) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('تأكيد الحذف'),
+          content: const Text('هل أنت متأكد أنك تريد حذف حسابك نهائيًا؟'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text(
+                'إلغاء',
+                style: TextStyle(color: AppColor.dark),
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColor.primary,
+              ),
+              onPressed: () async {
+                try {
+                  await FirebaseFirestore.instance
+                      .collection('lawyers')
+                      .doc(lawyerId)
+                      .delete();
+                  AppCache.setLoggedIn(false);
+                  AppCache.setIsLawyer(false);
+
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ChooseRoleScreen()),
+                    (route) => false,
+                  );
+                } catch (e) {
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('فشل حذف الحساب، حاول مرة أخرى.'),
+                    ),
+                  );
+                }
+              },
+              child: const Text('حذف', style: TextStyle(color: AppColor.light)),
             ),
           ],
         );
