@@ -4,10 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:qanony/data/repos/gemini_repo.dart';
 import 'package:qanony/firebase_options.dart';
-import 'package:qanony/presentation/screens/splash_screen.dart';
-import 'package:qanony/presentation/screens/subscription_screen.dart';
+import 'package:qanony/presentation/pages/ai_chat_screen.dart';
 import 'package:qanony/services/cubits/auth_cubit/auth_cubit.dart';
+import 'package:qanony/services/cubits/gemini/gemini_cubit.dart';
 import 'package:qanony/services/cubits/role/role_cubit.dart';
 import 'package:qanony/services/cubits/splash/splash_cubit.dart';
 
@@ -19,11 +20,7 @@ void main() async {
   await AppCache.init();
 
   final key = dotenv.env['STRIPE_PUBLISHABLE_KEY']!;
-  try {
-    Stripe.publishableKey = key;
-  } catch (e) {
-    print("Stripe error: $e");
-  }
+  Stripe.publishableKey = key;
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const QanonyApp());
@@ -39,6 +36,7 @@ class QanonyApp extends StatelessWidget {
         BlocProvider(create: (context) => SplashCubit()),
         BlocProvider(create: (_) => RoleCubit()..loadSavedRole()),
         BlocProvider(create: (context) => AuthCubit()),
+        BlocProvider(create: (_) => GeminiCubit(GeminiRepository())),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -60,7 +58,7 @@ class QanonyApp extends StatelessWidget {
           );
         },
 
-        home: SplashScreen(),
+        home: AiChatScreen(),
       ),
     );
   }
