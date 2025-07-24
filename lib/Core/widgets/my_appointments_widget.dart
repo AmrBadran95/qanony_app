@@ -7,7 +7,8 @@ class MyAppointmentCardWidget extends StatelessWidget {
   final String name;
   final String specialty;
   final String description;
-  final String price;
+  final String communication;
+  final String date;
   final VoidCallback? onDelete;
   final VoidCallback? onEdit;
 
@@ -16,7 +17,8 @@ class MyAppointmentCardWidget extends StatelessWidget {
     required this.name,
     required this.specialty,
     required this.description,
-    required this.price,
+    required this.date,
+    required this.communication,
     this.onDelete,
     this.onEdit,
   });
@@ -38,7 +40,10 @@ class MyAppointmentCardWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(name, style: AppText.bodyMedium),
+                  Text(
+                    name,
+                    style: AppText.bodyMedium.copyWith(color: AppColor.dark),
+                  ),
                   const SizedBox(height: 4),
                   Text(
                     specialty,
@@ -55,6 +60,19 @@ class MyAppointmentCardWidget extends StatelessWidget {
                       color: AppColor.dark,
                     ),
                   ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'طريقه التواصل:$communication',
+                    style: TextStyle(
+                      fontSize: AppText.labelSmall.fontSize,
+                      color: AppColor.dark,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'التاريخ: $date',
+                    style: AppText.labelSmall.copyWith(color: AppColor.dark),
+                  ),
                 ],
               ),
             ),
@@ -64,21 +82,6 @@ class MyAppointmentCardWidget extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "محادثة فيديو",
-                  style: TextStyle(
-                    fontSize: AppText.labelSmall.fontSize,
-                    color: AppColor.dark,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  "المبلغ: $price",
-                  style: TextStyle(
-                    fontSize: AppText.labelLarge.fontSize,
-                    color: AppColor.dark,
-                  ),
-                ),
                 const SizedBox(height: 8),
                 Row(
                   children: [
@@ -88,7 +91,7 @@ class MyAppointmentCardWidget extends StatelessWidget {
                     ),
                     IconButton(
                       onPressed: onDelete,
-                      icon: const Icon(Icons.delete, color: Colors.red),
+                      icon: const Icon(Icons.delete, color: AppColor.primary),
                     ),
                   ],
                 ),
