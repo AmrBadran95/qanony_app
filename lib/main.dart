@@ -6,7 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:qanony/data/repos/gemini_repo.dart';
 import 'package:qanony/firebase_options.dart';
-import 'package:qanony/presentation/pages/ai_chat_screen.dart';
+import 'package:qanony/presentation/screens/splash_screen.dart';
 import 'package:qanony/services/cubits/auth_cubit/auth_cubit.dart';
 import 'package:qanony/services/cubits/gemini/gemini_cubit.dart';
 import 'package:qanony/services/cubits/role/role_cubit.dart';
@@ -58,7 +58,7 @@ class QanonyApp extends StatelessWidget {
           );
         },
 
-        home: AiChatScreen(),
+        home: SplashScreen(),
       ),
     );
   }
