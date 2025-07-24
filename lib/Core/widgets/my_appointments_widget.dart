@@ -40,7 +40,10 @@ class MyAppointmentCardWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(name, style: AppText.bodyMedium),
+                  Text(
+                    name,
+                    style: AppText.bodyMedium.copyWith(color: AppColor.dark),
+                  ),
                   const SizedBox(height: 4),
                   Text(
                     specialty,

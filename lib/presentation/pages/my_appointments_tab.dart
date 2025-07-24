@@ -96,7 +96,7 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
                             child: Text(
                               selectedDate == null
                                   ? 'لم يتم اختيار التاريخ والوقت'
-                                  : 'تاريخ ووقت القضية: ${DateFormat('dd/MM/yyyy - hh:mm a', 'ar').format(selectedDate!)}',
+                                  : '  التاريخ: ${DateFormat('dd/MM/yyyy - hh:mm a', 'ar').format(selectedDate!)}',
                               style: selectedDate == null
                                   ? AppText.bodyMedium.copyWith(
                                       color: AppColor.primary,
@@ -112,7 +112,7 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
                               final pickedDate = await showDatePicker(
                                 context: context,
                                 initialDate: DateTime.now(),
-                                firstDate: DateTime(2020),
+                                firstDate: DateTime.now(),
                                 lastDate: DateTime(2100),
                                 builder: (context, child) {
                                   return Theme(
@@ -135,20 +135,33 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
                                   builder: (context, child) {
                                     return Theme(
                                       data: Theme.of(context).copyWith(
-                                        timePickerTheme:
-                                            const TimePickerThemeData(
-                                              backgroundColor: AppColor.light,
-                                              dialHandColor: AppColor.primary,
-                                              dialTextColor: AppColor.light,
-                                              dialBackgroundColor:
-                                                  AppColor.secondary,
-                                              hourMinuteColor: AppColor.dark,
-                                              hourMinuteTextColor:
-                                                  AppColor.light,
-                                              dayPeriodColor:
-                                                  AppColor.secondary,
-                                              dayPeriodTextColor: AppColor.dark,
-                                            ),
+                                        timePickerTheme: const TimePickerThemeData(
+                                          confirmButtonStyle: ButtonStyle(
+                                            foregroundColor:
+                                                WidgetStatePropertyAll(
+                                                  AppColor.green,
+                                                ),
+                                          ),
+                                          dayPeriodColor: AppColor.secondary,
+                                          backgroundColor:
+                                              AppColor.grey, // خلفية الدايلوج
+                                          hourMinuteTextColor:
+                                              AppColor.light, // لون الأرقام
+                                          dialHandColor: AppColor
+                                              .primary, // لون عقرب الاختيار
+                                          dialBackgroundColor: AppColor
+                                              .secondary, // خلفية الدائرة
+                                          dialTextColor: AppColor
+                                              .light, // لون الأرقام داخل الدائرة
+                                          entryModeIconColor: AppColor
+                                              .dark, // لون أيقونة الكتابة
+                                        ),
+                                        colorScheme: const ColorScheme.dark(
+                                          primary: AppColor
+                                              .primary, // لون الساعة المختارة والزراير
+                                          onSurface: AppColor
+                                              .secondary, // لون النصوص العادية
+                                        ),
                                       ),
                                       child: child!,
                                     );
@@ -253,8 +266,9 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
           stream: cubit.getAppointmentsStream(),
           builder: (context, snapshot) {
             if (snapshot.hasError) return const Center(child: Text('حدث خطأ'));
-            if (!snapshot.hasData)
+            if (!snapshot.hasData) {
               return const Center(child: CircularProgressIndicator());
+            }
 
             final appointments = snapshot.data!.docs;
 

@@ -13,7 +13,7 @@ class LawyerBaseScreen extends StatelessWidget {
   final Widget body;
   final int selectedIndex;
 
-  LawyerBaseScreen({
+  const LawyerBaseScreen({
     super.key,
     required this.body,
     required this.selectedIndex,
