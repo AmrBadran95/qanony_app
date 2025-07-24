@@ -17,3 +17,9 @@ class LawyerError extends LawyerState {
 
   LawyerError(this.message);
 }
+
+class LawyersMapedLoaded extends LawyerState {
+  final List<LawyerModel> lawyers;
+
+  LawyersMapedLoaded(this.lawyers);
+}
