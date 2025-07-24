@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
-import 'package:qanony/presentation/pages/lawyer_base_screen.dart';
+import 'package:qanony/presentation/pages/user_base_screen.dart';
 
 class UserHomeScreen extends StatelessWidget {
   const UserHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return LawyerBaseScreen(
+    return UserBaseScreen(
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

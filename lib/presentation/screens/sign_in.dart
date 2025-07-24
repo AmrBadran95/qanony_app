@@ -1,18 +1,20 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qanony/Core/styles/color.dart';
-import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/Core/styles/padding.dart';
+import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/Core/widgets/custom_button.dart';
 import 'package:qanony/Core/widgets/custom_text_form_field.dart';
-import 'package:qanony/presentation/screens/Alaa.dart';
+import 'package:qanony/presentation/pages/lawyer_base_screen.dart';
+import 'package:qanony/presentation/screens/lawyer_account.dart';
 import 'package:qanony/presentation/screens/lawyer_information.dart';
-import 'package:qanony/presentation/screens/user_home_screen.dart';
 import 'package:qanony/presentation/screens/sign_up.dart';
+import 'package:qanony/presentation/screens/user_home_screen.dart';
 import 'package:qanony/presentation/screens/waiting_page.dart';
 import 'package:qanony/presentation/screens/waiting_page_failed.dart';
 import 'package:qanony/services/cubits/auth_cubit/auth_cubit.dart';
+
 import '../../services/controllers/signin_form_controller.dart';
 import '../../services/validators/signin_signup_validators.dart';
 
@@ -47,7 +49,10 @@ class SignInScreen extends StatelessWidget {
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => const Alaa(),
+                      builder: (_) => LawyerBaseScreen(
+                        body: AccountLawyerScreen(),
+                        selectedIndex: 0,
+                      ),
                     ), // LawyerHomeScreen
                     (route) => false,
                   );
