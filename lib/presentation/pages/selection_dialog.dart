@@ -59,7 +59,7 @@ class SelectionDialog extends StatelessWidget {
             Expanded(
               child: Text(
                 value ?? label,
-                style: AppText.bodySmall,
+                style: AppText.bodySmall.copyWith(color: AppColor.dark,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
               ),
