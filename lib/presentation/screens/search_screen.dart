@@ -1,83 +1,140 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:qanony/Core/styles/color.dart';
-// import 'package:qanony/core/styles/padding.dart';
-// import 'package:qanony/presentation/pages/SearchAndFilters.dart';
-// import 'package:qanony/presentation/pages/user-base-screen.dart';
-// import 'package:qanony/services/cubits/Search/cubit/search_cubit.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:qanony/Core/styles/color.dart';
+import 'package:qanony/core/styles/padding.dart';
+import 'package:qanony/core/styles/text.dart';
+import 'package:qanony/services/cubits/Search/cubit/search_cubit.dart';
 
-// class SearchScreen extends StatelessWidget {
-//   const SearchScreen({super.key});
+import '../pages/search_and_filter.dart';
+import '../pages/user_base_screen.dart';
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocProvider(
-//       create: (_) => SearchCubit(),
-//       child: UserBaseScreen(
-//         body: Column(
-//           children: const [
-//             Padding(
-//               padding: EdgeInsets.all(AppPadding.small),
-//               child: SearchAndFilters(),
-//             ),
-//             Expanded(child: LawyersList()),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+class SearchScreen extends StatelessWidget {
+  const SearchScreen({super.key});
 
-// class LawyersList extends StatelessWidget {
-//   const LawyersList({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => SearchCubit(),
+      child: UserBaseScreen(
+        SearchColor: AppColor.secondary,
+        body: Column(
+          children: const [
+            Padding(
+              padding: EdgeInsets.all(AppPadding.small),
+              child: SearchAndFilters(),
+            ),
+            Expanded(child: LawyersList()),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<SearchCubit, SearchState>(
-//       builder: (context, state) {
-//         if (state is SearchLoading) {
-//           return Padding(
-//             padding: const EdgeInsets.symmetric(horizontal: AppPadding.small),
-//             child: ClipRRect(
-//               borderRadius: BorderRadius.circular(8),
-//               child: ListView.separated(
-//                 separatorBuilder: (context, index) =>
-//                     const SizedBox(height: 10),
-//                 itemCount: state.lawyers.length,
-//                 itemBuilder: (context, index) {
-//                   final lawyer = state.lawyers[index];
-//                   return ListTile(
-//                     contentPadding: EdgeInsets.all(AppPadding.small),
-//                     tileColor: AppColor.light,
-//                     leading: CircleAvatar(
-//                       backgroundColor: AppColor.grey,
-//                       backgroundImage: AssetImage('assets/images/lawyer 1.png'),
+class LawyersList extends StatelessWidget {
+  const LawyersList({super.key});
 
-//                       radius: 30,
-//                     ),
-//                     title: Text(lawyer.name),
-//                     subtitle: RichText(
-//                       text: TextSpan(
-//                         style: TextStyle(color: AppColor.dark, fontSize: 14),
-//                         children: [
-//                           TextSpan(
-//                             text: ' ${lawyer.specialization.join(" - ")}',
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                     trailing: Text(' ${lawyer.YearsOfExperience} سنوات خبرة'),
-//                   );
-//                 },
-//               ),
-//             ),
-//           );
-//         } else if (state is SearchInitial) {
-//           return const Center(child: CircularProgressIndicator());
-//         } else {
-//           return const Center(child: Text("لا يوجد بيانات."));
-//         }
-//       },
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SearchCubit, SearchState>(
+      builder: (context, state) {
+        if (state is SearchLoading) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppPadding.small),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: ListView.separated(
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 10),
+                itemCount: state.lawyers.length,
+                itemBuilder: (context, index) {
+                  final lawyer = state.lawyers[index];
+                  return Padding(
+                    padding: AppPadding.paddingSmall,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppColor.light,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: AppColor.grey.withOpacity(0.4), width: 1),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 6,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+
+                      child: ListTile(
+                        contentPadding: EdgeInsets.all(AppPadding.small),
+                        tileColor: AppColor.light,
+                        leading: CircleAvatar(
+                          backgroundColor: AppColor.grey,
+                          backgroundImage: NetworkImage(lawyer.profilePictureUrl!),
+
+                          radius: 30,
+                        ),
+                        title: Text(lawyer.fullName.toString(),style: AppText.bodyMedium.copyWith(color: AppColor.dark,fontWeight: FontWeight.w600),),
+                        subtitle:Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("النوع: ${lawyer.gender}",style: AppText.bodySmall.copyWith(color: AppColor.dark),),
+                            SizedBox(width: 5,),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: "التواصل عبر: ",
+                                    style: AppText.bodySmall.copyWith(color: AppColor.dark)                            ),
+                                  TextSpan(
+                                    text:
+                                    lawyer.offersCall == true && lawyer.offersOffice == true
+                                        ? "مكالمة صوتية/فيديو أو عبر المكتب"
+                                        : lawyer.offersCall == true
+                                        ? "مكالمة صوتية/فيديو"
+                                        : lawyer.offersOffice == true
+                                        ? "عبر المكتب"
+                                        : "لا توجد وسيلة تواصل محددة",
+                                      style: AppText.labelSmall.copyWith(color: AppColor.primary,fontWeight: FontWeight.w500)
+                            ),
+                                ],
+                              ),
+                            ),
+                            RatingBarIndicator(
+                              rating: 2.5,
+                              itemBuilder: (context, index) => Icon(
+                                Icons.star,
+                                color: AppColor.secondary,
+                              ),
+                              itemCount: 5,
+                              itemSize: 15.0,
+                              direction: Axis.horizontal,
+                            ),
+
+
+
+                          ],
+                        ),
+                        trailing: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Text('السعر : ${lawyer.officePrice}',style: AppText.labelSmall.copyWith(color: AppColor.dark),),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          );
+        } else if (state is SearchInitial) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is SearchError) {
+          return Center(child: Text(state.message));
+        } else {
+          return const Center(child: Text("لا يوجد بيانات."));
+        }
+      },
+    );
+  }
+}

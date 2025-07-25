@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qanony/Core/styles/color.dart';
+import 'package:qanony/core/styles/text.dart';
 
 class SelectionDialog extends StatelessWidget {
   final String label;
@@ -46,8 +47,8 @@ class SelectionDialog extends StatelessWidget {
     return GestureDetector(
       onTap: () => _showSelectionDialog(context),
       child: Container(
-        width: 130,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+        width: 120,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
           border: Border.all(color: AppColor.grey),
           color: AppColor.light,
@@ -58,10 +59,12 @@ class SelectionDialog extends StatelessWidget {
             Expanded(
               child: Text(
                 value ?? label,
-                style: TextStyle(fontSize: 12, color: AppColor.dark),
+                style: AppText.bodySmall,
                 overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
               ),
             ),
+
           ],
         ),
       ),
