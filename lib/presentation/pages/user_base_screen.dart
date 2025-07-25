@@ -7,6 +7,7 @@ import 'package:qanony/presentation/screens/notification-screen.dart';
 import 'package:qanony/services/cubits/notification/cubit/notification_cubit.dart';
 
 import '../../services/auth/auth_service.dart';
+import '../screens/search_screen.dart';
 import '../screens/sign_in.dart';
 import '../screens/user_home_screen.dart';
 
@@ -126,7 +127,9 @@ class UserBaseScreen extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SearchScreen()));
+                    },
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
