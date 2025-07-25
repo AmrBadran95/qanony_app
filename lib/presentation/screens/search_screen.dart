@@ -116,10 +116,34 @@ class LawyersList extends StatelessWidget {
 
                           ],
                         ),
-                        trailing: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Text('السعر : ${lawyer.officePrice}',style: AppText.labelSmall.copyWith(color: AppColor.dark),),
+                        trailing:
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "السعر: ",
+                                style: AppText.bodySmall.copyWith(color: AppColor.dark),
+                              ),
+                              TextSpan(
+                                text: (lawyer.callPrice != null && lawyer.officePrice != null)
+                                    ? "مكالمة: ${lawyer.callPrice} جنيه\nمكتب: ${lawyer.officePrice} جنيه"
+                                    : (lawyer.callPrice != null)
+                                    ? "مكالمة: ${lawyer.callPrice} جنيه"
+                                    : (lawyer.officePrice != null)
+                                    ? "مكتب: ${lawyer.officePrice} جنيه"
+                                    : "لا توجد وسيلة تواصل محددة",
+                                style: AppText.labelSmall.copyWith(
+                                  color: AppColor.primary,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
+
+
+
+
                       ),
                     ),
                   );
