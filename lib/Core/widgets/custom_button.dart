@@ -3,7 +3,7 @@ import 'package:qanony/Core/styles/color.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final double width;
   final double height;
   final Color backgroundColor;
@@ -31,36 +31,36 @@ class CustomButton extends StatelessWidget {
         width: width,
         height: height,
         decoration: BoxDecoration(
-          color: backgroundColor,
+          color: onTap == null
+              ? backgroundColor.withAlpha(150)
+              : backgroundColor,
           borderRadius: BorderRadius.circular(8),
         ),
         alignment: Alignment.center,
-        // child: Text(text, textAlign: TextAlign.center, style: textStyle),
         child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (icon != null) ...[
-            Icon(
-              icon,
-              color: AppColor.dark,
-              size: MediaQuery.of(context).size.width * 0.07,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (icon != null) ...[
+              Icon(
+                icon,
+                color: AppColor.dark,
+                size: MediaQuery.of(context).size.width * 0.07,
+              ),
+              SizedBox(width: MediaQuery.of(context).size.width * 0.02),
+            ],
+            Flexible(
+              child: Text(
+                text,
+                textAlign: TextAlign.center,
+                style: textStyle.copyWith(color: textColor),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                softWrap: false,
+              ),
             ),
-            SizedBox(width: MediaQuery.of(context).size.width * 0.02),
           ],
-          Flexible(
-            child: Text(
-              text,
-              textAlign: TextAlign.center,
-              style: textStyle.copyWith(color: textColor),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              softWrap: false,
-            ),
-          ),
-        ],
+        ),
       ),
-
-    ),
     );
   }
 }

@@ -168,7 +168,13 @@ class UserHomeScreen extends StatelessWidget {
 
                           return GestureDetector(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>LawyerScreen(lawyer.uid)));
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      LawyerScreen(lawyer.uid),
+                                ),
+                              );
                             },
                             child: Container(
                               width: 130,
@@ -181,7 +187,9 @@ class UserHomeScreen extends StatelessWidget {
                                     radius: 50,
                                     backgroundImage:
                                         lawyer.profilePictureUrl != null
-                                        ? NetworkImage(lawyer.profilePictureUrl!)
+                                        ? NetworkImage(
+                                            lawyer.profilePictureUrl!,
+                                          )
                                         : null,
                                     child: lawyer.profilePictureUrl == null
                                         ? Icon(Icons.person)
@@ -232,7 +240,7 @@ class UserHomeScreen extends StatelessWidget {
                 padding: AppPadding.paddingMedium,
                 child: Text(
                   'الأسئلة الشائعة',
-                  style: AppText.bodyLarge.copyWith(
+                  style: AppText.title.copyWith(
                     color: AppColor.dark,
                     fontWeight: FontWeight.bold,
                   ),
@@ -245,9 +253,13 @@ class UserHomeScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final question = questionList[index];
                     return ExpansionTile(
+                      collapsedIconColor: AppColor.dark,
+                      iconColor: AppColor.primary,
                       title: Text(
                         question['question'] ?? '',
-                        style: AppText.bodySmall.copyWith(color: AppColor.dark),
+                        style: AppText.bodyMedium.copyWith(
+                          color: AppColor.dark,
+                        ),
                       ),
                       children: [
                         Container(
@@ -256,7 +268,7 @@ class UserHomeScreen extends StatelessWidget {
                           color: AppColor.grey,
                           child: Text(
                             question['answer'] ?? '',
-                            style: AppText.bodySmall.copyWith(
+                            style: AppText.bodyMedium.copyWith(
                               color: AppColor.dark,
                             ),
                           ),

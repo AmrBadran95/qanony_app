@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:qanony/services/showAppointmentBottomSheet/showBookingFormSheet.dart';
+import 'package:qanony/services/show_appointment_bottom_sheet/show_booking_form_sheet.dart';
 
 import '../../Core/styles/color.dart';
 import '../../Core/styles/text.dart';
@@ -11,7 +10,7 @@ void showAppointmentBottomSheet({
   required List<DateTime> appointments,
   required String bookingType,
   required String price,
-
+  required String lawyerId,
 }) {
   final sortedAppointments = [...appointments]..sort((a, b) => a.compareTo(b));
   Map<String, List<DateTime>> groupedAppointments = {};
@@ -49,6 +48,8 @@ void showAppointmentBottomSheet({
               ...groupedAppointments.entries.map((entry) {
                 final dayName = DateFormat.EEEE('ar').format(entry.value.first);
                 return ExpansionTile(
+                  collapsedIconColor: AppColor.dark,
+                  iconColor: AppColor.primary,
                   title: Text(
                     '$dayName - ${entry.key}',
                     style: AppText.bodyMedium.copyWith(
@@ -63,9 +64,11 @@ void showAppointmentBottomSheet({
                         "الساعة: $time",
                         style: AppText.bodySmall.copyWith(color: AppColor.dark),
                       ),
-                      leading: Icon(Icons.access_time_outlined, color: AppColor.secondary),
+                      leading: Icon(
+                        Icons.access_time_outlined,
+                        color: AppColor.secondary,
+                      ),
                       onTap: () {
-                        // Navigator.pop(context);
                         showBookingForm(
                           context: context,
                           bookingType: bookingType,
@@ -73,14 +76,13 @@ void showAppointmentBottomSheet({
                           day: dayName,
                           date: " ${entry.key}",
                           time: time,
-
+                          lawyerId: lawyerId,
                         );
                       },
-
                     );
                   }).toList(),
                 );
-              }).toList()
+              }),
             ],
           ),
         ),

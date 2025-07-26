@@ -7,6 +7,7 @@ class CustomTextFormField extends StatelessWidget {
   final String label;
   final TextStyle labelStyle;
   final TextStyle textStyle;
+  final TextStyle? floatingLabelStyle;
   final EdgeInsetsGeometry contentPadding;
   final double width;
   final double? height;
@@ -27,6 +28,7 @@ class CustomTextFormField extends StatelessWidget {
     required this.labelStyle,
     required this.contentPadding,
     required this.width,
+    this.floatingLabelStyle,
     this.height,
     required this.backgroundColor,
     this.maxLines = 1,
@@ -55,6 +57,7 @@ class CustomTextFormField extends StatelessWidget {
         decoration: InputDecoration(
           labelText: label,
           labelStyle: labelStyle,
+          floatingLabelStyle: labelStyle,
           filled: true,
           fillColor: backgroundColor,
           border: OutlineInputBorder(
