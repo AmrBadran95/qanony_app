@@ -9,6 +9,7 @@ import 'package:qanony/presentation/pages/ai_chat_screen.dart';
 import '../../data/static/Advertisements.dart';
 import '../../services/cubits/Lawyer/lawyer_cubit.dart';
 import '../pages/user_base_screen.dart';
+import 'lawyer_card.dart';
 
 class UserHomeScreen extends StatelessWidget {
   const UserHomeScreen({super.key});
@@ -165,53 +166,58 @@ class UserHomeScreen extends StatelessWidget {
                           final lawyer = state.lawyers[index];
                           int rating = (index % 5) + 1;
 
-                          return Container(
-                            width: 130,
-                            padding: AppPadding.paddingSmall,
-                            decoration: BoxDecoration(color: AppColor.light),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                CircleAvatar(
-                                  radius: 50,
-                                  backgroundImage:
-                                      lawyer.profilePictureUrl != null
-                                      ? NetworkImage(lawyer.profilePictureUrl!)
-                                      : null,
-                                  child: lawyer.profilePictureUrl == null
-                                      ? Icon(Icons.person)
-                                      : null,
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  lawyer.fullName ?? "غير معروف",
-                                  style: AppText.bodySmall.copyWith(
-                                    color: AppColor.dark,
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>LawyerScreen(lawyer.uid)));
+                            },
+                            child: Container(
+                              width: 130,
+                              padding: AppPadding.paddingSmall,
+                              decoration: BoxDecoration(color: AppColor.light),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CircleAvatar(
+                                    radius: 50,
+                                    backgroundImage:
+                                        lawyer.profilePictureUrl != null
+                                        ? NetworkImage(lawyer.profilePictureUrl!)
+                                        : null,
+                                    child: lawyer.profilePictureUrl == null
+                                        ? Icon(Icons.person)
+                                        : null,
                                   ),
-                                  textAlign: TextAlign.center,
-                                ),
-                                Text(
-                                  lawyer.role,
-                                  style: AppText.labelSmall.copyWith(
-                                    color: AppColor.dark,
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    lawyer.fullName ?? "غير معروف",
+                                    style: AppText.bodySmall.copyWith(
+                                      color: AppColor.dark,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                ),
+                                  Text(
+                                    lawyer.role,
+                                    style: AppText.labelSmall.copyWith(
+                                      color: AppColor.dark,
+                                    ),
+                                  ),
 
-                                const SizedBox(height: 4),
+                                  const SizedBox(height: 4),
 
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: List.generate(5, (starIndex) {
-                                    return Icon(
-                                      Icons.star,
-                                      size: 14,
-                                      color: starIndex < rating
-                                          ? AppColor.secondary
-                                          : AppColor.grey,
-                                    );
-                                  }),
-                                ),
-                              ],
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: List.generate(5, (starIndex) {
+                                      return Icon(
+                                        Icons.star,
+                                        size: 14,
+                                        color: starIndex < rating
+                                            ? AppColor.secondary
+                                            : AppColor.grey,
+                                      );
+                                    }),
+                                  ),
+                                ],
+                              ),
                             ),
                           );
                         },

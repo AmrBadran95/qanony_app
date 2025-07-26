@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:qanony/Core/shared/app_cache.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
+import 'package:qanony/presentation/screens/choose_role_screen.dart';
 import 'package:qanony/presentation/screens/notification-screen.dart';
 import 'package:qanony/services/cubits/notification/cubit/notification_cubit.dart';
 
@@ -170,13 +172,56 @@ class UserBaseScreen extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () async {
-                      final authService = AuthService();
-                      await authService.logout();
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => const SignInScreen()),
-                            (route) => false,
-                      );
+                    //>>>اظهر الدايلوج الاولر وبعدين ف الزرار احط الكود داااا
+                    onTap: ()  {
+                      showDialog(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                              title: Text(
+                                'تسجيل الخروج',
+                                style: AppText.title.copyWith(color: AppColor.dark),
+                              ),
+                              content: const Text('هل أنت متأكد أنك تريد تسجيل الخروج؟'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: Text(
+                                    'إلغاء',
+                                    style: AppText.bodyMedium.copyWith(color: AppColor.primary),
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    final authService = AuthService();
+                                    await authService.logout();
+
+                                    AppCache.setLoggedIn(false);
+                                    AppCache.setIsLawyer(false);
+
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(builder: (context) => const ChooseRoleScreen()),
+                                          (route) => false,
+                                    );
+                                  },
+
+                                  child: Text(
+                                    'خروج',
+                                    style: AppText.bodyMedium.copyWith(color: AppColor.green),
+                                  ),
+                                ),
+                              ],
+                          ),
+                          );
+
+
+
+
+
+
+
+
+
+
 
                     },
                     child: Column(
@@ -207,3 +252,4 @@ class UserBaseScreen extends StatelessWidget {
     );
   }
 }
+

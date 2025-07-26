@@ -37,25 +37,30 @@ class CustomButton extends StatelessWidget {
         alignment: Alignment.center,
         // child: Text(text, textAlign: TextAlign.center, style: textStyle),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-
-          children: [
-            if (icon != null) ...[
-              Icon(
-                icon,
-                color: AppColor.dark,
-                size: MediaQuery.of(context).size.width * 0.07,
-              ),
-              SizedBox(width: MediaQuery.of(context).size.width * 0.02),
-            ],
-            Text(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (icon != null) ...[
+            Icon(
+              icon,
+              color: AppColor.dark,
+              size: MediaQuery.of(context).size.width * 0.07,
+            ),
+            SizedBox(width: MediaQuery.of(context).size.width * 0.02),
+          ],
+          Flexible(
+            child: Text(
               text,
               textAlign: TextAlign.center,
               style: textStyle.copyWith(color: textColor),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              softWrap: false,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
+
+    ),
     );
   }
 }
