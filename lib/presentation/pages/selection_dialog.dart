@@ -14,6 +14,7 @@ class SelectionDialog extends StatelessWidget {
     required this.items,
     required this.value,
     required this.onChanged,
+
   });
 
   void _showSelectionDialog(BuildContext context) {

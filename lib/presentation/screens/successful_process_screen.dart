@@ -26,7 +26,8 @@ class SuccessfulProcessScreen extends StatelessWidget {
 
     return BlocProvider(
       create: (_) => LawyerCubit(LawyerRepository())..getLawyer(user.uid),
-      child: Scaffold(
+      child:
+      Scaffold(
         backgroundColor: AppColor.grey,
         appBar: AppBar(
           backgroundColor: AppColor.primary,
