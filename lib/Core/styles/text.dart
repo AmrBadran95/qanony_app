@@ -47,6 +47,4 @@ class AppText {
     fontSize: 12,
     fontWeight: FontWeight.normal,
   );
-
-  static var titleMedium;
 }

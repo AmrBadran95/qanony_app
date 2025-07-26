@@ -78,6 +78,9 @@ class QanonyApp extends StatelessWidget {
             hintStyle: TextStyle(color: AppColor.dark),
             labelStyle: TextStyle(color: AppColor.dark),
           ),
+          progressIndicatorTheme: ProgressIndicatorThemeData(
+            color: AppColor.primary,
+          ),
         ),
         locale: const Locale('ar', 'EG'),
         supportedLocales: const [Locale('ar', 'EG'), Locale('en', 'US')],
