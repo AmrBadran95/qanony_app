@@ -6,7 +6,7 @@ import '../../data/models/payment_model.dart';
 
 class ApiService {
 
-  final String baseUrl = 'https://bcd6606a442d.ngrok-free.app';
+  final String baseUrl = 'https://aff6f48d55b4.ngrok-free.app';
 
   Future<Map<String, dynamic>> createPaymentIntent(int amount, String email) async {
     final url = Uri.parse('$baseUrl/create-payment-intent');

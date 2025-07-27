@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../data/models/order_status_enum.dart';
 import '../../../data/models/payment_model.dart';
 import '../../stripe/api_service.dart';
 import '../../stripe/stripe_service.dart';
@@ -54,4 +55,39 @@ class CheckoutCubit extends Cubit<CheckoutState> {
     }
 
   }
+
+  Future<void> userMakePayment({
+    required String orderId,
+    required int amount,
+    required String email,
+  }) async {
+    emit(CheckoutLoading());
+
+    try {
+      final paymentData = await apiService.createPaymentIntent(amount, email);
+      print('paymentData = $paymentData');
+
+      await stripeService.initPaymentSheet(
+        paymentIntentClientSecret: paymentData['clientSecret'],
+      );
+
+      await stripeService.presentPaymentSheet();
+      // تعديل حاله الطلب فى كولكشن الاوردر
+      await _firestore.collection('orders').doc(orderId).update({
+        'status': "payment_done"
+
+      });
+
+      emit(CheckoutSuccess());
+
+
+
+      emit(CheckoutLoadedWithData(await apiService.getPayments()));
+    } catch (e, stackTrace) {
+      print('Payment error: $e');
+      print(stackTrace);
+      emit(CheckoutFailure(e.toString()));
+    }
+  }
+
 }
