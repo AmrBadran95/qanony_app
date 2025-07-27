@@ -36,8 +36,23 @@ class WeeklyCalendarWidget extends StatelessWidget {
                         Icons.chevron_left,
                         color: AppColor.dark,
                       ),
-                      onPressed: () => cubit.changeWeek(-1),
+                      onPressed: () {
+                        final previousWeekStart = DateTime.now().add(
+                          Duration(days: 7 * (cubit.weekOffset - 1)),
+                        );
+                        final now = DateTime.now();
+                        final todayOnly = DateTime(
+                          now.year,
+                          now.month,
+                          now.day,
+                        );
+
+                        if (previousWeekStart.isBefore(todayOnly)) return;
+
+                        cubit.changeWeek(-1);
+                      },
                     ),
+
                     IconButton(
                       icon: const Icon(
                         Icons.chevron_right,
@@ -63,40 +78,48 @@ class WeeklyCalendarWidget extends StatelessWidget {
                       date,
                       cubit.selectedDate,
                     );
+                    final isPastDate = date.isBefore(
+                      DateTime.now().subtract(const Duration(days: 1)),
+                    );
 
                     return GestureDetector(
-                      onTap: () => cubit.selectDate(context, lawyerId, date),
-                      child: Container(
-                        width: 60,
-                        margin: const EdgeInsets.symmetric(horizontal: 6),
-                        decoration: BoxDecoration(
-                          color: isSelected
-                              ? AppColor.primary
-                              : Colors.transparent,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              DateFormat.EEEE('ar').format(date),
-                              style: TextStyle(
-                                color: isSelected
-                                    ? AppColor.light
-                                    : AppColor.darkgrey,
-                                fontWeight: FontWeight.w500,
+                      onTap: isPastDate
+                          ? null
+                          : () => cubit.selectDate(context, lawyerId, date),
+                      child: Opacity(
+                        opacity: isPastDate ? 0.4 : 1.0,
+                        child: Container(
+                          width: 60,
+                          margin: const EdgeInsets.symmetric(horizontal: 6),
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? AppColor.primary
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                DateFormat.EEEE('ar').format(date),
+                                style: TextStyle(
+                                  color: isSelected
+                                      ? AppColor.light
+                                      : AppColor.darkgrey,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 6),
-                            Text(
-                              '${date.day}',
-                              style: AppText.title.copyWith(
-                                color: isSelected
-                                    ? AppColor.light
-                                    : AppColor.dark,
+                              const SizedBox(height: 6),
+                              Text(
+                                '${date.day}',
+                                style: AppText.title.copyWith(
+                                  color: isSelected
+                                      ? AppColor.light
+                                      : AppColor.dark,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     );

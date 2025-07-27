@@ -17,7 +17,16 @@ class LawyerScheduleCubit extends Cubit<LawyerScheduleState> {
   List<DateTime> getWeekDates() {
     final today = DateTime.now().add(Duration(days: 7 * weekOffset));
     final startOfWeek = today.subtract(Duration(days: today.weekday % 7));
-    return List.generate(7, (i) => startOfWeek.add(Duration(days: i)));
+
+    return List.generate(7, (i) {
+      final date = startOfWeek.add(Duration(days: i));
+      final now = DateTime.now();
+      final todayOnly = DateTime(now.year, now.month, now.day);
+      if (date.isBefore(todayOnly)) {
+        return null;
+      }
+      return date;
+    }).whereType<DateTime>().toList();
   }
 
   bool isSameDate(DateTime a, DateTime b) =>
