@@ -99,7 +99,6 @@ class QanonyApp extends StatelessWidget {
         },
 
         home: SplashScreen(),
-        // home: AppointmentPageForUser(),
       ),
     );
   }

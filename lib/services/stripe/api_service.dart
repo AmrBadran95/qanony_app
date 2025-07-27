@@ -1,38 +1,41 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
+import 'package:dio/dio.dart';
 import '../../data/models/payment_model.dart';
 
 class ApiService {
-
-  final String baseUrl = 'https://aff6f48d55b4.ngrok-free.app';
+  final Dio _dio = Dio();
+  final String baseUrl = 'https://a0aec0e3de7d.ngrok-free.app';
 
   Future<Map<String, dynamic>> createPaymentIntent(int amount, String email) async {
-    final url = Uri.parse('$baseUrl/create-payment-intent');
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'amount': amount, 'email': email}),
-    );
+    try {
+      final response = await _dio.post(
+        '$baseUrl/create-payment-intent',
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+        }),
+        data: {
+          'amount': amount,
+          'email': email,
+        },
+      );
 
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else {
-      throw Exception('Failed to create payment intent');
+      return response.data;
+    } catch (e) {
+      throw Exception('Failed to create payment intent: $e');
     }
   }
 
   Future<List<PaymentData>> getPayments() async {
-    final url = Uri.parse('$baseUrl/payments');
+    try {
+      final response = await _dio.get('$baseUrl/payments');
 
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      return data.map((e) => PaymentData.fromJson(e)).toList();
-    } else {
-      throw Exception('Failed to fetch payments');
+      if (response.statusCode == 200) {
+        final List<dynamic> data = response.data;
+        return data.map((e) => PaymentData.fromJson(e)).toList();
+      } else {
+        throw Exception('Failed to fetch payments');
+      }
+    } catch (e) {
+      throw Exception('Failed to fetch payments: $e');
     }
   }
 }

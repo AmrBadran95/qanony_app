@@ -44,9 +44,9 @@ class CheckoutCubit extends Cubit<CheckoutState> {
         'subscriptionStart': DateTime.now().toIso8601String(),
         'subscriptionEnd': DateTime.now().add(Duration(days: 30)).toIso8601String(),
       });
-      final payments = await apiService.getPayments();
-
-      emit(CheckoutLoadedWithData(payments));
+      // final payments = await apiService.getPayments();
+      //
+      // emit(CheckoutLoadedWithData(payments));
 
     } catch (e, stackTrace) {
       print('Checkout error: $e');
@@ -72,20 +72,21 @@ class CheckoutCubit extends Cubit<CheckoutState> {
       );
 
       await stripeService.presentPaymentSheet();
-      // تعديل حاله الطلب فى كولكشن الاوردر
+      // تعديل حاله الطلب فى كولكشن الاوردر ان شاء الله
       await _firestore.collection('orders').doc(orderId).update({
-        'status': "payment_done"
+        'status': orderStatusToString( OrderStatus.paymentDone),
 
       });
 
       emit(CheckoutSuccess());
 
-
-
-      emit(CheckoutLoadedWithData(await apiService.getPayments()));
     } catch (e, stackTrace) {
       print('Payment error: $e');
       print(stackTrace);
+      await _firestore.collection('orders').doc(orderId).update({
+        'status': orderStatusToString(OrderStatus.paymentRejected),
+
+      });
       emit(CheckoutFailure(e.toString()));
     }
   }
