@@ -184,6 +184,10 @@ class AiChatScreen extends StatelessWidget {
                         borderSide: BorderSide(color: AppColor.dark),
                         borderRadius: BorderRadius.circular(30),
                       ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColor.dark),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
                     ),
                   ),
                 ),
