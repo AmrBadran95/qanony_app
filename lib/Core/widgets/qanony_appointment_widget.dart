@@ -7,7 +7,9 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
   final String name;
   final String specialty;
   final String description;
+  final String communication;
   final String price;
+  final String date;
   final List<Widget>? children;
 
   const QanonyAppointmentCardWidget({
@@ -16,6 +18,8 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
     required this.specialty,
     required this.description,
     required this.price,
+    required this.communication,
+    required this.date,
     this.children,
   });
 
@@ -65,6 +69,14 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
                           color: AppColor.dark,
                         ),
                       ),
+                      SizedBox(height: heightMedium),
+                      Text(
+                        "$date",
+                        style: TextStyle(
+                          fontSize: AppText.labelLarge.fontSize,
+                          color: AppColor.dark,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -73,7 +85,7 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "محادثة فيديو",
+                      "$communication",
                       style: TextStyle(
                         fontSize: AppText.labelSmall.fontSize,
                         color: AppColor.dark,

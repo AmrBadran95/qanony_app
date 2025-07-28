@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/text.dart';
+
 import '../../Core/widgets/qanony_appointment_widget.dart';
 
 class QanonyAppointmentsTab extends StatelessWidget {
@@ -40,6 +41,8 @@ class QanonyAppointmentsTab extends StatelessWidget {
           specialty: item["specialty"]!,
           description: item["description"]!,
           price: item["price"]!,
+          date: item["date"]!,
+          communication: item["communication"]!,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
