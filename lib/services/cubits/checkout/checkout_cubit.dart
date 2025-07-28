@@ -3,7 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../data/models/order_status_enum.dart';
 import '../../../data/models/payment_model.dart';
+import '../../firestore/order_firestore_service.dart';
 import '../../stripe/api_service.dart';
 import '../../stripe/stripe_service.dart';
 
@@ -15,6 +17,8 @@ class CheckoutCubit extends Cubit<CheckoutState> {
   final StripeService stripeService;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final orderService = OrderFirestoreService();
+
 
 
 
@@ -43,9 +47,9 @@ class CheckoutCubit extends Cubit<CheckoutState> {
         'subscriptionStart': DateTime.now().toIso8601String(),
         'subscriptionEnd': DateTime.now().add(Duration(days: 30)).toIso8601String(),
       });
-      final payments = await apiService.getPayments();
-
-      emit(CheckoutLoadedWithData(payments));
+      // final payments = await apiService.getPayments();
+      //
+      // emit(CheckoutLoadedWithData(payments));
 
     } catch (e, stackTrace) {
       print('Checkout error: $e');
@@ -54,4 +58,41 @@ class CheckoutCubit extends Cubit<CheckoutState> {
     }
 
   }
+
+  Future<void> userMakePayment({
+    required String orderId,
+    required int amount,
+    required String email,
+  }) async {
+    emit(CheckoutLoading());
+
+    try {
+      final paymentData = await apiService.createPaymentIntent(amount, email);
+      print('paymentData = $paymentData');
+
+      await stripeService.initPaymentSheet(
+        paymentIntentClientSecret: paymentData['clientSecret'],
+      );
+
+      await stripeService.presentPaymentSheet();
+      // تعديل حاله الطلب فى كولكشن الاوردر ان شاء الله
+
+      await orderService.updateOrder(orderId, {
+        'status': orderStatusToString(OrderStatus.paymentDone),
+      });
+
+
+
+      emit(CheckoutSuccess());
+
+    } catch (e, stackTrace) {
+      print('Payment error: $e');
+      print(stackTrace);
+      await orderService.updateOrder(orderId, {
+        'status': orderStatusToString(OrderStatus.paymentRejected),
+      });
+      emit(CheckoutFailure(e.toString()));
+    }
+  }
+
 }
