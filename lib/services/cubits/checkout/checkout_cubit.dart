@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/order_status_enum.dart';
 import '../../../data/models/payment_model.dart';
+import '../../firestore/order_firestore_service.dart';
 import '../../stripe/api_service.dart';
 import '../../stripe/stripe_service.dart';
 
@@ -16,6 +17,8 @@ class CheckoutCubit extends Cubit<CheckoutState> {
   final StripeService stripeService;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final orderService = OrderFirestoreService();
+
 
 
 
@@ -73,19 +76,20 @@ class CheckoutCubit extends Cubit<CheckoutState> {
 
       await stripeService.presentPaymentSheet();
       // تعديل حاله الطلب فى كولكشن الاوردر ان شاء الله
-      await _firestore.collection('orders').doc(orderId).update({
-        'status': orderStatusToString( OrderStatus.paymentDone),
 
+      await orderService.updateOrder(orderId, {
+        'status': orderStatusToString(OrderStatus.paymentDone),
       });
+
+
 
       emit(CheckoutSuccess());
 
     } catch (e, stackTrace) {
       print('Payment error: $e');
       print(stackTrace);
-      await _firestore.collection('orders').doc(orderId).update({
+      await orderService.updateOrder(orderId, {
         'status': orderStatusToString(OrderStatus.paymentRejected),
-
       });
       emit(CheckoutFailure(e.toString()));
     }

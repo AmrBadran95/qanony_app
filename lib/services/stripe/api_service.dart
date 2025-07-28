@@ -3,7 +3,7 @@ import '../../data/models/payment_model.dart';
 
 class ApiService {
   final Dio _dio = Dio();
-  final String baseUrl = 'https://a0aec0e3de7d.ngrok-free.app';
+  final String baseUrl = 'https://1c796281ddce.ngrok-free.app';
 
   Future<Map<String, dynamic>> createPaymentIntent(int amount, String email) async {
     try {

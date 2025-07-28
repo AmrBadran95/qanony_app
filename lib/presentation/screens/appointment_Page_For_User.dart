@@ -11,6 +11,7 @@ import '../../Core/widgets/custom_button.dart';
 import '../../data/models/order_status_enum.dart';
 import '../../services/cubits/checkout/checkout_cubit.dart';
 import '../../services/firestore/lawyer_firestore_service.dart';
+import '../../services/firestore/order_firestore_service.dart';
 import '../../services/stripe/api_service.dart';
 import '../../services/stripe/stripe_service.dart';
 import '../pages/user_base_screen.dart';
@@ -24,6 +25,7 @@ class AppointmentPageForUser extends StatelessWidget {
     final user = FirebaseAuth.instance.currentUser;
     final email = user?.email ?? '';
     final String userId = user?.uid??"";
+    final orderService = OrderFirestoreService();
 
     return
       MultiBlocProvider(
@@ -196,19 +198,36 @@ class AppointmentPageForUser extends StatelessWidget {
                                         ),
 
                                         data.status== OrderStatus.acceptedByLawyer
-                                            ? CustomButton(
-                                          text: "ادفع الآن",
-                                          onTap: () {
-                                            context.read<CheckoutCubit>().userMakePayment(amount: data.price.toInt(), email: email, orderId: data.orderId);
+                                            ? Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                CustomButton(
+                                                  text: "ادفع الآن",
+                                                  onTap: () {
+                                                context.read<CheckoutCubit>().userMakePayment(amount: data.price.toInt(), email: email, orderId: data.orderId);
+                                                   },
+                                             width: MediaQuery.of(context).size.width * 0.3,
+                                           height: MediaQuery.of(context).size.height * 0.04,
+                                            backgroundColor: AppColor.green,
+                                             textStyle: AppText.bodySmall,
 
-                                          },
-                                          width:
-                                          MediaQuery.of(context).size.width * 0.3,
-                                          height:
-                                          MediaQuery.of(context).size.height * 0.04,
-                                          backgroundColor: AppColor.primary,
-                                          textStyle: AppText.bodySmall,
-                                        )
+                                                    ),
+                                                CustomButton(
+                                                  text: "الغاء الطلب",
+                                                    onTap: () async {
+                                                      await orderService.updateOrder(data.orderId, {
+                                                        'status': orderStatusToString(OrderStatus.paymentRejected),
+                                                      });
+                                                    },
+                                                  width:
+                                                  MediaQuery.of(context).size.width * 0.3,
+                                                  height:
+                                                  MediaQuery.of(context).size.height * 0.04,
+                                                  backgroundColor: AppColor.primary,
+                                                  textStyle: AppText.bodySmall,
+                                                ),
+                                              ],
+                                            )
                                             : const SizedBox.shrink(),
 
                                       ],
