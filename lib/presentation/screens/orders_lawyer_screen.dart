@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/Core/widgets/custom_button.dart';
 import 'package:qanony/Core/widgets/qanony_appointment_widget.dart';
 import 'package:qanony/data/models/order_status_enum.dart';
-import 'package:qanony/presentation/pages/my_appointments_tab.dart';
 import 'package:qanony/services/cubits/order_lawyer/order_cubit.dart';
 
 class OrdersLawyerScreen extends StatelessWidget {
   const OrdersLawyerScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -34,6 +33,7 @@ class OrdersLawyerScreen extends StatelessWidget {
             if (pendingOrders.isEmpty) {
               return const Center(child: Text('لا يوجد طلبات حالياً'));
             }
+            final dateFormat = DateFormat('dd-MM-yyyy • hh:mm a', 'ar');
 
             return SingleChildScrollView(
               padding: AppPadding.paddingMedium,
@@ -44,6 +44,8 @@ class OrdersLawyerScreen extends StatelessWidget {
                     specialty: order.caseType,
                     description: order.caseDescription,
                     price: '${order.price} EGP',
+                    date: dateFormat.format(order.date),
+                    communication: order.contactMethod,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -55,21 +57,17 @@ class OrdersLawyerScreen extends StatelessWidget {
                                   .read<OrderCubit>()
                                   .updateOrderStatus(
                                     order.orderId,
-                                    'accepted_by_lawyer',
+                                    orderStatusToString(
+                                      OrderStatus.acceptedByLawyer,
+                                    ),
                                   );
 
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text("تم قبول الطلب بنجاح"),
-                                  ),
-                                );
-
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const MyAppointmentsTab(),
+                                    content: Text(
+                                      "تم قبول الطلب بنجاح بانتظار اكمال الطلب",
+                                    ),
                                   ),
                                 );
                               }
@@ -86,7 +84,9 @@ class OrdersLawyerScreen extends StatelessWidget {
                                   .read<OrderCubit>()
                                   .updateOrderStatus(
                                     order.orderId,
-                                    'rejected_by_lawyer',
+                                    orderStatusToString(
+                                      OrderStatus.rejectedByLawyer,
+                                    ),
                                   );
 
                               if (context.mounted) {
