@@ -12,7 +12,11 @@ void showAppointmentBottomSheet({
   required String price,
   required String lawyerId,
 }) {
-  final sortedAppointments = [...appointments]..sort((a, b) => a.compareTo(b));
+  final now = DateTime.now();
+  final sortedAppointments = [
+    ...appointments.where((appointment) => appointment.isAfter(now))
+  ]..sort((a, b) => a.compareTo(b));
+
   Map<String, List<DateTime>> groupedAppointments = {};
   for (var appointment in sortedAppointments) {
     String dayKey = DateFormat.yMMMMd('ar').format(appointment);

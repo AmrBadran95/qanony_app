@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/core/styles/color.dart';
@@ -97,7 +98,7 @@ class AppointmentPageForUser extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(width: MediaQuery.of(context).size.width * .03),
+                                            SizedBox(width: MediaQuery.of(context).size.width * .016),
                                             Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
@@ -118,24 +119,36 @@ class AppointmentPageForUser extends StatelessWidget {
                                                             style: AppText.labelSmall.copyWith(color: AppColor.dark),
                                                           ),
 
-                                                          Row(
-                                                            children: [
-                                                              Icon(
-                                                                Icons.assignment_turned_in_outlined,
-                                                                size: MediaQuery.of(context).size.width * .04,
-                                                              ),
-                                                              Text(
-                                                                "الوصف:${data.caseDescription}",
-                                                                style: AppText.labelSmall.copyWith(color: AppColor.dark),
-                                                                overflow: TextOverflow.ellipsis,
-                                                              ),
-                                                            ],
+                                                          SizedBox(
+                                                            width: MediaQuery.of(context).size.width * .3,
+                                                            child: Row(
+                                                              children: [
+                                                                Icon(
+                                                                  Icons.assignment_turned_in_outlined,
+                                                                  size: MediaQuery.of(context).size.width * .04,
+                                                                ),
+                                                                Expanded(
+                                                                  child: Text(
+                                                                    "الوصف:${data.caseDescription}",
+                                                                    style: AppText.labelSmall.copyWith(color: AppColor.dark),
+                                                                    overflow: TextOverflow.ellipsis,
+                                                                    softWrap: false,
+                                                                    maxLines: 1,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
                                                           Text(
 
                                                               data.contactMethod,
                                                            style: AppText.labelSmall.copyWith(color: AppColor.dark)
                                                           ),
+                                                          Text(
+                                                            DateFormat('EEEE، yyyy/MM/dd – hh:mm a', 'ar').format(data.date),
+                                                            style: AppText.labelSmall.copyWith(color: AppColor.dark),
+                                                          )
+
                                                         ],
                                                       ),
                                                     ),
