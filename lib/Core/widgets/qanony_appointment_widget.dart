@@ -39,70 +39,111 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
         vertical: screenHeight * 0.01,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(AppPadding.medium),
+        padding: const EdgeInsets.all(AppPadding.large),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            /// Badge + اسم العميل
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Icon(Icons.person, size: 40, color: AppColor.dark),
-                SizedBox(width: widthMedium),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(name, style: AppText.bodyMedium),
-                      SizedBox(height: heightMedium),
-                      Text(
-                        specialty,
-                        style: TextStyle(
-                          fontSize: AppText.labelLarge.fontSize,
-                          color: AppColor.dark,
-                        ),
-                      ),
-                      SizedBox(height: heightMedium),
-                      Text(
-                        description,
-                        style: TextStyle(
-                          fontSize: AppText.labelSmall.fontSize,
-                          color: AppColor.dark,
-                        ),
-                      ),
-                      SizedBox(height: heightMedium),
-                      Text(
-                        "$date",
-                        style: TextStyle(
-                          fontSize: AppText.labelLarge.fontSize,
-                          color: AppColor.dark,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(width: widthMedium),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
                   children: [
+                    Icon(Icons.person, color: AppColor.dark, size: 20),
+                    const SizedBox(width: 4),
                     Text(
-                      "$communication",
-                      style: TextStyle(
-                        fontSize: AppText.labelSmall.fontSize,
-                        color: AppColor.dark,
-                      ),
-                    ),
-                    SizedBox(height: heightMedium),
-                    Text(
-                      "المبلغ: $price",
-                      style: TextStyle(
-                        fontSize: AppText.labelLarge.fontSize,
-                        color: AppColor.dark,
-                      ),
+                      name,
+                      style: AppText.title.copyWith(color: AppColor.dark),
                     ),
                   ],
                 ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColor.primary,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    communication,
+                    style: AppText.labelLarge.copyWith(color: AppColor.light),
+                  ),
+                ),
               ],
             ),
+            const SizedBox(height: AppPadding.medium),
+
+            /// نوع القضية + الوصف
+            Text(
+              specialty,
+              style: AppText.bodyMedium.copyWith(color: AppColor.dark),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'الوصف: $description',
+              style: AppText.bodyMedium.copyWith(color: AppColor.dark),
+            ),
+            const SizedBox(height: AppPadding.small),
+
+            /// التاريخ والساعة
+            /// التاريخ
+            Row(
+              children: [
+                const Icon(
+                  Icons.calendar_today,
+                  size: 18,
+                  color: AppColor.darkgrey,
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  date.split('•')[0].trim(), // يفترض إن التاريخ قبلي "•"
+                  style: AppText.bodyMedium.copyWith(color: AppColor.dark),
+                ),
+              ],
+            ),
+            const SizedBox(height: AppPadding.small),
+
+            /// الساعة
+            Row(
+              children: [
+                const Icon(
+                  Icons.access_time,
+                  size: 18,
+                  color: AppColor.darkgrey,
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  date.split('•')[1].trim(), // يفترض إن الساعة بعد "•"
+                  style: AppText.bodyMedium.copyWith(color: AppColor.dark),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: AppPadding.small),
+
+            /// المبلغ
+            Row(
+              children: [
+                const Icon(
+                  Icons.attach_money,
+                  size: 18,
+                  color: AppColor.darkgrey,
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  " $price",
+                  style: AppText.bodyMedium.copyWith(
+                    color: AppColor.green,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: AppPadding.medium),
+
+            /// أزرار (قبول / رفض)
             if (children != null && children!.isNotEmpty) ...[
               SizedBox(height: heightMedium),
               ...children!,
