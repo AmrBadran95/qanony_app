@@ -33,7 +33,7 @@ class OrdersLawyerScreen extends StatelessWidget {
             if (pendingOrders.isEmpty) {
               return const Center(child: Text('لا يوجد طلبات حالياً'));
             }
-            final dateFormat = DateFormat('dd/MM/yyyy • hh:mm a', 'ar');
+            final dateFormat = DateFormat('dd-MM-yyyy • hh:mm a', 'ar');
 
             return SingleChildScrollView(
               padding: AppPadding.paddingMedium,
