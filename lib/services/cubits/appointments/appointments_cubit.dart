@@ -94,4 +94,23 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
     selectedSpecialty = value;
     emit(SpecialtyChanged(value));
   }
+
+  // ✅ مواعيد قانوني للحالات المطلوبة
+  Future<void> getQanonyAppointments() async {
+    emit(AppointmentsLoading());
+
+    try {
+      final snapshot = await appointmentsRef
+          .where('status', whereIn: ['accepted_by_lawyer', 'payment_done'])
+          .get();
+
+      final data = snapshot.docs
+          .map((doc) => {'id': doc.id, ...doc.data() as Map<String, dynamic>})
+          .toList();
+
+      emit(AppointmentsLoaded(data));
+    } catch (e) {
+      emit(AppointmentsError("فشل في تحميل المواعيد: ${e.toString()}"));
+    }
+  }
 }

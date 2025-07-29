@@ -97,4 +97,26 @@ class LawyerInfoCubit extends Cubit<LawyerInfoState> {
     _lawyerStreamSubscription?.cancel();
     return super.close();
   }
+
+  Future<void> removePastAppointments(String lawyerId) async {
+    final now = DateTime.now();
+
+    final docRef = FirebaseFirestore.instance
+        .collection('lawyers')
+        .doc(lawyerId);
+
+    final docSnapshot = await docRef.get();
+
+    if (docSnapshot.exists) {
+      final data = docSnapshot.data();
+      final List<dynamic> appointments = data?['availableAppointments'] ?? [];
+
+      final updatedAppointments = appointments.where((appointment) {
+        final date = (appointment as Timestamp).toDate();
+        return date.isAfter(now);
+      }).toList();
+
+      await docRef.update({'availableAppointments': updatedAppointments});
+    }
+  }
 }

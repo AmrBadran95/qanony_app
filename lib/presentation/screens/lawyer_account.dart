@@ -30,8 +30,8 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
     _lawyerCubit = LawyerInfoCubit(LawyerFirestoreService());
 
     _lawyerCubit.getLawyerById(lawyerId ?? '');
+    _lawyerCubit.removePastAppointments(lawyerId ?? '');
   }
-
 
   @override
   Widget build(BuildContext context) {
