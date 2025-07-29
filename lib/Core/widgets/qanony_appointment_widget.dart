@@ -31,6 +31,22 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
     final widthMedium = screenWidth * 0.04;
     final heightMedium = screenHeight * 0.015;
 
+    // تحليل التاريخ والوقت
+    final dateParts = date.split('•');
+    final String dateOnly = dateParts[0].trim();
+    final String timeOnly = dateParts.length > 1 ? dateParts[1].trim() : '';
+    final DateTime parsedDate = DateTime.tryParse(dateOnly) ?? DateTime.now();
+    final List<String> arabicDays = [
+      'الأحد',
+      'الإثنين',
+      'الثلاثاء',
+      'الأربعاء',
+      'الخميس',
+      'الجمعة',
+      'السبت',
+    ];
+    final String dayName = arabicDays[parsedDate.weekday % 7];
+
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -50,10 +66,15 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
                 Row(
                   children: [
                     Icon(Icons.person, color: AppColor.dark, size: 20),
-                    const SizedBox(width: 4),
-                    Text(
-                      name,
-                      style: AppText.title.copyWith(color: AppColor.dark),
+                    const SizedBox(width: 2),
+                    SizedBox(
+                      width: screenWidth * 0.4,
+                      child: Text(
+                        name,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: AppText.title.copyWith(color: AppColor.dark),
+                      ),
                     ),
                   ],
                 ),
@@ -68,12 +89,12 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
                   ),
                   child: Text(
                     communication,
-                    style: AppText.labelLarge.copyWith(color: AppColor.light),
+                    style: AppText.labelSmall.copyWith(color: AppColor.light),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: AppPadding.medium),
+            const SizedBox(height: AppPadding.small),
 
             /// نوع القضية + الوصف
             Text(
@@ -87,8 +108,7 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
             ),
             const SizedBox(height: AppPadding.small),
 
-            /// التاريخ والساعة
-            /// التاريخ
+            /// اليوم + التاريخ في صف واحد
             Row(
               children: [
                 const Icon(
@@ -98,14 +118,14 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
                 ),
                 const SizedBox(width: 4),
                 Text(
-                  date.split('•')[0].trim(), // يفترض إن التاريخ قبلي "•"
+                  "$dayName، $dateOnly",
                   style: AppText.bodyMedium.copyWith(color: AppColor.dark),
                 ),
               ],
             ),
             const SizedBox(height: AppPadding.small),
 
-            /// الساعة
+            /// الساعة لوحدها
             Row(
               children: [
                 const Icon(
@@ -115,12 +135,11 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
                 ),
                 const SizedBox(width: 4),
                 Text(
-                  date.split('•')[1].trim(), // يفترض إن الساعة بعد "•"
+                  timeOnly,
                   style: AppText.bodyMedium.copyWith(color: AppColor.dark),
                 ),
               ],
             ),
-
             const SizedBox(height: AppPadding.small),
 
             /// المبلغ
@@ -143,7 +162,7 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
             ),
             const SizedBox(height: AppPadding.medium),
 
-            /// أزرار (قبول / رفض)
+            /// الأزرار
             if (children != null && children!.isNotEmpty) ...[
               SizedBox(height: heightMedium),
               ...children!,
