@@ -78,7 +78,7 @@ void showAppointmentBottomSheet({
                           bookingType: bookingType,
                           price: price,
                           day: dayName,
-                          date: " ${entry.key}",
+                          date: timeSlot,
                           time: time,
                           lawyerId: lawyerId,
                         );

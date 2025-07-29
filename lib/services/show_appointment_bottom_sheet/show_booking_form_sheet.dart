@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart' show DateFormat;
 import 'package:qanony/services/auth/auth_service.dart';
 import 'package:qanony/services/cubits/order_form/order_form_cubit.dart';
 import 'package:qanony/services/cubits/order_form/order_form_state.dart';
@@ -18,7 +19,7 @@ void showBookingForm({
   required String bookingType,
   required String price,
   required String day,
-  required String date,
+  required DateTime date,
   required String time,
   required String lawyerId,
 }) {
@@ -151,7 +152,8 @@ void showBookingForm({
                           _buildDisabledField("نوع الحجز", bookingType, media),
                           _buildDisabledField("السعر", price, media),
                           _buildDisabledField("اليوم", day, media),
-                          _buildDisabledField("التاريخ", date, media),
+                          _buildDisabledField("التاريخ", DateFormat.yMMMMd('ar').format(date), media),
+
                           _buildDisabledField("الساعة", time, media),
                           SizedBox(height: media.height * 0.03),
                           BlocConsumer<OrderFormCubit, OrderFormState>(
@@ -203,7 +205,7 @@ void showBookingForm({
                                           userId: uid,
                                           lawyerId: lawyerId,
                                           status: OrderStatus.pending,
-                                          date: DateTime.now(),
+                                          date: date,
                                           userName: nameController.text.trim(),
                                           caseType: selectedSpecialty!,
                                           caseDescription: problemController
