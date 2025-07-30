@@ -155,6 +155,7 @@ class UserBaseScreen extends StatelessWidget {
                   GestureDetector(
 
                     onTap: () {
+
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>AppointmentPageForUser()));
                     },
                     child: Column(

@@ -27,6 +27,9 @@ dependencies:
   dio: ^5.8.0+1
   flutter_stripe: ^11.5.0
   flutter_dotenv: ^5.2.1
+  zego_uikit_prebuilt_call: ^4.17.9
+  zego_uikit_signaling_plugin: ^2.8.15
+  firebase_messaging: ^15.2.10
 
 dev_dependencies:
   flutter_test:

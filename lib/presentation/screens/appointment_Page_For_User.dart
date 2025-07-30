@@ -6,8 +6,10 @@ import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/core/styles/color.dart';
 import 'package:qanony/data/repos/order_repository.dart';
+import 'package:qanony/services/call/callService.dart';
 import 'package:qanony/services/cubits/UserOrder/user_order_cubit.dart';
-
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+import 'package:zego_uikit/zego_uikit.dart';
 import '../../Core/widgets/custom_button.dart';
 import '../../data/models/order_status_enum.dart';
 import '../../services/cubits/checkout/checkout_cubit.dart';
@@ -48,7 +50,10 @@ class AppointmentPageForUser extends StatelessWidget {
               } else if (state is UserOrderError) {
                 return Center(child: Text(state.message));
               } else if (state is UserOrderLoaded) {
+
                 final order = state.orders;
+                CallService callService= CallService();
+
                 return SizedBox(
                   width: double.infinity,
                   child: Column(
@@ -59,6 +64,7 @@ class AppointmentPageForUser extends StatelessWidget {
                           padding: AppPadding.paddingMedium,
                           itemBuilder: (context, index) {
                             final data = order[index];
+
                             print('Status from Firebase: ${data.status}');
 
                             return FutureBuilder(
@@ -241,6 +247,44 @@ class AppointmentPageForUser extends StatelessWidget {
                                                 ),
                                               ],
                                             )
+                                            :data.status== OrderStatus.acceptedByLawyer?
+                                             CustomButton(
+                                              text: "انضم الى الجلسة",
+                                              onTap: () async {
+                                                callService.onUserLogin(data.userId, data.userName);
+                                                await ZegoUIKitPrebuiltCallInvitationService().send(
+                                                  resourceID: "QanonyApp",
+                                                  invitees: [
+                                                    ZegoCallUser(
+                                                     data.lawyerId,
+                                                     lawyer.fullName.toString(),
+                                                    ),
+                                                  ],
+                                                  isVideoCall: true,
+                                                );
+                                              },
+                                              width:
+                                              MediaQuery.of(context).size.width * 0.3,
+                                              height:
+                                              MediaQuery.of(context).size.height * 0.04,
+                                              backgroundColor: AppColor.green,
+                                              textStyle: AppText.bodySmall,
+                                        )
+                                        // ZegoSendCallInvitationButton(
+                                        //
+                                        //   isVideoCall: true,
+                                        //   //You need to use the resourceID that you created in the subsequent steps.
+                                        //   //Please continue reading this document.
+                                        //   resourceID: "QanonyApp",
+                                        //   invitees: [
+                                        //     ZegoUIKitUser(
+                                        //       id: data.lawyerId,
+                                        //       name: lawyer.fullName.toString(),
+                                        //     ),
+                                        //
+                                        //
+                                        //   ],
+                                        // )
                                             : const SizedBox.shrink(),
 
                                       ],
