@@ -12,6 +12,9 @@ class OnboardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return BlocListener<OnboardingCubit, OnboardingState>(
       listener: (context, state) {
         if (state is OnboardingSkipped) {
@@ -30,19 +33,19 @@ class OnboardingScreen extends StatelessWidget {
           children: [
             IntroductionScreen(
               rawPages: onboardingPages,
-              scrollPhysics: ScrollPhysics(),
+              scrollPhysics: const ScrollPhysics(),
               allowImplicitScrolling: true,
               infiniteAutoScroll: true,
               autoScrollDuration: 2000,
-              controlsMargin: EdgeInsets.all(48),
+              controlsMargin: EdgeInsets.all(screenWidth * 0.08),
               dotsDecorator: DotsDecorator(
-                size: const Size.square(10.0),
-                activeSize: const Size(20.0, 10.0),
+                size: Size.square(screenWidth * 0.025),
+                activeSize: Size(screenWidth * 0.05, screenHeight * 0.012),
                 activeColor: AppColor.secondary,
                 color: AppColor.grey,
-                spacing: const EdgeInsets.symmetric(horizontal: 4),
+                spacing: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
                 activeShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25.0),
+                  borderRadius: BorderRadius.circular(screenWidth * 0.06),
                 ),
               ),
               showDoneButton: false,
@@ -50,8 +53,8 @@ class OnboardingScreen extends StatelessWidget {
               showSkipButton: false,
             ),
             Positioned(
-              top: 80,
-              left: 40,
+              top: screenHeight * 0.1,
+              left: screenWidth * 0.1,
               child: GestureDetector(
                 onTap: () {
                   context.read<OnboardingCubit>().completeOnboarding();

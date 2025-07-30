@@ -21,14 +21,17 @@ class LawyerBaseScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.primary,
         title: Padding(
           padding: EdgeInsets.only(
-            left: MediaQuery.of(context).size.width * 0.01,
-            right: MediaQuery.of(context).size.width * 0.01,
-            bottom: MediaQuery.of(context).size.height * 0.01,
+            left: screenWidth * 0.01,
+            right: screenWidth * 0.01,
+            bottom: screenHeight * 0.01,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -41,15 +44,17 @@ class LawyerBaseScreen extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.notifications_none_sharp,
-                    size: MediaQuery.of(context).size.width * 0.095,
+                    size: screenWidth * 0.095,
                     color: AppColor.light,
                   ),
                   Padding(
-                    padding: EdgeInsets.only(right: 4, top: 4),
+                    padding: EdgeInsets.only(
+                      right: screenWidth * 0.01,
+                      top: screenWidth * 0.01,
+                    ),
                     child: Container(
-                      width: MediaQuery.of(context).size.width * 0.03,
-                      height: MediaQuery.of(context).size.width * 0.03,
-
+                      width: screenWidth * 0.03,
+                      height: screenWidth * 0.03,
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         color: AppColor.secondary,
@@ -102,13 +107,13 @@ class LawyerBaseScreen extends StatelessWidget {
                     onTap: () => _showLogoutDialog(context),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
-                      children: const [
+                      children: [
                         Icon(
                           Icons.exit_to_app,
-                          size: 20,
+                          size: screenWidth * 0.05,
                           color: AppColor.light,
                         ),
-                        SizedBox(height: 4),
+                        SizedBox(height: screenHeight * 0.005),
                         Text(
                           "تسجيل الخروج",
                           style: TextStyle(color: AppColor.light),
@@ -134,6 +139,9 @@ class LawyerBaseScreen extends StatelessWidget {
     required Widget destination,
     required bool isSelected,
   }) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return GestureDetector(
       onTap: () {
         Navigator.pushReplacement(
@@ -149,10 +157,10 @@ class LawyerBaseScreen extends StatelessWidget {
         children: [
           Icon(
             icon,
-            size: 20,
+            size: screenWidth * 0.05,
             color: isSelected ? Colors.yellow : AppColor.light,
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: screenHeight * 0.005),
           Text(
             label,
             style: AppText.labelSmall.copyWith(

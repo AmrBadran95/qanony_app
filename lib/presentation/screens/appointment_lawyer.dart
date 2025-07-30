@@ -13,6 +13,9 @@ class AppointmentLawyer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return BlocProvider(
       create: (context) => SubscriptionCubit()..checkSubscription(),
       child: BlocBuilder<SubscriptionCubit, bool>(
@@ -75,50 +78,53 @@ class AppointmentLawyer extends StatelessWidget {
             length: 2,
             child: Builder(
               builder: (context) {
-                return Column(
-                  children: [
-                    TabBar(
-                      controller: tabController,
-                      labelColor: AppColor.dark,
-                      unselectedLabelColor: AppColor.grey,
-                      indicatorColor: AppColor.secondary,
-                      tabs: [
-                        Tab(
-                          child: Text(
-                            "مواعيدى",
-                            style: AppText.bodyLarge.copyWith(
-                              color: AppColor.dark,
-                            ),
-                          ),
-                        ),
-                        Tab(
-                          child: isSubscribed
-                              ? Text(
-                                  "مواعيد قانونى",
-                                  style: AppText.bodyLarge.copyWith(
-                                    color: AppColor.dark,
-                                  ),
-                                )
-                              : Text(
-                                  "مواعيد قانونى",
-                                  style: AppText.bodyLarge.copyWith(
-                                    color: AppColor.grey,
-                                  ),
+                return SizedBox(
+                  width: screenWidth,
+                  height: screenHeight,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: screenWidth * 0.9,
+                        child: TabBar(
+                          controller: tabController,
+                          labelColor: AppColor.dark,
+                          unselectedLabelColor: AppColor.grey,
+                          indicatorColor: AppColor.secondary,
+                          tabs: [
+                            Tab(
+                              child: Text(
+                                "مواعيدى",
+                                style: AppText.bodyLarge.copyWith(
+                                  color: AppColor.dark,
                                 ),
+                              ),
+                            ),
+                            Tab(
+                              child: Text(
+                                "مواعيد قانونى",
+                                style: AppText.bodyLarge.copyWith(
+                                  color: isSubscribed
+                                      ? AppColor.dark
+                                      : AppColor.grey,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    Expanded(
-                      child: TabBarView(
-                        controller: tabController,
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: const [
-                          MyAppointmentsTab(),
-                          QanonyAppointmentsTab(),
-                        ],
                       ),
-                    ),
-                  ],
+                      SizedBox(height: screenHeight * 0.02),
+                      Expanded(
+                        child: TabBarView(
+                          controller: tabController,
+                          physics: const NeverScrollableScrollPhysics(),
+                          children: const [
+                            MyAppointmentsTab(),
+                            QanonyAppointmentsTab(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               },
             ),

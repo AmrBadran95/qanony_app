@@ -38,6 +38,9 @@ class LawyersList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return BlocBuilder<SearchCubit, SearchState>(
       builder: (context, state) {
         if (state is SearchLoading) {
@@ -47,7 +50,7 @@ class LawyersList extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
               child: ListView.separated(
                 separatorBuilder: (context, index) =>
-                    const SizedBox(height: 10),
+                    SizedBox(height: screenHeight * 0.015),
                 itemCount: state.lawyers.length,
                 itemBuilder: (context, index) {
                   final lawyer = state.lawyers[index];
@@ -55,13 +58,21 @@ class LawyersList extends StatelessWidget {
                     padding: AppPadding.paddingSmall,
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>LawyerScreen(lawyer.uid)));
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LawyerScreen(lawyer.uid),
+                          ),
+                        );
                       },
                       child: Container(
                         decoration: BoxDecoration(
                           color: AppColor.light,
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: AppColor.grey.withOpacity(0.4), width: 1),
+                          border: Border.all(
+                            color: AppColor.grey.withOpacity(0.4),
+                            width: 1,
+                          ),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black12,
@@ -70,67 +81,84 @@ class LawyersList extends StatelessWidget {
                             ),
                           ],
                         ),
-                      
                         child: ListTile(
-                          contentPadding: EdgeInsets.all(AppPadding.small),
+                          contentPadding: EdgeInsets.all(screenWidth * 0.03),
                           tileColor: AppColor.light,
                           leading: CircleAvatar(
                             backgroundColor: AppColor.grey,
-                            backgroundImage: NetworkImage(lawyer.profilePictureUrl!),
-                      
-                            radius: 30,
+                            backgroundImage: NetworkImage(
+                              lawyer.profilePictureUrl!,
+                            ),
+                            radius: screenWidth * 0.08,
                           ),
-                          title: Text(lawyer.fullName.toString(),style: AppText.bodyMedium.copyWith(color: AppColor.dark,fontWeight: FontWeight.w600),),
-                          subtitle:Column(
+                          title: Text(
+                            lawyer.fullName.toString(),
+                            style: AppText.bodyMedium.copyWith(
+                              color: AppColor.dark,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("النوع: ${lawyer.gender}",style: AppText.bodySmall.copyWith(color: AppColor.dark),),
-                              SizedBox(width: 5,),
+                              Text(
+                                "النوع: ${lawyer.gender}",
+                                style: AppText.bodySmall.copyWith(
+                                  color: AppColor.dark,
+                                ),
+                              ),
+                              SizedBox(height: screenHeight * 0.005),
                               RichText(
                                 text: TextSpan(
                                   children: [
                                     TextSpan(
                                       text: "التواصل عبر: ",
-                                      style: AppText.bodySmall.copyWith(color: AppColor.dark)                            ),
+                                      style: AppText.bodySmall.copyWith(
+                                        color: AppColor.dark,
+                                      ),
+                                    ),
                                     TextSpan(
                                       text:
-                                      lawyer.offersCall == true && lawyer.offersOffice == true
+                                          lawyer.offersCall == true &&
+                                              lawyer.offersOffice == true
                                           ? "مكالمة صوتية/فيديو أو عبر المكتب"
                                           : lawyer.offersCall == true
                                           ? "مكالمة صوتية/فيديو"
                                           : lawyer.offersOffice == true
                                           ? "عبر المكتب"
                                           : "لا توجد وسيلة تواصل محددة",
-                                        style: AppText.labelSmall.copyWith(color: AppColor.primary,fontWeight: FontWeight.w500)
-                              ),
+                                      style: AppText.labelSmall.copyWith(
+                                        color: AppColor.primary,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
+                              SizedBox(height: screenHeight * 0.005),
                               RatingBarIndicator(
                                 rating: 2.5,
-                                itemBuilder: (context, index) => Icon(
-                                  Icons.star,
-                                  color: AppColor.secondary,
-                                ),
+                                itemBuilder: (context, index) =>
+                                    Icon(Icons.star, color: AppColor.secondary),
                                 itemCount: 5,
-                                itemSize: 15.0,
+                                itemSize: screenWidth * 0.035,
                                 direction: Axis.horizontal,
                               ),
-                      
-                      
-                      
                             ],
                           ),
-                          trailing:
-                          RichText(
+                          trailing: RichText(
                             text: TextSpan(
                               children: [
                                 TextSpan(
                                   text: "السعر: ",
-                                  style: AppText.bodySmall.copyWith(color: AppColor.dark),
+                                  style: AppText.bodySmall.copyWith(
+                                    color: AppColor.dark,
+                                  ),
                                 ),
                                 TextSpan(
-                                  text: (lawyer.callPrice != null && lawyer.officePrice != null)
+                                  text:
+                                      (lawyer.callPrice != null &&
+                                          lawyer.officePrice != null)
                                       ? "مكالمة: ${lawyer.callPrice} جنيه\nمكتب: ${lawyer.officePrice} جنيه"
                                       : (lawyer.callPrice != null)
                                       ? "مكالمة: ${lawyer.callPrice} جنيه"
@@ -145,10 +173,6 @@ class LawyersList extends StatelessWidget {
                               ],
                             ),
                           ),
-                      
-                      
-                      
-                      
                         ),
                       ),
                     ),

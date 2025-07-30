@@ -15,6 +15,8 @@ class MultiStepperForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.sizeOf(context);
+
     return BlocConsumer<MultiStepperCubit, MultiStepperState>(
       listener: (context, state) {
         if (state is MultiStepperSubmitted) {
@@ -61,8 +63,8 @@ class MultiStepperForm extends StatelessWidget {
                     CustomButton(
                       text: "متابعة",
                       onTap: details.onStepContinue ?? () {},
-                      width: 120,
-                      height: 50,
+                      width: screenSize.width * 0.35,
+                      height: screenSize.height * 0.065,
                       backgroundColor: AppColor.green,
                       textStyle: AppText.bodyLarge.copyWith(
                         color: AppColor.light,
@@ -72,8 +74,8 @@ class MultiStepperForm extends StatelessWidget {
                     CustomButton(
                       text: "رجوع",
                       onTap: details.onStepCancel ?? () {},
-                      width: 120,
-                      height: 50,
+                      width: screenSize.width * 0.35,
+                      height: screenSize.height * 0.065,
                       backgroundColor: AppColor.primary,
                       textStyle: AppText.bodyLarge.copyWith(
                         color: AppColor.light,
@@ -115,7 +117,7 @@ class MultiStepperForm extends StatelessWidget {
                   : StepState.indexed,
             ),
             Step(
-              title: Text('طريفة التواصل'),
+              title: Text('طريقة التواصل'),
               content: const ContactForm(),
               isActive: currentStep >= 3,
               state: state is MultiStepperStepError && currentStep == 3

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qanony/Core/styles/color.dart';
+import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/core/widgets/role_container.dart';
 import 'package:qanony/presentation/screens/sign_in.dart';
 import 'package:qanony/services/cubits/role/role_cubit.dart';
@@ -10,6 +11,11 @@ class ChooseRoleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final horizontalPadding = screenWidth * 0.05;
+    final verticalSpacing = screenHeight * 0.06;
+
     return Scaffold(
       body: BlocListener<RoleCubit, RoleState>(
         listener: (context, state) {
@@ -24,6 +30,7 @@ class ChooseRoleScreen extends StatelessWidget {
           width: double.infinity,
           height: double.infinity,
           color: AppColor.grey,
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -37,7 +44,7 @@ class ChooseRoleScreen extends StatelessWidget {
                     "كمحامٍ، يمكنك تقديم خدماتك، إدارة جلساتك، والتواصل مع عملائك بسهولة.",
                 text3: "ابدأ رحلتك القانونية الآن.",
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.06),
+              SizedBox(height: verticalSpacing),
               RoleContainer(
                 color: AppColor.secondary,
                 onTap: () {

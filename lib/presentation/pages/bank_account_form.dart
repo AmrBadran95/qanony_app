@@ -11,18 +11,19 @@ class BankAccountForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Form(
       key: BankAccountFormKey.formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: MediaQuery.of(context).size.height * .01),
-
+          SizedBox(height: screenHeight * 0.01),
           CustomTextFormField(
             controller: BankAccountControllers.bankNameController,
             validator: BankAccountValidators.validateBankName,
             width: double.infinity,
-            height: 60,
+            height: screenHeight * 0.075,
             label: "اسم البنك",
             contentPadding: AppPadding.paddingMedium,
             backgroundColor: AppColor.grey,
@@ -30,14 +31,12 @@ class BankAccountForm extends StatelessWidget {
             labelStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
             keyboardType: TextInputType.text,
           ),
-
-          SizedBox(height: MediaQuery.of(context).size.height * .01),
-
+          SizedBox(height: screenHeight * 0.01),
           CustomTextFormField(
             controller: BankAccountControllers.accountHolderController,
             validator: BankAccountValidators.validateAccountHolder,
             width: double.infinity,
-            height: 60,
+            height: screenHeight * 0.075,
             label: "اسم صاحب الحساب",
             contentPadding: AppPadding.paddingMedium,
             backgroundColor: AppColor.grey,
@@ -45,14 +44,12 @@ class BankAccountForm extends StatelessWidget {
             labelStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
             keyboardType: TextInputType.name,
           ),
-
-          SizedBox(height: MediaQuery.of(context).size.height * .01),
-
+          SizedBox(height: screenHeight * 0.01),
           CustomTextFormField(
             controller: BankAccountControllers.accountNumberController,
             validator: BankAccountValidators.validateAccountNumber,
             width: double.infinity,
-            height: 60,
+            height: screenHeight * 0.075,
             label: "رقم الحساب",
             contentPadding: AppPadding.paddingMedium,
             backgroundColor: AppColor.grey,

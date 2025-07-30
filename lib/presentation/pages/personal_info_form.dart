@@ -17,330 +17,171 @@ class PersonalInfoForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: PersonalInfoFormKey.formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: MediaQuery.of(context).size.height * .01),
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
 
-          CustomTextFormField(
-            controller: PersonalInfoControllers.fullNameController,
-            validator: PersonalInfoValidators.validateFullName,
-            width: double.infinity,
-            label: "الاسم رباعي",
-            contentPadding: AppPadding.paddingMedium,
-            backgroundColor: AppColor.grey,
-            labelStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
-            textStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
-          ),
-          SizedBox(height: MediaQuery.of(context).size.height * .01),
+    return Padding(
+      padding: AppPadding.paddingMedium,
+      child: Form(
+        key: PersonalInfoFormKey.formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: screenHeight * 0.015),
 
-          CustomTextFormField(
-            controller: PersonalInfoControllers.nationalIdController,
-            validator: PersonalInfoValidators.validateNationalId,
-            width: double.infinity,
-            label: "الرقم القومي",
-            contentPadding: AppPadding.paddingMedium,
-            backgroundColor: AppColor.grey,
-            labelStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
-            textStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
-            keyboardType: TextInputType.number,
-          ),
-          SizedBox(height: MediaQuery.of(context).size.height * .01),
+            CustomTextFormField(
+              controller: PersonalInfoControllers.fullNameController,
+              validator: PersonalInfoValidators.validateFullName,
+              width: double.infinity,
+              label: "الاسم رباعي",
+              contentPadding: AppPadding.paddingMedium,
+              backgroundColor: AppColor.grey,
+              labelStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
+              textStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
+            ),
 
-          FormField<String>(
-            initialValue: PersonalInfoControllers.governorate.value,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: PersonalInfoValidators.validateGovernorate,
-            builder: (state) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ValueListenableBuilder<String?>(
-                    valueListenable: PersonalInfoControllers.governorate,
-                    builder: (context, value, _) {
-                      return DropdownButtonFormField<String>(
-                        value: value,
-                        onChanged: (newValue) {
-                          PersonalInfoControllers.governorate.value = newValue;
-                          state.didChange(newValue);
-                        },
-                        style: AppText.bodyLarge.copyWith(color: AppColor.dark),
-                        dropdownColor: AppColor.grey,
-                        decoration: InputDecoration(
-                          labelText: "اختر المحافظة",
-                          labelStyle: AppText.bodyLarge.copyWith(
+            SizedBox(height: screenHeight * 0.015),
+
+            CustomTextFormField(
+              controller: PersonalInfoControllers.nationalIdController,
+              validator: PersonalInfoValidators.validateNationalId,
+              width: double.infinity,
+              label: "الرقم القومي",
+              contentPadding: AppPadding.paddingMedium,
+              backgroundColor: AppColor.grey,
+              labelStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
+              textStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
+              keyboardType: TextInputType.number,
+            ),
+
+            SizedBox(height: screenHeight * 0.015),
+
+            FormField<String>(
+              initialValue: PersonalInfoControllers.governorate.value,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: PersonalInfoValidators.validateGovernorate,
+              builder: (state) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ValueListenableBuilder<String?>(
+                      valueListenable: PersonalInfoControllers.governorate,
+                      builder: (context, value, _) {
+                        return DropdownButtonFormField<String>(
+                          value: value,
+                          onChanged: (newValue) {
+                            PersonalInfoControllers.governorate.value =
+                                newValue;
+                            state.didChange(newValue);
+                          },
+                          style: AppText.bodyLarge.copyWith(
                             color: AppColor.dark,
                           ),
-                          filled: true,
-                          fillColor: AppColor.grey,
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: AppColor.dark),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
+                          dropdownColor: AppColor.grey,
+                          decoration: InputDecoration(
+                            labelText: "اختر المحافظة",
+                            labelStyle: AppText.bodyLarge.copyWith(
                               color: AppColor.dark,
-                              width: 1,
                             ),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: AppColor.primary),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: AppColor.dark,
-                              width: 1,
+                            filled: true,
+                            fillColor: AppColor.grey,
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: AppColor.dark),
                             ),
-                          ),
-                        ),
-                        items: egyptGovernorates
-                            .map(
-                              (governorate) => DropdownMenuItem(
-                                value: governorate,
-                                child: Text(governorate),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: AppColor.dark,
+                                width: 1,
                               ),
-                            )
-                            .toList(),
-                      );
-                    },
-                  ),
-                  if (state.hasError)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 5),
-                      child: Text(
-                        state.errorText!,
-                        style: AppText.bodySmall.copyWith(
-                          color: AppColor.primary,
-                        ),
-                      ),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: AppColor.primary),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: AppColor.dark,
+                                width: 1,
+                              ),
+                            ),
+                          ),
+                          items: egyptGovernorates
+                              .map(
+                                (governorate) => DropdownMenuItem(
+                                  value: governorate,
+                                  child: Text(governorate),
+                                ),
+                              )
+                              .toList(),
+                        );
+                      },
                     ),
-                ],
-              );
-            },
-          ),
-
-          SizedBox(height: MediaQuery.of(context).size.height * .01),
-
-          CustomTextFormField(
-            controller: PersonalInfoControllers.fullAddressController,
-            validator: PersonalInfoValidators.validateFullAddress,
-            width: double.infinity,
-            label: "العنوان بالكامل",
-            contentPadding: AppPadding.paddingMedium,
-            backgroundColor: AppColor.grey,
-            labelStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
-            textStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
-          ),
-          SizedBox(height: MediaQuery.of(context).size.height * .01),
-
-          Builder(
-            builder: (context) {
-              return FormField<DateTime>(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (_) {
-                  final state = context.read<DateOfBirthCubit>().state;
-                  if (state is DateOfBirthSelected) {
-                    return PersonalInfoValidators.validateBirthDate(
-                      state.selectedDate,
-                    );
-                  }
-                  return PersonalInfoValidators.validateBirthDate(null);
-                },
-                builder: (state) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      BlocBuilder<DateOfBirthCubit, DateOfBirthState>(
-                        builder: (context, dateState) {
-                          DateTime? selectedDate;
-                          if (dateState is DateOfBirthSelected) {
-                            selectedDate = dateState.selectedDate;
-                          }
-
-                          return CustomCalendar(
-                            label: "تاريخ الميلاد",
-                            prevOnly: true,
-                            selectedDate: selectedDate,
-                            onDateSelected: (date) {
-                              context.read<DateOfBirthCubit>().selectDate(date);
-                              state.didChange(date);
-                            },
-                          );
-                        },
-                      ),
-                      if (state.hasError)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Text(
-                            state.errorText!,
-                            style: AppText.bodySmall.copyWith(
-                              color: AppColor.primary,
-                            ),
+                    if (state.hasError)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: Text(
+                          state.errorText!,
+                          style: AppText.bodySmall.copyWith(
+                            color: AppColor.primary,
                           ),
                         ),
-                    ],
-                  );
-                },
-              );
-            },
-          ),
+                      ),
+                  ],
+                );
+              },
+            ),
 
-          SizedBox(height: MediaQuery.of(context).size.height * .01),
+            SizedBox(height: screenHeight * 0.015),
 
-          Text(
-            "النوع",
-            style: AppText.bodyLarge.copyWith(color: AppColor.dark),
-          ),
-          SizedBox(height: MediaQuery.of(context).size.height * .01),
-          FormField<String>(
-            initialValue: PersonalInfoControllers.gender.value,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: PersonalInfoValidators.validateGender,
-            builder: (state) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ValueListenableBuilder<String?>(
-                    valueListenable: PersonalInfoControllers.gender,
-                    builder: (context, value, _) {
-                      return Row(
-                        children: [
-                          Expanded(
-                            child: RadioListTile<String>(
-                              value: 'ذكر',
-                              groupValue: value,
-                              onChanged: (val) {
-                                PersonalInfoControllers.gender.value = val;
-                                state.didChange(val);
-                              },
-                              title: Text("ذكر"),
-                              activeColor: AppColor.dark,
-                            ),
-                          ),
-                          Expanded(
-                            child: RadioListTile<String>(
-                              value: 'أنثى',
-                              groupValue: value,
-                              onChanged: (val) {
-                                PersonalInfoControllers.gender.value = val;
-                                state.didChange(val);
-                              },
-                              title: Text("أنثى"),
-                              activeColor: AppColor.dark,
-                            ),
-                          ),
-                        ],
+            CustomTextFormField(
+              controller: PersonalInfoControllers.fullAddressController,
+              validator: PersonalInfoValidators.validateFullAddress,
+              width: double.infinity,
+              label: "العنوان بالكامل",
+              contentPadding: AppPadding.paddingMedium,
+              backgroundColor: AppColor.grey,
+              labelStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
+              textStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
+            ),
+
+            SizedBox(height: screenHeight * 0.015),
+
+            Builder(
+              builder: (context) {
+                return FormField<DateTime>(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (_) {
+                    final state = context.read<DateOfBirthCubit>().state;
+                    if (state is DateOfBirthSelected) {
+                      return PersonalInfoValidators.validateBirthDate(
+                        state.selectedDate,
                       );
-                    },
-                  ),
-                  if (state.hasError)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 5),
-                      child: Text(
-                        state.errorText!,
-                        style: AppText.bodySmall.copyWith(
-                          color: AppColor.primary,
-                        ),
-                      ),
-                    ),
-                ],
-              );
-            },
-          ),
-
-          SizedBox(height: MediaQuery.of(context).size.height * .01),
-
-          Center(
-            child: FormField<String>(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (_) => PersonalInfoValidators.validateProfileImage(
-                PersonalInfoControllers.profileImage.value,
-              ),
-              builder: (state) {
-                return ValueListenableBuilder<String?>(
-                  valueListenable: PersonalInfoControllers.profileImage,
-                  builder: (context, value, _) {
+                    }
+                    return PersonalInfoValidators.validateBirthDate(null);
+                  },
+                  builder: (state) {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomButton(
-                          text: "إضافة صورة شخصية",
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          height: 60,
-                          backgroundColor: AppColor.secondary,
-                          textStyle: AppText.bodyLarge.copyWith(
-                            color: AppColor.dark,
-                          ),
-                          textColor: AppColor.dark,
-                          onTap: () {
-                            showModalBottomSheet(
-                              context: context,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(8),
-                                ),
-                              ),
-                              builder: (_) => Padding(
-                                padding: AppPadding.paddingExtraLarge,
-                                child: Wrap(
-                                  children: [
-                                    ListTile(
-                                      leading: const Icon(
-                                        Icons.photo_library,
-                                        color: AppColor.secondary,
-                                      ),
-                                      title: Text(
-                                        "اختيار من المعرض",
-                                        style: AppText.bodyLarge.copyWith(
-                                          color: AppColor.dark,
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                        PersonalInfoControllers.pickProfileImage(
-                                          source: ImageSource.gallery,
-                                          state: state,
-                                        );
-                                      },
-                                    ),
-                                    ListTile(
-                                      leading: const Icon(
-                                        Icons.camera_alt,
-                                        color: AppColor.secondary,
-                                      ),
-                                      title: Text(
-                                        "استخدام الكاميرا",
-                                        style: AppText.bodyLarge.copyWith(
-                                          color: AppColor.dark,
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                        PersonalInfoControllers.pickProfileImage(
-                                          source: ImageSource.camera,
-                                          state: state,
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
+                        BlocBuilder<DateOfBirthCubit, DateOfBirthState>(
+                          builder: (context, dateState) {
+                            DateTime? selectedDate;
+                            if (dateState is DateOfBirthSelected) {
+                              selectedDate = dateState.selectedDate;
+                            }
+
+                            return CustomCalendar(
+                              label: "تاريخ الميلاد",
+                              prevOnly: true,
+                              selectedDate: selectedDate,
+                              onDateSelected: (date) {
+                                context.read<DateOfBirthCubit>().selectDate(
+                                  date,
+                                );
+                                state.didChange(date);
+                              },
                             );
                           },
                         ),
-                        if (value != null) ...[
-                          const SizedBox(height: 10),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.network(
-                              value,
-                              height: 120,
-                              width: 120,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ],
                         if (state.hasError)
                           Padding(
                             padding: const EdgeInsets.only(top: 8),
@@ -357,8 +198,189 @@ class PersonalInfoForm extends StatelessWidget {
                 );
               },
             ),
-          ),
-        ],
+
+            SizedBox(height: screenHeight * 0.015),
+
+            Text(
+              "النوع",
+              style: AppText.bodyLarge.copyWith(color: AppColor.dark),
+            ),
+            SizedBox(height: screenHeight * 0.01),
+
+            FormField<String>(
+              initialValue: PersonalInfoControllers.gender.value,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: PersonalInfoValidators.validateGender,
+              builder: (state) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ValueListenableBuilder<String?>(
+                      valueListenable: PersonalInfoControllers.gender,
+                      builder: (context, value, _) {
+                        return Row(
+                          children: [
+                            Expanded(
+                              child: RadioListTile<String>(
+                                value: 'ذكر',
+                                groupValue: value,
+                                onChanged: (val) {
+                                  PersonalInfoControllers.gender.value = val;
+                                  state.didChange(val);
+                                },
+                                title: Text("ذكر"),
+                                activeColor: AppColor.dark,
+                              ),
+                            ),
+                            Expanded(
+                              child: RadioListTile<String>(
+                                value: 'أنثى',
+                                groupValue: value,
+                                onChanged: (val) {
+                                  PersonalInfoControllers.gender.value = val;
+                                  state.didChange(val);
+                                },
+                                title: Text(
+                                  "أنثى",
+                                  textDirection: TextDirection.rtl,
+                                  textAlign: TextAlign.right,
+                                  style: AppText.bodyLarge.copyWith(
+                                    color: AppColor.dark,
+                                  ),
+                                ),
+                                activeColor: AppColor.dark,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                    if (state.hasError)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: Text(
+                          state.errorText!,
+                          style: AppText.bodySmall.copyWith(
+                            color: AppColor.primary,
+                          ),
+                        ),
+                      ),
+                  ],
+                );
+              },
+            ),
+
+            SizedBox(height: screenHeight * 0.015),
+
+            Center(
+              child: FormField<String>(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (_) => PersonalInfoValidators.validateProfileImage(
+                  PersonalInfoControllers.profileImage.value,
+                ),
+                builder: (state) {
+                  return ValueListenableBuilder<String?>(
+                    valueListenable: PersonalInfoControllers.profileImage,
+                    builder: (context, value, _) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CustomButton(
+                            text: "إضافة صورة شخصية",
+                            width: screenWidth * 0.6,
+                            height: screenHeight * 0.07,
+                            backgroundColor: AppColor.secondary,
+                            textStyle: AppText.bodyLarge.copyWith(
+                              color: AppColor.dark,
+                            ),
+                            textColor: AppColor.dark,
+                            onTap: () {
+                              showModalBottomSheet(
+                                context: context,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(8),
+                                  ),
+                                ),
+                                builder: (_) => Padding(
+                                  padding: AppPadding.paddingExtraLarge,
+                                  child: Wrap(
+                                    children: [
+                                      ListTile(
+                                        leading: const Icon(
+                                          Icons.photo_library,
+                                          color: AppColor.secondary,
+                                        ),
+                                        title: Text(
+                                          "اختيار من المعرض",
+                                          style: AppText.bodyLarge.copyWith(
+                                            color: AppColor.dark,
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                          PersonalInfoControllers.pickProfileImage(
+                                            source: ImageSource.gallery,
+                                            state: state,
+                                          );
+                                        },
+                                      ),
+                                      ListTile(
+                                        leading: const Icon(
+                                          Icons.camera_alt,
+                                          color: AppColor.secondary,
+                                        ),
+                                        title: Text(
+                                          "استخدام الكاميرا",
+                                          style: AppText.bodyLarge.copyWith(
+                                            color: AppColor.dark,
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                          PersonalInfoControllers.pickProfileImage(
+                                            source: ImageSource.camera,
+                                            state: state,
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          if (value != null) ...[
+                            const SizedBox(height: 10),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.network(
+                                value,
+                                height: screenHeight * 0.15,
+                                width: screenWidth * 0.3,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ],
+                          if (state.hasError)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8),
+                              child: Text(
+                                state.errorText!,
+                                style: AppText.bodySmall.copyWith(
+                                  color: AppColor.primary,
+                                ),
+                              ),
+                            ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -15,8 +15,7 @@ class AddAppointment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final pageWidth = MediaQuery.of(context).size.width;
-    final pageHeight = MediaQuery.of(context).size.height;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
@@ -31,7 +30,7 @@ class AddAppointment extends StatelessWidget {
         backgroundColor: AppColor.primary,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(AppPadding.medium),
+        padding: EdgeInsets.all(AppPadding.medium),
         child: BlocProvider(
           create: (context) => CalendarCubit(),
           child: Column(
@@ -45,7 +44,7 @@ class AddAppointment extends StatelessWidget {
                 contentPadding: AppPadding.paddingSmall,
                 backgroundColor: AppColor.grey,
               ),
-              SizedBox(height: pageHeight * 0.02),
+              SizedBox(height: screenHeight * 0.02),
               DropdownButtonFormField<String>(
                 value: null,
                 items: caseTypes
@@ -66,7 +65,7 @@ class AddAppointment extends StatelessWidget {
                   contentPadding: AppPadding.paddingSmall,
                 ),
               ),
-              SizedBox(height: pageHeight * 0.02),
+              SizedBox(height: screenHeight * 0.02),
               CustomTextFormField(
                 label: 'وصف الموعد',
                 textStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
@@ -75,7 +74,7 @@ class AddAppointment extends StatelessWidget {
                 width: double.infinity,
                 backgroundColor: AppColor.grey,
               ),
-              SizedBox(height: pageHeight * 0.02),
+              SizedBox(height: screenHeight * 0.02),
               CustomTextFormField(
                 label: 'السعر بالجنيه',
                 keyboardType: TextInputType.number,
@@ -85,13 +84,12 @@ class AddAppointment extends StatelessWidget {
                 width: double.infinity,
                 backgroundColor: AppColor.grey,
               ),
-              SizedBox(height: pageHeight * 0.02),
+              SizedBox(height: screenHeight * 0.02),
               BlocBuilder<CalendarCubit, CalendarState>(
                 builder: (context, state) {
                   final selectedDate = CalendarController.getSelectedDate(
                     state,
                   );
-
                   return CustomCalendar(
                     label: "تاريخ الموعد",
                     selectedDate: selectedDate,
@@ -101,7 +99,7 @@ class AddAppointment extends StatelessWidget {
                   );
                 },
               ),
-              SizedBox(height: pageHeight * 0.03),
+              SizedBox(height: screenHeight * 0.03),
               Center(
                 child: CustomButton(
                   text: 'اضافه قضيه',

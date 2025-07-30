@@ -5,7 +5,6 @@ import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/core/styles/text.dart';
 import 'package:qanony/data/static/case_types.dart';
 import 'package:qanony/presentation/pages/selection_dialog.dart';
-
 import 'package:qanony/services/cubits/Search/cubit/search_cubit.dart';
 
 class SearchAndFilters extends StatelessWidget {
@@ -14,6 +13,8 @@ class SearchAndFilters extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<SearchCubit>();
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,12 +30,12 @@ class SearchAndFilters extends StatelessWidget {
               filled: true,
               fillColor: AppColor.grey,
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(25),
-                borderSide:  BorderSide(color: AppColor.grey, width: .7),
+                borderRadius: BorderRadius.circular(screenWidth * 0.06),
+                borderSide: BorderSide(color: AppColor.grey, width: 0.7),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(25),
-                borderSide:  BorderSide(color: AppColor.primary, width: 1),
+                borderRadius: BorderRadius.circular(screenWidth * 0.06),
+                borderSide: BorderSide(color: AppColor.primary, width: 1),
               ),
             ),
             onChanged: (value) {
@@ -42,38 +43,36 @@ class SearchAndFilters extends StatelessWidget {
             },
           ),
         ),
-
-        const SizedBox(height: 10),
+        SizedBox(height: screenHeight * 0.01),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: BlocBuilder<SearchCubit, SearchState>(
             builder: (context, state) {
               return Padding(
-                padding:AppPadding.horizontalSmall,
+                padding: AppPadding.horizontalSmall,
                 child: Row(
                   children: [
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                          cubit.clearFilters();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColor.darkgrey,
-                          foregroundColor: AppColor.primary,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        cubit.clearFilters();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColor.darkgrey,
+                        foregroundColor: AppColor.primary,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: screenWidth * 0.04,
+                          vertical: screenHeight * 0.01,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            screenWidth * 0.015,
                           ),
                         ),
-                        icon: const Icon(Icons.all_inbox),
-                        label: const Text("الكل"),
                       ),
+                      icon: const Icon(Icons.all_inbox),
+                      label: const Text("الكل"),
                     ),
-                    const SizedBox(width: 10),
+                    SizedBox(width: screenWidth * 0.025),
                     SelectionDialog(
                       label: "النوع",
                       items: const ["ذكر", "أنثى"],
@@ -81,10 +80,8 @@ class SearchAndFilters extends StatelessWidget {
                       onChanged: (val) {
                         cubit.updateFilter(newType: val);
                       },
-
-
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: screenWidth * 0.02),
                     SelectionDialog(
                       label: "التخصص",
                       items: caseTypes,
@@ -93,10 +90,14 @@ class SearchAndFilters extends StatelessWidget {
                         cubit.updateFilter(newSpecialization: val);
                       },
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: screenWidth * 0.02),
                     SelectionDialog(
                       label: "التواصل عبر",
-                      items: const ["مكالمه فيديو", "مكالمه صوتيه", "فى المكتب"],
+                      items: const [
+                        "مكالمه فيديو",
+                        "مكالمه صوتيه",
+                        "فى المكتب",
+                      ],
                       value: cubit.contactMethod,
                       onChanged: (val) {
                         String? method;
@@ -107,11 +108,7 @@ class SearchAndFilters extends StatelessWidget {
                         }
                         cubit.updateFilter(newContactMethod: method);
                       },
-
                     ),
-
-
-
                   ],
                 ),
               );

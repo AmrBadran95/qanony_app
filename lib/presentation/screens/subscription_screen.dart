@@ -15,12 +15,12 @@ import '../../services/stripe/stripe_service.dart';
 class SubscriptionScreen extends StatelessWidget {
   const SubscriptionScreen({super.key});
 
-
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     final user = FirebaseAuth.instance.currentUser;
     final email = user?.email ?? '';
-
 
     return BlocProvider(
       create: (_) => CheckoutCubit(ApiService(), StripeService()),
@@ -33,7 +33,6 @@ class SubscriptionScreen extends StatelessWidget {
                 builder: (context) => SuccessfulProcessScreen(),
               ),
             );
-
           } else if (state is CheckoutFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text("فشل الدفع: ${state.error}")),
@@ -41,14 +40,13 @@ class SubscriptionScreen extends StatelessWidget {
           }
         },
         child: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle(
+          value: const SystemUiOverlayStyle(
             statusBarColor: AppColor.grey,
             statusBarIconBrightness: Brightness.dark,
           ),
           child: Scaffold(
             body: Stack(
               children: [
-
                 Container(
                   width: double.infinity,
                   height: double.infinity,
@@ -64,11 +62,9 @@ class SubscriptionScreen extends StatelessWidget {
                   height: double.infinity,
                   color: Colors.black.withOpacity(.5),
                 ),
-
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-
                     Column(
                       children: [
                         Row(
@@ -77,40 +73,34 @@ class SubscriptionScreen extends StatelessWidget {
                             Text(
                               "Go Pro",
                               style: AppText.headingLarge.copyWith(
-                                  color: AppColor.primary),
+                                color: AppColor.primary,
+                                fontSize: screenWidth * 0.08,
+                              ),
                             ),
-                            const SizedBox(width: 8),
+                            SizedBox(width: screenWidth * 0.02),
                             Icon(
                               Icons.star_rounded,
                               color: AppColor.primary,
-                              size: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width * .1,
+                              size: screenWidth * 0.1,
                             ),
                           ],
                         ),
-                        SizedBox(height: MediaQuery
-                            .of(context)
-                            .size
-                            .width * .05),
+                        SizedBox(height: screenHeight * 0.02),
                         Text(
                           "اختر نظام الاشتراك المناسب لك",
                           style: AppText.bodyMedium.copyWith(
                             color: AppColor.primary,
                             fontWeight: FontWeight.bold,
+                            fontSize: screenWidth * 0.045,
                           ),
                         ),
                       ],
                     ),
-
-
+                    SizedBox(height: screenHeight * 0.03),
                     Padding(
                       padding: AppPadding.paddingMedium,
                       child: SubscriptionCard(
-                        onTap: () {
-
-                        },
+                        onTap: () {},
                         label: "الباقه الاولى",
                         labelColor: AppColor.secondary,
                         icon: Icons.monetization_on_outlined,
@@ -124,58 +114,54 @@ class SubscriptionScreen extends StatelessWidget {
                         text3: "تقدر تعدل أو تحذف أي موعد من جدولك .",
                       ),
                     ),
-
                     Padding(
                       padding: AppPadding.paddingMedium,
                       child: Builder(
-                        builder: (context) =>
-                            SubscriptionCard(
-                              onTap: () {
-                                context.read<CheckoutCubit>().startCheckout(
-                                  100,
-                                  email,
-                                  "باقه المحترف",
-                                );
-                              },
-                              label: "الأكثر انتشارا",
-                              labelColor: AppColor.primary,
-                              icon: Icons.percent_rounded,
-                              priceText: "20 %",
-                              title: "باقه المحترف ",
-                              option1: "عمولة التطبيق 20% لكل استشارة",
-                              text1: "التطبيق يحصل على نسبة 20% من كل استشارة ",
-                              option2: "تنظيم المواعيد بسهولة",
-                              text2: "أول 3 استشارات  بدون خصم رسوم من التطبيق",
-                              option3: "تعديل وحذف المواعيد",
-                              text3: "تقدر تعدل أو تحذف أي موعد من جدولك .",
-                            ),
+                        builder: (context) => SubscriptionCard(
+                          onTap: () {
+                            context.read<CheckoutCubit>().startCheckout(
+                              100,
+                              email,
+                              "باقه المحترف",
+                            );
+                          },
+                          label: "الأكثر انتشارا",
+                          labelColor: AppColor.primary,
+                          icon: Icons.percent_rounded,
+                          priceText: "20 %",
+                          title: "باقه المحترف ",
+                          option1: "عمولة التطبيق 20% لكل استشارة",
+                          text1: "التطبيق يحصل على نسبة 20% من كل استشارة ",
+                          option2: "تنظيم المواعيد بسهولة",
+                          text2: "أول 3 استشارات  بدون خصم رسوم من التطبيق",
+                          option3: "تعديل وحذف المواعيد",
+                          text3: "تقدر تعدل أو تحذف أي موعد من جدولك .",
+                        ),
                       ),
                     ),
-
                     Padding(
                       padding: AppPadding.paddingMedium,
                       child: Builder(
-                        builder: (context) =>
-                            SubscriptionCard(
-                              onTap: () {
-                                context.read<CheckoutCubit>().startCheckout(
-                                  600,
-                                  email,
-                                  "اشتراك شهري",
-                                );
-                              },
-                              label: "الباقه الشهريه",
-                              labelColor: AppColor.dark,
-                              icon: Icons.attach_money_outlined,
-                              priceText: "600 شهرياً",
-                              title: "باقه شهريه ",
-                              option1: "3 استشارات مجانية من العمولة",
-                              text1: "أول 3 استشارات  بدون خصم رسوم من التطبيق",
-                              option2: "تنظيم المواعيد بسهولة",
-                              text2: "أول 3 استشارات  بدون خصم رسوم من التطبيق",
-                              option3: "تعديل وحذف المواعيد",
-                              text3: "تقدر تعدل أو تحذف أي موعد من جدولك .",
-                            ),
+                        builder: (context) => SubscriptionCard(
+                          onTap: () {
+                            context.read<CheckoutCubit>().startCheckout(
+                              600,
+                              email,
+                              "اشتراك شهري",
+                            );
+                          },
+                          label: "الباقه الشهريه",
+                          labelColor: AppColor.dark,
+                          icon: Icons.attach_money_outlined,
+                          priceText: "600 شهرياً",
+                          title: "باقه شهريه ",
+                          option1: "3 استشارات مجانية من العمولة",
+                          text1: "أول 3 استشارات  بدون خصم رسوم من التطبيق",
+                          option2: "تنظيم المواعيد بسهولة",
+                          text2: "أول 3 استشارات  بدون خصم رسوم من التطبيق",
+                          option3: "تعديل وحذف المواعيد",
+                          text3: "تقدر تعدل أو تحذف أي موعد من جدولك .",
+                        ),
                       ),
                     ),
                   ],

@@ -23,6 +23,9 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return BlocProvider(
       create: (context) => AuthCubit(),
       child: BlocConsumer<AuthCubit, AuthState>(
@@ -107,7 +110,10 @@ class SignUpScreen extends StatelessWidget {
             body: SafeArea(
               child: Center(
                 child: Padding(
-                  padding: AppPadding.paddingLarge,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: screenWidth * 0.06,
+                    vertical: screenHeight * 0.02,
+                  ),
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -116,9 +122,10 @@ class SignUpScreen extends StatelessWidget {
                           'مرحباً , سجل للانضمام إلينا',
                           style: AppText.headingMedium.copyWith(
                             color: AppColor.primary,
+                            fontSize: screenWidth * 0.05,
                           ),
                         ),
-                        SizedBox(height: 50),
+                        SizedBox(height: screenHeight * 0.06),
                         Form(
                           key: SignUpFormKey.formKey,
                           child: Column(
@@ -136,14 +143,16 @@ class SignUpScreen extends StatelessWidget {
                                 labelStyle: AppText.bodyMedium.copyWith(
                                   color: AppColor.dark,
                                 ),
-                                contentPadding: AppPadding.paddingMedium,
+                                contentPadding: EdgeInsets.all(
+                                  screenWidth * 0.04,
+                                ),
                                 width: double.infinity,
-                                height: 60,
+                                height: screenHeight * 0.07,
                                 backgroundColor: AppColor.light,
                                 keyboardType: TextInputType.emailAddress,
                                 validator: AppValidators.validateEmail,
                               ),
-                              const SizedBox(height: 20),
+                              SizedBox(height: screenHeight * 0.025),
                               CustomTextFormField(
                                 logo: const Icon(
                                   Icons.phone,
@@ -157,14 +166,16 @@ class SignUpScreen extends StatelessWidget {
                                 labelStyle: AppText.bodyMedium.copyWith(
                                   color: AppColor.dark,
                                 ),
-                                contentPadding: AppPadding.paddingMedium,
+                                contentPadding: EdgeInsets.all(
+                                  screenWidth * 0.04,
+                                ),
                                 width: double.infinity,
-                                height: 60,
+                                height: screenHeight * 0.07,
                                 backgroundColor: AppColor.light,
                                 keyboardType: TextInputType.phone,
                                 validator: AppValidators.validatePhone,
                               ),
-                              const SizedBox(height: 20),
+                              SizedBox(height: screenHeight * 0.025),
                               CustomTextFormField(
                                 logo: const Icon(
                                   Icons.visibility_off,
@@ -179,15 +190,17 @@ class SignUpScreen extends StatelessWidget {
                                 labelStyle: AppText.bodyMedium.copyWith(
                                   color: AppColor.dark,
                                 ),
-                                contentPadding: AppPadding.paddingMedium,
+                                contentPadding: EdgeInsets.all(
+                                  screenWidth * 0.04,
+                                ),
                                 width: double.infinity,
-                                height: 60,
+                                height: screenHeight * 0.07,
                                 backgroundColor: AppColor.light,
                                 obscureText: true,
                                 keyboardType: TextInputType.visiblePassword,
                                 validator: AppValidators.validatePassword,
                               ),
-                              const SizedBox(height: 20),
+                              SizedBox(height: screenHeight * 0.025),
                               CustomTextFormField(
                                 logo: const Icon(
                                   Icons.visibility_off,
@@ -202,9 +215,11 @@ class SignUpScreen extends StatelessWidget {
                                 labelStyle: AppText.bodyMedium.copyWith(
                                   color: AppColor.dark,
                                 ),
-                                contentPadding: AppPadding.paddingMedium,
+                                contentPadding: EdgeInsets.all(
+                                  screenWidth * 0.04,
+                                ),
                                 width: double.infinity,
-                                height: 60,
+                                height: screenHeight * 0.07,
                                 backgroundColor: AppColor.light,
                                 obscureText: true,
                                 keyboardType: TextInputType.visiblePassword,
@@ -214,7 +229,7 @@ class SignUpScreen extends StatelessWidget {
                                       SignUpControllers.passwordController.text,
                                     ),
                               ),
-                              const SizedBox(height: 30),
+                              SizedBox(height: screenHeight * 0.04),
                               CustomButton(
                                 text: isLoading
                                     ? '...جارٍ تسجيل الحساب'
@@ -231,7 +246,7 @@ class SignUpScreen extends StatelessWidget {
                                   }
                                 },
                                 width: double.infinity,
-                                height: 55,
+                                height: screenHeight * 0.065,
                                 backgroundColor: AppColor.primary,
                                 textStyle: AppText.title.copyWith(
                                   color: AppColor.light,
@@ -240,17 +255,20 @@ class SignUpScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(height: 30),
+                        SizedBox(height: screenHeight * 0.04),
                         Center(
                           child: Text.rich(
                             TextSpan(
                               text: 'هل لديك حساب بالفعل؟ ',
-                              style: AppText.bodySmall,
+                              style: AppText.bodySmall.copyWith(
+                                fontSize: screenWidth * 0.035,
+                              ),
                               children: [
                                 TextSpan(
                                   text: 'تسجيل دخول',
                                   style: AppText.bodyMedium.copyWith(
                                     color: AppColor.primary,
+                                    fontSize: screenWidth * 0.037,
                                   ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {

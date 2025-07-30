@@ -87,9 +87,13 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
                         validator: (value) => value == null ? 'مطلوب' : null,
                       ),
                       _buildField(descriptionController, 'وصف القضية'),
-                      const SizedBox(height: 10),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.01,
+                      ),
                       _buildField(communicationType, 'طريقة التواصل مع العميل'),
-                      const SizedBox(height: 10),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.01,
+                      ),
                       Row(
                         children: [
                           Expanded(
@@ -135,32 +139,28 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
                                   builder: (context, child) {
                                     return Theme(
                                       data: Theme.of(context).copyWith(
-                                        timePickerTheme: const TimePickerThemeData(
-                                          confirmButtonStyle: ButtonStyle(
-                                            foregroundColor:
-                                                WidgetStatePropertyAll(
-                                                  AppColor.green,
-                                                ),
-                                          ),
-                                          dayPeriodColor: AppColor.secondary,
-                                          backgroundColor:
-                                              AppColor.grey, // خلفية الدايلوج
-                                          hourMinuteTextColor:
-                                              AppColor.light, // لون الأرقام
-                                          dialHandColor: AppColor
-                                              .primary, // لون عقرب الاختيار
-                                          dialBackgroundColor: AppColor
-                                              .secondary, // خلفية الدائرة
-                                          dialTextColor: AppColor
-                                              .light, // لون الأرقام داخل الدائرة
-                                          entryModeIconColor: AppColor
-                                              .dark, // لون أيقونة الكتابة
-                                        ),
+                                        timePickerTheme:
+                                            const TimePickerThemeData(
+                                              confirmButtonStyle: ButtonStyle(
+                                                foregroundColor:
+                                                    WidgetStatePropertyAll(
+                                                      AppColor.green,
+                                                    ),
+                                              ),
+                                              dayPeriodColor:
+                                                  AppColor.secondary,
+                                              backgroundColor: AppColor.grey,
+                                              hourMinuteTextColor:
+                                                  AppColor.light,
+                                              dialHandColor: AppColor.primary,
+                                              dialBackgroundColor:
+                                                  AppColor.secondary,
+                                              dialTextColor: AppColor.light,
+                                              entryModeIconColor: AppColor.dark,
+                                            ),
                                         colorScheme: const ColorScheme.dark(
-                                          primary: AppColor
-                                              .primary, // لون الساعة المختارة والزراير
-                                          onSurface: AppColor
-                                              .secondary, // لون النصوص العادية
+                                          primary: AppColor.primary,
+                                          onSurface: AppColor.secondary,
                                         ),
                                       ),
                                       child: child!,
@@ -259,6 +259,7 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<AppointmentsCubit>();
+    final screenPadding = MediaQuery.of(context).size.width * 0.04;
 
     return Stack(
       children: [
@@ -277,7 +278,11 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
             }
 
             return ListView.builder(
-              padding: const EdgeInsets.only(bottom: 80),
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).size.height * 0.1,
+                left: screenPadding,
+                right: screenPadding,
+              ),
               itemCount: appointments.length,
               itemBuilder: (context, index) {
                 final item = appointments[index];
@@ -296,8 +301,8 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
           },
         ),
         Positioned(
-          bottom: 16,
-          left: 16,
+          bottom: MediaQuery.of(context).size.height * 0.02,
+          left: screenPadding,
           child: FloatingActionButton(
             backgroundColor: AppColor.green,
             onPressed: () => _showAddDialog(context),

@@ -11,11 +11,12 @@ import 'package:qanony/services/cubits/order_lawyer/order_cubit.dart';
 
 class OrdersLawyerScreen extends StatelessWidget {
   const OrdersLawyerScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final buttonWidth = screenWidth * 0.35;
-    const buttonHeight = 40.0;
+    final size = MediaQuery.of(context).size;
+    final buttonWidth = size.width * 0.35;
+    final buttonHeight = size.height * 0.05;
 
     return BlocProvider(
       create: (context) => OrderCubit()..loadMyOrders(),
@@ -36,7 +37,10 @@ class OrdersLawyerScreen extends StatelessWidget {
             final dateFormat = DateFormat('dd-MM-yyyy • hh:mm a', 'ar');
 
             return SingleChildScrollView(
-              padding: AppPadding.paddingMedium,
+              padding: EdgeInsets.symmetric(
+                horizontal: size.width * 0.04,
+                vertical: size.height * 0.02,
+              ),
               child: Column(
                 children: pendingOrders.map((order) {
                   return QanonyAppointmentCardWidget(

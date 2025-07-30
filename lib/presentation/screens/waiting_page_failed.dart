@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:qanony/Core/styles/color.dart';
+import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/Core/widgets/custom_button.dart';
 import 'package:qanony/presentation/screens/choose_role_screen.dart';
@@ -28,15 +29,15 @@ class WaitingPageFailed extends StatelessWidget {
         body: Center(
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: width * 0.08,
-              vertical: height * 0.04,
+              horizontal: width * 0.06,
+              vertical: height * 0.03,
             ),
             child: BlocConsumer<LawyerRejectionCubit, LawyerRejectionState>(
               listener: (context, state) {
                 if (state is LawyerRejectionDeleted) {
                   Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (_) => ChooseRoleScreen()),
+                    MaterialPageRoute(builder: (_) => const ChooseRoleScreen()),
                     (route) => false,
                   );
                 }
@@ -47,7 +48,14 @@ class WaitingPageFailed extends StatelessWidget {
                 }
 
                 if (state is LawyerRejectionError) {
-                  return const Text('حدث خطأ أثناء جلب البيانات');
+                  return Text(
+                    'حدث خطأ أثناء جلب البيانات',
+                    style: AppText.bodyLarge.copyWith(
+                      color: AppColor.dark,
+                      fontSize: width * 0.045,
+                    ),
+                    textAlign: TextAlign.center,
+                  );
                 }
 
                 final reasons = state is LawyerRejectionLoaded
@@ -67,7 +75,7 @@ class WaitingPageFailed extends StatelessWidget {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(height: height * 0.03),
+                      SizedBox(height: height * 0.025),
                       Text(
                         'تم رفض طلبك! برجاء التأكد من صحة البيانات والمحاولة مرة أخرى.',
                         style: AppText.bodyLarge.copyWith(
@@ -89,7 +97,7 @@ class WaitingPageFailed extends StatelessWidget {
                         ...reasons.map(
                           (reason) => Padding(
                             padding: EdgeInsets.symmetric(
-                              vertical: height * 0.005,
+                              vertical: height * 0.007,
                             ),
                             child: Text(
                               '• $reason',
@@ -101,7 +109,7 @@ class WaitingPageFailed extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(height: height * 0.02),
+                        SizedBox(height: height * 0.025),
                       ],
                       CustomButton(
                         text: 'العودة إلى تسجيل الدخول',

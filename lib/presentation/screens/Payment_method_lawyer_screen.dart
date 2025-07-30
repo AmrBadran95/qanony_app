@@ -21,6 +21,7 @@ class _PaymentMethodLawyerScreenState extends State<PaymentMethodLawyerScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final padding = size.width * 0.04;
 
     return Scaffold(
       backgroundColor: AppColor.grey,
@@ -40,7 +41,7 @@ class _PaymentMethodLawyerScreenState extends State<PaymentMethodLawyerScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: AppPadding.paddingMedium,
+          padding: EdgeInsets.all(padding),
           child: Column(
             children: [
               PaymentMethodOption(
@@ -52,6 +53,7 @@ class _PaymentMethodLawyerScreenState extends State<PaymentMethodLawyerScreen> {
                   setState(() => _selectedMethod = 'credit_card');
                 },
               ),
+              SizedBox(height: size.height * 0.015),
               PaymentMethodOption(
                 selectedMethod: _selectedMethod,
                 method: 'bank_transfer',
@@ -61,17 +63,17 @@ class _PaymentMethodLawyerScreenState extends State<PaymentMethodLawyerScreen> {
                   setState(() => _selectedMethod = 'bank_transfer');
                 },
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: size.height * 0.03),
               PaymentDetailsContainer(
                 selectedMethod: _selectedMethod,
                 maxHeight: min(size.height * 0.45, 280),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: size.height * 0.03),
               CustomButton(
                 text: 'متابعة الدفع',
                 onTap: () {},
                 width: double.infinity,
-                height: 50,
+                height: size.height * 0.06,
                 backgroundColor: AppColor.primary,
                 textStyle: AppText.title,
                 textColor: AppColor.light,

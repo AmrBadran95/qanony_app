@@ -9,6 +9,7 @@ class PaymentLawyerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: AppColor.grey,
       appBar: AppBar(
@@ -25,12 +26,15 @@ class PaymentLawyerScreen extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: AppPadding.paddingMedium,
+        padding: EdgeInsets.symmetric(
+          horizontal: size.width * 0.05,
+          vertical: size.height * 0.02,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              padding: AppPadding.paddingMedium,
+              padding: EdgeInsets.all(size.width * 0.04),
               decoration: BoxDecoration(
                 color: AppColor.light,
                 borderRadius: BorderRadius.circular(8),
@@ -39,7 +43,7 @@ class PaymentLawyerScreen extends StatelessWidget {
                 children: [
                   Container(
                     width: double.infinity,
-                    padding: AppPadding.paddingMedium,
+                    padding: EdgeInsets.all(size.width * 0.04),
                     decoration: BoxDecoration(
                       color: AppColor.grey,
                       borderRadius: BorderRadius.circular(4),
@@ -50,7 +54,7 @@ class PaymentLawyerScreen extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: size.height * 0.02),
                   Align(
                     alignment: Alignment.centerRight,
                     child: Text(
@@ -58,7 +62,7 @@ class PaymentLawyerScreen extends StatelessWidget {
                       style: AppText.title.copyWith(color: AppColor.dark),
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: size.height * 0.01),
                   Align(
                     alignment: Alignment.centerRight,
                     child: Text(
@@ -83,22 +87,22 @@ class PaymentLawyerScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: size.height * 0.03),
             CustomButton(
               text: 'الغاء الاشتراك',
               onTap: () {},
               width: double.infinity,
-              height: 50,
+              height: size.height * 0.06,
               backgroundColor: AppColor.primary,
               textStyle: AppText.title,
               textColor: AppColor.light,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: size.height * 0.02),
             CustomButton(
               text: 'العودة للصفحه الرئيسية',
               onTap: () {},
               width: double.infinity,
-              height: 50,
+              height: size.height * 0.06,
               backgroundColor: AppColor.secondary,
               textStyle: AppText.title,
               textColor: AppColor.dark,

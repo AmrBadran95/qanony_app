@@ -14,16 +14,18 @@ class AiChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60),
+        preferredSize: Size.fromHeight(height * 0.08),
         child: AppBar(
           backgroundColor: AppColor.primary,
           title: Padding(
-            padding: EdgeInsets.only(
-              left: MediaQuery.of(context).size.width * 0.01,
-              right: MediaQuery.of(context).size.width * 0.01,
-              bottom: MediaQuery.of(context).size.height * 0.01,
+            padding: EdgeInsets.symmetric(
+              horizontal: width * 0.02,
+              vertical: height * 0.01,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -38,7 +40,10 @@ class AiChatScreen extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: AppPadding.paddingLarge,
+        padding: EdgeInsets.symmetric(
+          horizontal: width * 0.05,
+          vertical: height * 0.02,
+        ),
         child: Column(
           children: [
             GestureDetector(
@@ -54,12 +59,16 @@ class AiChatScreen extends StatelessWidget {
                     "مسح المحادثة",
                     style: AppText.bodySmall.copyWith(color: AppColor.primary),
                   ),
-                  SizedBox(width: MediaQuery.of(context).size.width * .02),
-                  Icon(Icons.delete, size: 20, color: AppColor.primary),
+                  SizedBox(width: width * 0.02),
+                  Icon(
+                    Icons.delete,
+                    size: width * 0.05,
+                    color: AppColor.primary,
+                  ),
                 ],
               ),
             ),
-            SizedBox(height: MediaQuery.of(context).size.height * .02),
+            SizedBox(height: height * 0.02),
             Expanded(
               child: BlocConsumer<GeminiCubit, GeminiState>(
                 listener: (context, state) {
@@ -81,7 +90,7 @@ class AiChatScreen extends StatelessWidget {
                 },
                 builder: (context, state) {
                   return ListView.builder(
-                    padding: AppPadding.paddingMedium,
+                    padding: EdgeInsets.all(width * 0.03),
                     reverse: true,
                     itemCount: messages.length,
                     itemBuilder: (context, index) {
@@ -93,22 +102,20 @@ class AiChatScreen extends StatelessWidget {
                             ? Alignment.centerRight
                             : Alignment.centerLeft,
                         child: Container(
-                          margin: AppPadding.verticalMedium,
-                          padding: AppPadding.paddingMedium,
-                          constraints: BoxConstraints(
-                            maxWidth: MediaQuery.of(context).size.width * 0.75,
-                          ),
+                          margin: EdgeInsets.symmetric(vertical: height * 0.01),
+                          padding: EdgeInsets.all(width * 0.03),
+                          constraints: BoxConstraints(maxWidth: width * 0.75),
                           decoration: BoxDecoration(
                             borderRadius: isUser
                                 ? BorderRadius.only(
-                                    topLeft: Radius.circular(8),
-                                    topRight: Radius.circular(8),
-                                    bottomLeft: Radius.circular(8),
+                                    topLeft: Radius.circular(width * 0.02),
+                                    topRight: Radius.circular(width * 0.02),
+                                    bottomLeft: Radius.circular(width * 0.02),
                                   )
                                 : BorderRadius.only(
-                                    topLeft: Radius.circular(8),
-                                    topRight: Radius.circular(8),
-                                    bottomRight: Radius.circular(8),
+                                    topLeft: Radius.circular(width * 0.02),
+                                    topRight: Radius.circular(width * 0.02),
+                                    bottomRight: Radius.circular(width * 0.02),
                                   ),
                             color: isUser ? AppColor.primary : AppColor.grey,
                           ),
@@ -129,23 +136,23 @@ class AiChatScreen extends StatelessWidget {
                 },
               ),
             ),
-            SizedBox(height: MediaQuery.of(context).size.height * .02),
+            SizedBox(height: height * 0.02),
             Row(
               children: [
                 BlocBuilder<GeminiCubit, GeminiState>(
                   builder: (context, state) {
                     return IconButton(
                       icon: state is GeminiLoading
-                          ? const SizedBox(
-                              width: 24,
-                              height: 24,
+                          ? SizedBox(
+                              width: width * 0.06,
+                              height: width * 0.06,
                               child: CircularProgressIndicator(
                                 color: AppColor.dark,
                               ),
                             )
-                          : const Icon(
+                          : Icon(
                               Icons.keyboard_arrow_right_sharp,
-                              size: 40,
+                              size: width * 0.08,
                               color: AppColor.dark,
                             ),
                       onPressed: state is GeminiLoading
@@ -178,15 +185,15 @@ class AiChatScreen extends StatelessWidget {
                       ),
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: AppColor.dark),
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(width * 0.07),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: AppColor.dark),
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(width * 0.07),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: AppColor.dark),
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(width * 0.07),
                       ),
                     ),
                   ),

@@ -17,18 +17,21 @@ class LawyermentInfoForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Form(
       key: LawyermentInfoFormKey.formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: MediaQuery.of(context).size.height * .01),
+          SizedBox(height: screenHeight * 0.01),
 
           CustomTextFormField(
             controller: LawyermentInfoControllers.aboutMeController,
             validator: LawyermentInfoValidators.validateAboutMe,
-            width: double.infinity,
-            height: 100,
+            width: screenWidth,
+            height: screenHeight * 0.13,
             label: "نبذة عني",
             contentPadding: AppPadding.paddingMedium,
             backgroundColor: AppColor.grey,
@@ -37,13 +40,13 @@ class LawyermentInfoForm extends StatelessWidget {
             maxLines: 3,
           ),
 
-          SizedBox(height: MediaQuery.of(context).size.height * .01),
+          SizedBox(height: screenHeight * 0.01),
 
           CustomTextFormField(
             controller: LawyermentInfoControllers.registrationNumberController,
             validator: LawyermentInfoValidators.validateRegistrationNumber,
-            width: double.infinity,
-            height: 60,
+            width: screenWidth,
+            height: screenHeight * 0.08,
             label: "رقم القيد بنقابة المحامين",
             keyboardType: TextInputType.number,
             contentPadding: AppPadding.paddingMedium,
@@ -52,58 +55,53 @@ class LawyermentInfoForm extends StatelessWidget {
             labelStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
           ),
 
-          SizedBox(height: MediaQuery.of(context).size.height * .01),
+          SizedBox(height: screenHeight * 0.01),
 
-          Builder(
-            builder: (context) {
-              return BlocBuilder<RegistrationDateCubit, RegistrationDateState>(
-                builder: (context, dateState) {
-                  final selectedDate = dateState is RegistrationDateSelected
-                      ? dateState.selectedDate
-                      : null;
+          BlocBuilder<RegistrationDateCubit, RegistrationDateState>(
+            builder: (context, dateState) {
+              final selectedDate = dateState is RegistrationDateSelected
+                  ? dateState.selectedDate
+                  : null;
 
-                  return FormField<DateTime>(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (_) {
-                      return LawyermentInfoValidators.validateRegistrationDate(
-                        selectedDate,
-                      );
-                    },
-                    builder: (state) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomCalendar(
-                            label: "تاريخ القيد",
-                            prevOnly: true,
-                            selectedDate: selectedDate,
-                            onDateSelected: (date) {
-                              context.read<RegistrationDateCubit>().selectDate(
-                                date,
-                              );
-                              state.didChange(date);
-                            },
-                          ),
-                          if (state.hasError)
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8),
-                              child: Text(
-                                state.errorText!,
-                                style: AppText.bodySmall.copyWith(
-                                  color: AppColor.primary,
-                                ),
-                              ),
+              return FormField<DateTime>(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (_) =>
+                    LawyermentInfoValidators.validateRegistrationDate(
+                      selectedDate,
+                    ),
+                builder: (state) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomCalendar(
+                        label: "تاريخ القيد",
+                        prevOnly: true,
+                        selectedDate: selectedDate,
+                        onDateSelected: (date) {
+                          context.read<RegistrationDateCubit>().selectDate(
+                            date,
+                          );
+                          state.didChange(date);
+                        },
+                      ),
+                      if (state.hasError)
+                        Padding(
+                          padding: EdgeInsets.only(top: screenHeight * 0.008),
+                          child: Text(
+                            state.errorText!,
+                            style: AppText.bodySmall.copyWith(
+                              color: AppColor.primary,
                             ),
-                        ],
-                      );
-                    },
+                          ),
+                        ),
+                    ],
                   );
                 },
               );
             },
           ),
 
-          SizedBox(height: MediaQuery.of(context).size.height * .01),
+          SizedBox(height: screenHeight * 0.01),
 
           ValueListenableBuilder<List<String>>(
             valueListenable: LawyermentInfoControllers.specializationList,
@@ -180,7 +178,6 @@ class LawyermentInfoForm extends StatelessWidget {
                       );
                     },
                   );
-
                   if (result != null) {
                     LawyermentInfoControllers.specializationList.value = result;
                   }
@@ -200,8 +197,8 @@ class LawyermentInfoForm extends StatelessWidget {
                             controller: TextEditingController(
                               text: selectedList.join(', '),
                             ),
-                            width: double.infinity,
-                            height: 60,
+                            width: screenWidth,
+                            height: screenHeight * 0.08,
                             label: "التخصصات",
                             contentPadding: AppPadding.paddingMedium,
                             backgroundColor: AppColor.grey,
@@ -214,7 +211,9 @@ class LawyermentInfoForm extends StatelessWidget {
                           ),
                           if (state.hasError)
                             Padding(
-                              padding: const EdgeInsets.only(top: 8),
+                              padding: EdgeInsets.only(
+                                top: screenHeight * 0.008,
+                              ),
                               child: Text(
                                 state.errorText!,
                                 style: AppText.bodySmall.copyWith(
@@ -231,7 +230,7 @@ class LawyermentInfoForm extends StatelessWidget {
             },
           ),
 
-          SizedBox(height: MediaQuery.of(context).size.height * .01),
+          SizedBox(height: screenHeight * 0.02),
 
           Center(
             child: FormField<String>(
@@ -244,94 +243,92 @@ class LawyermentInfoForm extends StatelessWidget {
                   valueListenable: LawyermentInfoControllers.cardImage,
                   builder: (context, value, _) {
                     return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Center(
-                          child: CustomButton(
-                            text: "صورة كارنيه النقابة",
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            height: 60,
-                            backgroundColor: AppColor.secondary,
-                            textStyle: AppText.bodyLarge.copyWith(
-                              color: AppColor.dark,
-                            ),
-                            textColor: AppColor.dark,
-                            onTap: () {
-                              showModalBottomSheet(
-                                context: context,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(8),
-                                  ),
-                                ),
-                                builder: (_) => Padding(
-                                  padding: AppPadding.paddingExtraLarge,
-                                  child: Wrap(
-                                    children: [
-                                      ListTile(
-                                        leading: const Icon(
-                                          Icons.photo_library,
-                                          color: AppColor.secondary,
-                                        ),
-                                        title: Text(
-                                          "اختيار من المعرض",
-                                          style: AppText.bodyLarge.copyWith(
-                                            color: AppColor.dark,
-                                          ),
-                                        ),
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                          LawyermentInfoControllers.pickCardImage(
-                                            source: ImageSource.gallery,
-                                            state: state,
-                                          );
-                                        },
-                                      ),
-                                      ListTile(
-                                        leading: const Icon(
-                                          Icons.camera_alt,
-                                          color: AppColor.secondary,
-                                        ),
-                                        title: Text(
-                                          "استخدام الكاميرا",
-                                          style: AppText.bodyLarge.copyWith(
-                                            color: AppColor.dark,
-                                          ),
-                                        ),
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                          LawyermentInfoControllers.pickCardImage(
-                                            source: ImageSource.camera,
-                                            state: state,
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
+                        CustomButton(
+                          text: "صورة كارنيه النقابة",
+                          width: screenWidth * 0.5,
+                          height: screenHeight * 0.075,
+                          backgroundColor: AppColor.secondary,
+                          textStyle: AppText.bodyLarge.copyWith(
+                            color: AppColor.dark,
                           ),
-                        ),
-                        const SizedBox(height: 10),
-                        if (value != null) ...[
-                          Center(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.network(
-                                value,
-                                height: 120,
-                                width: 120,
-                                fit: BoxFit.cover,
+                          textColor: AppColor.dark,
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(8),
+                                ),
                               ),
+                              builder: (_) => Padding(
+                                padding: AppPadding.paddingExtraLarge,
+                                child: Wrap(
+                                  children: [
+                                    ListTile(
+                                      leading: const Icon(
+                                        Icons.photo_library,
+                                        color: AppColor.secondary,
+                                      ),
+                                      title: Text(
+                                        "اختيار من المعرض",
+                                        style: AppText.bodyLarge.copyWith(
+                                          color: AppColor.dark,
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                        LawyermentInfoControllers.pickCardImage(
+                                          source: ImageSource.gallery,
+                                          state: state,
+                                        );
+                                      },
+                                    ),
+                                    ListTile(
+                                      leading: const Icon(
+                                        Icons.camera_alt,
+                                        color: AppColor.secondary,
+                                      ),
+                                      title: Text(
+                                        "استخدام الكاميرا",
+                                        style: AppText.bodyLarge.copyWith(
+                                          color: AppColor.dark,
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                        LawyermentInfoControllers.pickCardImage(
+                                          source: ImageSource.camera,
+                                          state: state,
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        SizedBox(height: screenHeight * 0.01),
+                        if (value != null)
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.network(
+                              value,
+                              height: screenHeight * 0.18,
+                              width: screenWidth * 0.3,
+                              fit: BoxFit.cover,
                             ),
                           ),
-                        ],
                         if (state.hasError)
-                          Text(
-                            state.errorText!,
-                            style: AppText.bodySmall.copyWith(
-                              color: AppColor.primary,
+                          Padding(
+                            padding: EdgeInsets.only(top: screenHeight * 0.008),
+                            child: Text(
+                              state.errorText!,
+                              style: AppText.bodySmall.copyWith(
+                                color: AppColor.primary,
+                              ),
                             ),
                           ),
                       ],

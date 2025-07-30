@@ -26,6 +26,10 @@ class LawyerInformation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final blockHeight = size.height / 100;
+    final blockWidth = size.width / 100;
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => MultiStepperCubit()),
@@ -113,10 +117,11 @@ class LawyerInformation extends StatelessWidget {
                         final isLoading = state is LawyerConfirmationLoading;
 
                         return Padding(
-                          padding: AppPadding.paddingSmall,
+                          padding: AppPadding.paddingMedium,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              SizedBox(height: blockHeight * 2),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -126,7 +131,7 @@ class LawyerInformation extends StatelessWidget {
                                       color: AppColor.dark,
                                     ),
                                   ),
-                                  const SizedBox(width: 8),
+                                  SizedBox(width: blockWidth * 2),
                                   const Icon(
                                     Icons.person,
                                     color: AppColor.dark,
@@ -134,13 +139,13 @@ class LawyerInformation extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 16),
+                              SizedBox(height: blockHeight * 2.5),
                               const Expanded(child: MultiStepperForm()),
-                              const SizedBox(height: 16),
+                              SizedBox(height: blockHeight * 2.5),
                               ValueListenableBuilder<bool>(
                                 valueListenable:
                                     ConfirmationControllers.confirmedInfo,
-                                builder: (_, value, _) {
+                                builder: (_, value, __) {
                                   return CheckboxListTile(
                                     value: value,
                                     onChanged: (val) =>
@@ -160,11 +165,11 @@ class LawyerInformation extends StatelessWidget {
                                   );
                                 },
                               ),
-                              const SizedBox(height: 8),
+                              SizedBox(height: blockHeight * 1.5),
                               ValueListenableBuilder<bool>(
                                 valueListenable:
                                     ConfirmationControllers.agreedToTerms,
-                                builder: (_, value, _) {
+                                builder: (_, value, __) {
                                   return CheckboxListTile(
                                     value: value,
                                     onChanged: (val) =>
@@ -184,7 +189,7 @@ class LawyerInformation extends StatelessWidget {
                                   );
                                 },
                               ),
-                              const SizedBox(height: 16),
+                              SizedBox(height: blockHeight * 2.5),
                               CustomButton(
                                 text: isLoading
                                     ? "جارٍ الإرسال..."
@@ -207,7 +212,7 @@ class LawyerInformation extends StatelessWidget {
                                       );
                                 },
                                 width: double.infinity,
-                                height: 60,
+                                height: size.height * 0.07,
                                 backgroundColor: isLoading
                                     ? AppColor.grey
                                     : AppColor.secondary,
@@ -216,7 +221,7 @@ class LawyerInformation extends StatelessWidget {
                                 ),
                                 textColor: AppColor.dark,
                               ),
-                              const SizedBox(height: 16),
+                              SizedBox(height: blockHeight * 2.5),
                             ],
                           ),
                         );

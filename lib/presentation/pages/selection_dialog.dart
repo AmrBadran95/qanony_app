@@ -14,7 +14,6 @@ class SelectionDialog extends StatelessWidget {
     required this.items,
     required this.value,
     required this.onChanged,
-
   });
 
   void _showSelectionDialog(BuildContext context) {
@@ -45,11 +44,16 @@ class SelectionDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return GestureDetector(
       onTap: () => _showSelectionDialog(context),
       child: Container(
-        width: 120,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        width: screenWidth * 0.3,
+        padding: EdgeInsets.symmetric(
+          horizontal: screenWidth * 0.03,
+          vertical: screenWidth * 0.025,
+        ),
         decoration: BoxDecoration(
           border: Border.all(color: AppColor.grey),
           color: AppColor.light,
@@ -65,7 +69,6 @@ class SelectionDialog extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-
           ],
         ),
       ),

@@ -11,13 +11,15 @@ class ContactForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Form(
       key: ContactFormKey.formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(width: MediaQuery.of(context).size.width * 0.01),
-
+          SizedBox(width: screenWidth * 0.01),
           ValueListenableBuilder<bool>(
             valueListenable: ContactControllers.callEnabled,
             builder: (context, isChecked, _) {
@@ -32,7 +34,7 @@ class ContactForm extends StatelessWidget {
                             ContactControllers.callEnabled.value = value!,
                         activeColor: AppColor.green,
                       ),
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.01),
+                      SizedBox(width: screenWidth * 0.01),
                       Text(
                         "مكالمة صوتية / فيديو",
                         style: AppText.bodyLarge.copyWith(color: AppColor.dark),
@@ -48,7 +50,7 @@ class ContactForm extends StatelessWidget {
                             isChecked,
                           ),
                       width: double.infinity,
-                      height: 60,
+                      height: screenHeight * 0.07,
                       label: "سعر الجلسة",
                       backgroundColor: AppColor.grey,
                       contentPadding: AppPadding.paddingMedium,
@@ -60,13 +62,12 @@ class ContactForm extends StatelessWidget {
                       ),
                       keyboardType: TextInputType.number,
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                    SizedBox(height: screenHeight * 0.01),
                   ],
                 ],
               );
             },
           ),
-
           ValueListenableBuilder<bool>(
             valueListenable: ContactControllers.officeEnabled,
             builder: (context, isChecked, _) {
@@ -81,7 +82,7 @@ class ContactForm extends StatelessWidget {
                             ContactControllers.officeEnabled.value = value!,
                         activeColor: AppColor.green,
                       ),
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.01),
+                      SizedBox(width: screenWidth * 0.01),
                       Text(
                         "حجز في المكتب",
                         style: AppText.bodyLarge.copyWith(color: AppColor.dark),
@@ -97,7 +98,7 @@ class ContactForm extends StatelessWidget {
                             isChecked,
                           ),
                       width: double.infinity,
-                      height: 60,
+                      height: screenHeight * 0.07,
                       label: "سعر الجلسة",
                       backgroundColor: AppColor.grey,
                       contentPadding: AppPadding.paddingMedium,
@@ -109,7 +110,7 @@ class ContactForm extends StatelessWidget {
                       ),
                       keyboardType: TextInputType.number,
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                    SizedBox(height: screenHeight * 0.01),
                   ],
                 ],
               );

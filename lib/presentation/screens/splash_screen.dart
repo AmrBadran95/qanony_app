@@ -20,6 +20,8 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     context.read<SplashCubit>().initializeApp();
 
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return BlocListener<SplashCubit, SplashState>(
       listener: (context, state) {
         if (state is SplashFirstLaunch) {
@@ -74,7 +76,7 @@ class SplashScreen extends StatelessWidget {
               content: Row(
                 children: [
                   const Icon(Icons.error_outline, color: AppColor.primary),
-                  const SizedBox(width: 12),
+                  SizedBox(width: screenHeight * 0.015),
                   Expanded(
                     child: Text(
                       "حدث خطأ ما. برجاء إعادة المحاولة",
@@ -90,7 +92,7 @@ class SplashScreen extends StatelessWidget {
               margin: AppPadding.paddingMedium,
               padding: AppPadding.paddingMedium,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(screenHeight * 0.01),
               ),
               elevation: 6,
               duration: const Duration(seconds: 3),
@@ -103,7 +105,7 @@ class SplashScreen extends StatelessWidget {
           width: double.infinity,
           height: double.infinity,
           padding: AppPadding.paddingExtraLarge,
-          decoration: BoxDecoration(color: AppColor.primary),
+          color: AppColor.primary,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -111,13 +113,14 @@ class SplashScreen extends StatelessWidget {
               Image.asset(
                 "assets/images/Logo.png",
                 fit: BoxFit.fill,
-                height: MediaQuery.of(context).size.height * .4,
+                height: screenHeight * 0.4,
               ),
+              SizedBox(height: screenHeight * 0.04),
               Text(
                 "قانوني",
                 style: AppText.appHeading.copyWith(color: AppColor.light),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * .05),
+              SizedBox(height: screenHeight * 0.05),
               Text(
                 "للمحـاماة و الأستشارات القانونية ",
                 style: AppText.title.copyWith(color: AppColor.secondary),
