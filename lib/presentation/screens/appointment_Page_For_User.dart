@@ -30,6 +30,7 @@ class AppointmentPageForUser extends StatelessWidget {
     final String userId = user?.uid??"";
     final orderService = OrderFirestoreService();
 
+
     return
       MultiBlocProvider(
         providers: [
@@ -247,11 +248,11 @@ class AppointmentPageForUser extends StatelessWidget {
                                                 ),
                                               ],
                                             )
-                                            :data.status== OrderStatus.acceptedByLawyer?
+                                            :data.status== OrderStatus.paymentDone?
                                              CustomButton(
                                               text: "انضم الى الجلسة",
                                               onTap: () async {
-                                                callService.onUserLogin(data.userId, data.userName);
+
                                                 await ZegoUIKitPrebuiltCallInvitationService().send(
                                                   resourceID: "QanonyApp",
                                                   invitees: [
@@ -270,21 +271,7 @@ class AppointmentPageForUser extends StatelessWidget {
                                               backgroundColor: AppColor.green,
                                               textStyle: AppText.bodySmall,
                                         )
-                                        // ZegoSendCallInvitationButton(
-                                        //
-                                        //   isVideoCall: true,
-                                        //   //You need to use the resourceID that you created in the subsequent steps.
-                                        //   //Please continue reading this document.
-                                        //   resourceID: "QanonyApp",
-                                        //   invitees: [
-                                        //     ZegoUIKitUser(
-                                        //       id: data.lawyerId,
-                                        //       name: lawyer.fullName.toString(),
-                                        //     ),
-                                        //
-                                        //
-                                        //   ],
-                                        // )
+
                                             : const SizedBox.shrink(),
 
                                       ],
