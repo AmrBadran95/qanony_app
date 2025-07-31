@@ -23,7 +23,8 @@ import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'package:zego_uikit/zego_uikit.dart';
 import 'Core/shared/app_cache.dart';
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey <NavigatorState>();
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,10 +39,10 @@ void main() async {
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await ZegoUIKit().initLog().then((value) async {
-    await ZegoUIKitPrebuiltCallInvitationService().useSystemCallingUI(
-      [ZegoUIKitSignalingPlugin()],
-    );
-  runApp(const QanonyApp());
+    await ZegoUIKitPrebuiltCallInvitationService().useSystemCallingUI([
+      ZegoUIKitSignalingPlugin(),
+    ]);
+    runApp(const QanonyApp());
   });
 }
 
