@@ -27,6 +27,12 @@ dependencies:
   dio: ^5.8.0+1
   flutter_stripe: ^11.5.0
   flutter_dotenv: ^5.2.1
+  share_plus: ^11.0.0
+  pdf: ^3.11.3
+  printing: ^5.14.2
+  path_provider: ^2.1.5
+  url_launcher: ^6.3.2
+  app_links: ^6.4.0
   zego_uikit_prebuilt_call: ^4.16.5
   zego_uikit_signaling_plugin: ^2.8.15
   firebase_messaging: ^15.2.10

@@ -4,7 +4,6 @@ import 'package:qanony/core/styles/color.dart';
 import 'package:qanony/core/widgets/custom_button.dart';
 import 'package:qanony/core/styles/padding.dart';
 import 'package:qanony/core/styles/text.dart';
-import 'package:qanony/presentation/pages/bank_account_form.dart';
 import 'package:qanony/presentation/pages/contact_form.dart';
 import 'package:qanony/presentation/pages/lawyerment_info_form.dart';
 import 'package:qanony/presentation/pages/personal_info_form.dart';
@@ -105,20 +104,10 @@ class MultiStepperForm extends StatelessWidget {
                   : StepState.indexed,
             ),
             Step(
-              title: Text('بيانات الحساب البنكي'),
-              content: const BankAccountForm(),
-              isActive: currentStep >= 2,
-              state: currentStep > 2
-                  ? StepState.complete
-                  : state is MultiStepperStepError && currentStep == 2
-                  ? StepState.error
-                  : StepState.indexed,
-            ),
-            Step(
               title: Text('طريفة التواصل'),
               content: const ContactForm(),
-              isActive: currentStep >= 3,
-              state: state is MultiStepperStepError && currentStep == 3
+              isActive: currentStep >= 2,
+              state: state is MultiStepperStepError && currentStep == 2
                   ? StepState.error
                   : StepState.indexed,
             ),

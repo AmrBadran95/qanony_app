@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:qanony/data/models/lawyer_model.dart';
-import 'package:qanony/services/controllers/bank_account_controller.dart';
 import 'package:qanony/services/controllers/contact_controller.dart';
 import 'package:qanony/services/controllers/lawyerment_controller.dart';
 import 'package:qanony/services/controllers/personal_info_controllers.dart';
@@ -34,15 +33,12 @@ class LawyerConfirmationCubit extends Cubit<LawyerConfirmationState> {
     try {
       PersonalInfoFormKey.formKey.currentState?.save();
       LawyermentInfoFormKey.formKey.currentState?.save();
-      BankAccountFormKey.formKey.currentState?.save();
       ContactFormKey.formKey.currentState?.save();
 
       final personalValid =
           PersonalInfoFormKey.formKey.currentState?.validate() ?? false;
       final lawyerValid =
           LawyermentInfoFormKey.formKey.currentState?.validate() ?? false;
-      final bankValid =
-          BankAccountFormKey.formKey.currentState?.validate() ?? false;
       final contactValid =
           ContactFormKey.formKey.currentState?.validate() ?? false;
 
@@ -53,10 +49,7 @@ class LawyerConfirmationCubit extends Cubit<LawyerConfirmationState> {
           ),
         );
         return false;
-      } else if (!personalValid ||
-          !lawyerValid ||
-          !bankValid ||
-          !contactValid) {
+      } else if (!personalValid || !lawyerValid || !contactValid) {
         emit(
           LawyerConfirmationValidationError(
             "تأكد من ملء جميع الحقول بشكل صحيح",
@@ -100,10 +93,6 @@ class LawyerConfirmationCubit extends Cubit<LawyerConfirmationState> {
         registrationDate: registrationDate,
         specialty: LawyermentInfoControllers.specializationList.value,
         cardImageUrl: LawyermentInfoControllers.cardImage.value,
-        bankName: BankAccountControllers.bankNameController.text,
-        accountHolderName: BankAccountControllers.accountHolderController.text,
-        accountNumber: BankAccountControllers.accountNumberController.text
-            .trim(),
         offersCall: ContactControllers.callEnabled.value,
         callPrice: double.tryParse(
           ContactValidators.convertArabicNumbersToEnglish(

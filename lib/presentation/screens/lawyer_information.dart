@@ -4,9 +4,11 @@ import 'package:qanony/core/styles/color.dart';
 import 'package:qanony/core/styles/padding.dart';
 import 'package:qanony/core/styles/text.dart';
 import 'package:qanony/core/widgets/custom_button.dart';
+import 'package:qanony/data/repos/stripe_connect_repo.dart';
 import 'package:qanony/presentation/pages/multi_stepper_form.dart';
-import 'package:qanony/presentation/screens/waiting_page.dart';
+import 'package:qanony/presentation/screens/lawyer_connect.dart';
 import 'package:qanony/services/controllers/lawyer_info_confirmation_controller.dart';
+import 'package:qanony/services/cubits/connect/connect_cubit.dart';
 import 'package:qanony/services/cubits/date_of_birth/date_of_birth_cubit.dart';
 import 'package:qanony/services/cubits/lawyer_confirmation/lawyer_confirmation_cubit.dart';
 import 'package:qanony/services/cubits/registration_date/registration_date_cubit.dart';
@@ -73,7 +75,13 @@ class LawyerInformation extends StatelessWidget {
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const WaitingPage(),
+                              builder: (_) => BlocProvider(
+                                create: (_) => ConnectCubit(ConnectRepo()),
+                                child: LawyerConnect(
+                                  lawyerId: uid,
+                                  email: email,
+                                ),
+                              ),
                             ),
                             (route) => false,
                           );

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,20 +7,24 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/data/repos/gemini_repo.dart';
+import 'package:qanony/data/repos/stripe_subscription_repo.dart';
 import 'package:qanony/firebase_options.dart';
 import 'package:qanony/presentation/screens/splash_screen.dart';
 import 'package:qanony/services/cubits/appointments/appointments_cubit.dart';
 import 'package:qanony/services/cubits/auth_cubit/auth_cubit.dart';
+import 'package:qanony/services/cubits/deep_link/deep_link_cubit.dart';
 import 'package:qanony/services/cubits/gemini/gemini_cubit.dart';
 import 'package:qanony/services/cubits/lawyer_info/lawyer_info_cubit.dart';
 import 'package:qanony/services/cubits/role/role_cubit.dart';
 import 'package:qanony/services/cubits/splash/splash_cubit.dart';
+import 'package:qanony/services/cubits/subscription/stripe_subscription_cubit.dart';
 import 'package:qanony/services/firestore/lawyer_firestore_service.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'package:zego_uikit/zego_uikit.dart';
 import 'Core/shared/app_cache.dart';
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey <NavigatorState>();
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,12 +35,14 @@ void main() async {
   final key = dotenv.env['STRIPE_PUBLISHABLE_KEY']!;
   Stripe.publishableKey = key;
 
+  await Stripe.instance.applySettings();
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await ZegoUIKit().initLog().then((value) async {
-    await ZegoUIKitPrebuiltCallInvitationService().useSystemCallingUI(
-      [ZegoUIKitSignalingPlugin()],
-    );
-  runApp(const QanonyApp());
+    await ZegoUIKitPrebuiltCallInvitationService().useSystemCallingUI([
+      ZegoUIKitSignalingPlugin(),
+    ]);
+    runApp(const QanonyApp());
   });
 }
 
@@ -54,6 +61,10 @@ class QanonyApp extends StatelessWidget {
         ),
         BlocProvider(create: (_) => AppointmentsCubit()),
         BlocProvider(create: (_) => GeminiCubit(GeminiRepository())),
+        BlocProvider(create: (_) => (DeepLinkCubit())..listenToDeepLinks()),
+        BlocProvider(
+          create: (_) => StripeSubscriptionCubit(StripeSubscriptionRepo(Dio())),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
