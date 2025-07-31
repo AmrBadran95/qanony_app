@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:qanony/services/controllers/bank_account_controller.dart';
 import 'package:qanony/services/controllers/contact_controller.dart';
 import 'package:qanony/services/controllers/lawyerment_controller.dart';
 import 'package:qanony/services/controllers/personal_info_controllers.dart';
@@ -15,7 +14,6 @@ class MultiStepperCubit extends Cubit<MultiStepperState> {
   final formKeys = [
     PersonalInfoFormKey.formKey,
     LawyermentInfoFormKey.formKey,
-    BankAccountFormKey.formKey,
     ContactFormKey.formKey,
   ];
 
@@ -64,7 +62,6 @@ class MultiStepperCubit extends Cubit<MultiStepperState> {
   void disposeControllers() {
     PersonalInfoControllers.dispose();
     LawyermentInfoControllers.dispose();
-    BankAccountControllers.dispose();
     ContactControllers.dispose();
   }
 }

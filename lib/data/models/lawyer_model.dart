@@ -22,10 +22,6 @@ class LawyerModel {
   final List<String>? specialty;
   final String? cardImageUrl;
 
-  final String? bankName;
-  final String? accountHolderName;
-  final String? accountNumber;
-
   final bool? offersCall;
   final double? callPrice;
 
@@ -56,9 +52,6 @@ class LawyerModel {
     this.registrationDate,
     this.specialty,
     this.cardImageUrl,
-    this.bankName,
-    this.accountHolderName,
-    this.accountNumber,
     this.offersCall,
     this.callPrice,
     this.offersOffice,
@@ -81,35 +74,32 @@ class LawyerModel {
       nationalId: json['nationalId'],
       governorate: json['governorate'],
       address: json['address'],
-      dateOfBirth:json['dateOfBirth'] != null
+      dateOfBirth: json['dateOfBirth'] != null
           ? DateTime(
-        (json['dateOfBirth'] as Timestamp).toDate().year,
-        (json['dateOfBirth'] as Timestamp).toDate().month,
-        (json['dateOfBirth'] as Timestamp).toDate().day,
-      )
+              (json['dateOfBirth'] as Timestamp).toDate().year,
+              (json['dateOfBirth'] as Timestamp).toDate().month,
+              (json['dateOfBirth'] as Timestamp).toDate().day,
+            )
           : null,
       gender: json['gender'],
       profilePictureUrl: json['profilePictureUrl'],
       bio: json['bio'],
       registrationNumber: json['registrationNumber'],
-      registrationDate:json['registrationDate'] != null
+      registrationDate: json['registrationDate'] != null
           ? DateTime(
-        (json['registrationDate'] as Timestamp).toDate().year,
-        (json['registrationDate'] as Timestamp).toDate().month,
-        (json['registrationDate'] as Timestamp).toDate().day,
-      )
+              (json['registrationDate'] as Timestamp).toDate().year,
+              (json['registrationDate'] as Timestamp).toDate().month,
+              (json['registrationDate'] as Timestamp).toDate().day,
+            )
           : null,
       specialty: List<String>.from(json['specialty'] ?? []),
       cardImageUrl: json['cardImageUrl'],
-      bankName: json['bankName'],
-      accountHolderName: json['accountHolderName'],
-      accountNumber: json['accountNumber'],
       offersCall: json['offersCall'],
       callPrice: (json['callPrice'] as num?)?.toDouble(),
       offersOffice: json['offersOffice'],
       officePrice: (json['officePrice'] as num?)?.toDouble(),
       subscriptionType: json['subscriptionType'] ?? 'free',
-      subscriptionStart:  json['subscriptionStart'] != null
+      subscriptionStart: json['subscriptionStart'] != null
           ? DateTime(
               (json['subscriptionStart'] as Timestamp).toDate().year,
               (json['subscriptionStart'] as Timestamp).toDate().month,
@@ -153,9 +143,6 @@ class LawyerModel {
       'registrationDate': registrationDate,
       'specialty': specialty,
       'cardImageUrl': cardImageUrl,
-      'bankName': bankName,
-      'accountHolderName': accountHolderName,
-      'accountNumber': accountNumber,
       'offersCall': offersCall,
       'callPrice': callPrice,
       'offersOffice': offersOffice,
@@ -196,11 +183,6 @@ class LawyerModel {
 
     if (specialty != null) data['specialty'] = specialty;
     if (cardImageUrl != null) data['cardImageUrl'] = cardImageUrl;
-    if (bankName != null) data['bankName'] = bankName;
-    if (accountHolderName != null) {
-      data['accountHolderName'] = accountHolderName;
-    }
-    if (accountNumber != null) data['accountNumber'] = accountNumber;
 
     if (offersCall != null) data['offersCall'] = offersCall;
     if (callPrice != null) data['callPrice'] = callPrice;
@@ -242,9 +224,6 @@ class LawyerModel {
     DateTime? registrationDate,
     List<String>? specialty,
     String? cardImageUrl,
-    String? bankName,
-    String? accountHolderName,
-    String? accountNumber,
     bool? offersCall,
     double? callPrice,
     bool? offersOffice,
@@ -273,9 +252,6 @@ class LawyerModel {
       registrationDate: registrationDate ?? this.registrationDate,
       specialty: specialty ?? this.specialty,
       cardImageUrl: cardImageUrl ?? this.cardImageUrl,
-      bankName: bankName ?? this.bankName,
-      accountHolderName: accountHolderName ?? this.accountHolderName,
-      accountNumber: accountNumber ?? this.accountNumber,
       offersCall: offersCall ?? this.offersCall,
       callPrice: callPrice ?? this.callPrice,
       offersOffice: offersOffice ?? this.offersOffice,

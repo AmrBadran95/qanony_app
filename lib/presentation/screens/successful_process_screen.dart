@@ -5,6 +5,10 @@ import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/Core/widgets/custom_button.dart';
+import 'package:qanony/presentation/pages/lawyer_base_screen.dart';
+import 'package:qanony/presentation/screens/lawyer_account.dart';
+import 'package:qanony/services/helpers/pdf_generator.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../data/repos/lawyer_repository.dart';
 import '../../services/cubits/Lawyer/lawyer_cubit.dart';
 
@@ -26,8 +30,7 @@ class SuccessfulProcessScreen extends StatelessWidget {
 
     return BlocProvider(
       create: (_) => LawyerCubit(LawyerRepository())..getLawyer(user.uid),
-      child:
-      Scaffold(
+      child: Scaffold(
         backgroundColor: AppColor.grey,
         appBar: AppBar(
           backgroundColor: AppColor.primary,
@@ -90,7 +93,7 @@ class SuccessfulProcessScreen extends StatelessWidget {
                               ),
                               SizedBox(height: size.height * 0.02),
                               Text(
-                                ' الباقه الحاليه:${lawyer.subscriptionType}',
+                                ' الباقه الحاليه: ${lawyer.subscriptionType}',
                                 style: AppText.bodyLarge.copyWith(
                                   color: AppColor.dark,
                                 ),
@@ -122,8 +125,7 @@ class SuccessfulProcessScreen extends StatelessWidget {
                                         color: AppColor.dark,
                                       ),
                                       textAlign: TextAlign.start,
-                                      overflow:
-                                          TextOverflow.visible, // تأكدي من ده
+                                      overflow: TextOverflow.visible,
                                       softWrap: true,
                                     ),
                                   ),
@@ -144,7 +146,56 @@ class SuccessfulProcessScreen extends StatelessWidget {
 
                           CustomButton(
                             text: 'مشاركة',
-                            onTap: () {},
+                            onTap: () async {
+                              try {
+                                final pdfPath = await generateSubscriptionPdf(
+                                  subscriptionType: lawyer.subscriptionType,
+                                  subscriptionStart:
+                                      lawyer.subscriptionStart ??
+                                      DateTime.now(),
+                                  subscriptionEnd:
+                                      lawyer.subscriptionEnd ?? DateTime.now(),
+                                  paymentMethod: "تحويل بنكي",
+                                );
+
+                                final params = ShareParams(
+                                  files: [XFile(pdfPath)],
+                                  text: 'تفاصيل الاشتراك',
+                                );
+
+                                final result = await SharePlus.instance.share(
+                                  params,
+                                );
+
+                                if (result.status ==
+                                    ShareResultStatus.dismissed) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'تم إلغاء المشاركة',
+                                        style: AppText.bodyMedium.copyWith(
+                                          color: AppColor.primary,
+                                        ),
+                                      ),
+                                      backgroundColor: AppColor.grey,
+                                    ),
+                                  );
+                                }
+                              } catch (e) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'حدث خطأ أثناء المشاركة: $e',
+                                      style: AppText.bodyMedium.copyWith(
+                                        color: AppColor.primary,
+                                      ),
+                                    ),
+                                    backgroundColor: AppColor.grey,
+                                  ),
+                                );
+                              }
+                            },
+
                             width: double.infinity,
                             height: 50,
                             backgroundColor: AppColor.primary,
@@ -158,7 +209,18 @@ class SuccessfulProcessScreen extends StatelessWidget {
                     SizedBox(height: size.height * 0.03),
                     CustomButton(
                       text: 'العودة للصفحة الرئيسية',
-                      onTap: () {},
+                      onTap: () async {
+                        await Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => LawyerBaseScreen(
+                              body: AccountLawyerScreen(),
+                              selectedIndex: 0,
+                            ),
+                          ),
+                          (route) => false,
+                        );
+                      },
                       width: double.infinity,
                       height: 50,
                       backgroundColor: AppColor.secondary,
