@@ -6,7 +6,10 @@ import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/core/styles/color.dart';
 import 'package:qanony/data/repos/order_repository.dart';
+import 'package:qanony/services/call/callService.dart';
 import 'package:qanony/services/cubits/UserOrder/user_order_cubit.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+import 'package:zego_uikit/zego_uikit.dart';
 import '../../Core/widgets/custom_button.dart';
 import '../../data/models/order_status_enum.dart';
 import '../../services/firestore/lawyer_firestore_service.dart';
@@ -41,6 +44,7 @@ class AppointmentPageForUser extends StatelessWidget {
                 return Center(child: Text(state.message));
               } else if (state is UserOrderLoaded) {
                 final order = state.orders;
+
                 return SizedBox(
                   width: double.infinity,
                   child: Column(
@@ -51,6 +55,7 @@ class AppointmentPageForUser extends StatelessWidget {
                           padding: AppPadding.paddingMedium,
                           itemBuilder: (context, index) {
                             final data = order[index];
+
                             print('Status from Firebase: ${data.status}');
 
                             return FutureBuilder(
@@ -65,6 +70,10 @@ class AppointmentPageForUser extends StatelessWidget {
                                 }
 
                                 final lawyer = snapshot.data!;
+                                final now = DateTime.now();
+                                final isTimeToJoin = now.isAfter(
+                                  data.date.subtract(Duration(minutes: 5)),
+                                );
 
                                 return Card(
                                   margin: EdgeInsets.only(
@@ -82,19 +91,19 @@ class AppointmentPageForUser extends StatelessWidget {
                                       children: [
                                         Row(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Container(
                                               width:
                                                   MediaQuery.of(
                                                     context,
                                                   ).size.width *
-                                                  0.2,
+                                                  0.19,
                                               height:
                                                   MediaQuery.of(
                                                     context,
                                                   ).size.width *
-                                                  0.2,
+                                                  0.19,
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(20),
@@ -112,7 +121,7 @@ class AppointmentPageForUser extends StatelessWidget {
                                                   MediaQuery.of(
                                                     context,
                                                   ).size.width *
-                                                  .016,
+                                                  .025,
                                             ),
                                             Column(
                                               crossAxisAlignment:
@@ -125,7 +134,8 @@ class AppointmentPageForUser extends StatelessWidget {
                                                           MediaQuery.of(
                                                             context,
                                                           ).size.height *
-                                                          0.1,
+                                                          0.13,
+
                                                       child: Column(
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
@@ -167,15 +177,6 @@ class AppointmentPageForUser extends StatelessWidget {
                                                                 .3,
                                                             child: Row(
                                                               children: [
-                                                                Icon(
-                                                                  Icons
-                                                                      .assignment_turned_in_outlined,
-                                                                  size:
-                                                                      MediaQuery.of(
-                                                                        context,
-                                                                      ).size.width *
-                                                                      .04,
-                                                                ),
                                                                 Expanded(
                                                                   child: Text(
                                                                     "الوصف:${data.caseDescription}",
@@ -231,33 +232,23 @@ class AppointmentPageForUser extends StatelessWidget {
                                                     ),
                                                     Row(
                                                       children: [
-                                                        Icon(
-                                                          Icons.money_outlined,
-                                                          size:
-                                                              MediaQuery.of(
-                                                                context,
-                                                              ).size.width *
-                                                              .05,
-                                                        ),
-                                                        SizedBox(
-                                                          width:
-                                                              MediaQuery.of(
-                                                                context,
-                                                              ).size.width *
-                                                              .01,
-                                                        ),
                                                         Text(
                                                           "المبلغ :${data.price} ",
                                                           style: AppText
-                                                              .labelSmall,
+                                                              .labelSmall
+                                                              .copyWith(
+                                                                color: AppColor
+                                                                    .dark,
+                                                              ),
                                                         ),
-                                                        Icon(
-                                                          Icons.attach_money,
-                                                          size:
-                                                              MediaQuery.of(
-                                                                context,
-                                                              ).size.width *
-                                                              .04,
+                                                        Text(
+                                                          "EGP",
+                                                          style: AppText
+                                                              .labelSmall
+                                                              .copyWith(
+                                                                color: AppColor
+                                                                    .dark,
+                                                              ),
                                                         ),
                                                       ],
                                                     ),
@@ -382,6 +373,45 @@ class AppointmentPageForUser extends StatelessWidget {
                                                         AppText.bodySmall,
                                                   ),
                                                 ],
+                                              )
+                                            : data.status ==
+                                                  OrderStatus.paymentDone
+                                            ? CustomButton(
+                                                text: "انضم الى الجلسة",
+                                                onTap: isTimeToJoin
+                                                    ? () async {
+                                                        await ZegoUIKitPrebuiltCallInvitationService()
+                                                            .send(
+                                                              resourceID:
+                                                                  "QanonyApp",
+                                                              invitees: [
+                                                                ZegoCallUser(
+                                                                  data.lawyerId,
+                                                                  lawyer
+                                                                      .fullName
+                                                                      .toString(),
+                                                                ),
+                                                              ],
+                                                              isVideoCall: true,
+                                                            );
+                                                      }
+                                                    : null,
+                                                width:
+                                                    MediaQuery.of(
+                                                      context,
+                                                    ).size.width *
+                                                    0.3,
+                                                height:
+                                                    MediaQuery.of(
+                                                      context,
+                                                    ).size.height *
+                                                    0.04,
+                                                backgroundColor: isTimeToJoin
+                                                    ? AppColor.green
+                                                    : AppColor.grey.withOpacity(
+                                                        0.4,
+                                                      ),
+                                                textStyle: AppText.bodySmall,
                                               )
                                             : const SizedBox.shrink(),
                                       ],

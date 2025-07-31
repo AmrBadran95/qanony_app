@@ -2,6 +2,8 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        maven { url = uri("https://artifacts.agora.io/repo") }
+
     }
 }
 
@@ -19,3 +21,4 @@ subprojects {
 tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
 }
+

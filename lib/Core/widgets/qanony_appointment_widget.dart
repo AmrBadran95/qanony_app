@@ -160,7 +160,7 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: AppPadding.medium),
+            // const SizedBox(height: AppPadding.small),
 
             /// الأزرار
             if (children != null && children!.isNotEmpty) ...[
