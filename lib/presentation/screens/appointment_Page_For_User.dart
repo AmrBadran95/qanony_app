@@ -53,7 +53,6 @@ class AppointmentPageForUser extends StatelessWidget {
               } else if (state is UserOrderLoaded) {
 
                 final order = state.orders;
-                CallService callService= CallService();
 
                 return SizedBox(
                   width: double.infinity,
@@ -68,6 +67,7 @@ class AppointmentPageForUser extends StatelessWidget {
 
                             print('Status from Firebase: ${data.status}');
 
+
                             return FutureBuilder(
                               future: LawyerFirestoreService().getLawyerById(data.lawyerId),
                               builder: (context, snapshot) {
@@ -76,6 +76,9 @@ class AppointmentPageForUser extends StatelessWidget {
                                 }
 
                                 final lawyer = snapshot.data!;
+                                final now = DateTime.now();
+                                final isTimeToJoin = now.isAfter(data.date.subtract(Duration(minutes: 5)));
+
 
                                 return Card(
                                   margin: EdgeInsets.only(
@@ -92,11 +95,11 @@ class AppointmentPageForUser extends StatelessWidget {
                                       children: [
                                         Row(
 
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Container(
-                                              width: MediaQuery.of(context).size.width * 0.2,
-                                              height: MediaQuery.of(context).size.width * 0.2,
+                                              width: MediaQuery.of(context).size.width * 0.19,
+                                              height: MediaQuery.of(context).size.width * 0.19,
                                               decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(20),
                                                 image: DecorationImage(
@@ -105,14 +108,15 @@ class AppointmentPageForUser extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(width: MediaQuery.of(context).size.width * .016),
+                                            SizedBox(width: MediaQuery.of(context).size.width * .025),
                                             Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Row(
                                                   children: [
                                                     SizedBox(
-                                                      height: MediaQuery.of(context).size.height * 0.1,
+                                                      height: MediaQuery.of(context).size.height * 0.13,
+
                                                       child: Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -130,10 +134,7 @@ class AppointmentPageForUser extends StatelessWidget {
                                                             width: MediaQuery.of(context).size.width * .3,
                                                             child: Row(
                                                               children: [
-                                                                Icon(
-                                                                  Icons.assignment_turned_in_outlined,
-                                                                  size: MediaQuery.of(context).size.width * .04,
-                                                                ),
+
                                                                 Expanded(
                                                                   child: Text(
                                                                     "الوصف:${data.caseDescription}",
@@ -162,19 +163,12 @@ class AppointmentPageForUser extends StatelessWidget {
                                                     SizedBox(width: MediaQuery.of(context).size.width * .01),
                                                     Row(
                                                       children: [
-                                                        Icon(
-                                                          Icons.money_outlined,
-                                                          size: MediaQuery.of(context).size.width * .05,
-                                                        ),
-                                                        SizedBox(width: MediaQuery.of(context).size.width * .01),
+
                                                         Text(
                                                           "المبلغ :${data.price} ",
-                                                          style: AppText.labelSmall,
+                                                          style: AppText.labelSmall.copyWith(color: AppColor.dark),
                                                         ),
-                                                        Icon(
-                                                          Icons.attach_money,
-                                                          size: MediaQuery.of(context).size.width * .04,
-                                                        ),
+                                                        Text("EGP",style: AppText.labelSmall.copyWith(color: AppColor.dark),)
                                                       ],
                                                     ),
                                                   ],
@@ -249,30 +243,36 @@ class AppointmentPageForUser extends StatelessWidget {
                                               ],
                                             )
                                             :data.status== OrderStatus.paymentDone?
-                                             CustomButton(
-                                              text: "انضم الى الجلسة",
-                                              onTap: () async {
 
-                                                await ZegoUIKitPrebuiltCallInvitationService().send(
-                                                  resourceID: "QanonyApp",
-                                                  invitees: [
-                                                    ZegoCallUser(
-                                                     data.lawyerId,
-                                                     lawyer.fullName.toString(),
-                                                    ),
-                                                  ],
-                                                  isVideoCall: true,
-                                                );
-                                              },
-                                              width:
-                                              MediaQuery.of(context).size.width * 0.3,
-                                              height:
-                                              MediaQuery.of(context).size.height * 0.04,
-                                              backgroundColor: AppColor.green,
-                                              textStyle: AppText.bodySmall,
-                                        )
 
-                                            : const SizedBox.shrink(),
+                                  CustomButton(
+                                  text: "انضم الى الجلسة",
+                                  onTap: isTimeToJoin
+                                      ? () async {
+                                    await ZegoUIKitPrebuiltCallInvitationService().send(
+                                      resourceID: "QanonyApp",
+                                      invitees: [
+                                        ZegoCallUser(
+                                          data.lawyerId,
+                                          lawyer.fullName.toString(),
+                                        ),
+                                      ],
+                                      isVideoCall: true,
+                                    );
+                                  }
+                                      : null,
+                                  width: MediaQuery.of(context).size.width * 0.3,
+                                  height: MediaQuery.of(context).size.height * 0.04,
+                                  backgroundColor: isTimeToJoin
+                                      ? AppColor.green
+                                      : AppColor.grey.withOpacity(0.4),
+                                  textStyle: AppText.bodySmall,
+                                )
+
+
+
+
+                                : const SizedBox.shrink(),
 
                                       ],
                                     ),

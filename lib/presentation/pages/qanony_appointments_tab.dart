@@ -45,6 +45,7 @@ class QanonyAppointmentsTab extends StatelessWidget {
             final orders = state.appointments;
             CallService callService= CallService();
 
+
             if (orders.isEmpty) {
               return const Center(child: Text("لا توجد مواعيد حالياً"));
             }
@@ -53,6 +54,9 @@ class QanonyAppointmentsTab extends StatelessWidget {
               itemCount: orders.length,
               itemBuilder: (context, index) {
                 final order = orders[index];
+                final now = DateTime.now();
+                final isTimeToJoin = now.isAfter(order.date.subtract(Duration(minutes: 5)));
+                print(isTimeToJoin);
 
                 return QanonyAppointmentCardWidget(
                   name: order.userName,
@@ -74,8 +78,8 @@ class QanonyAppointmentsTab extends StatelessWidget {
                     order.status== OrderStatus.acceptedByLawyer?
                     CustomButton(
                       text: "انضم الى الجلسة",
-                      onTap: () async {
-
+                      onTap: isTimeToJoin
+                          ? () async {
                         await ZegoUIKitPrebuiltCallInvitationService().send(
                           resourceID: "QanonyApp",
                           invitees: [
@@ -86,12 +90,13 @@ class QanonyAppointmentsTab extends StatelessWidget {
                           ],
                           isVideoCall: true,
                         );
-                      },
-                      width:
-                      MediaQuery.of(context).size.width * 0.3,
-                      height:
-                      MediaQuery.of(context).size.height * 0.04,
-                      backgroundColor: AppColor.green,
+                      }
+                          : null,
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      height: MediaQuery.of(context).size.height * 0.04,
+                      backgroundColor: isTimeToJoin
+                          ? AppColor.green
+                          : AppColor.grey.withOpacity(0.4),
                       textStyle: AppText.bodySmall,
                     )
 
