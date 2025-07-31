@@ -28,10 +28,8 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    final widthMedium = screenWidth * 0.04;
     final heightMedium = screenHeight * 0.015;
 
-    // تحليل التاريخ والوقت
     final dateParts = date.split('•');
     final String dateOnly = dateParts[0].trim();
     final String timeOnly = dateParts.length > 1 ? dateParts[1].trim() : '';
@@ -59,7 +57,6 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            /// Badge + اسم العميل
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -96,7 +93,6 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
             ),
             const SizedBox(height: AppPadding.small),
 
-            /// نوع القضية + الوصف
             Text(
               specialty,
               style: AppText.bodyMedium.copyWith(color: AppColor.dark),
@@ -108,7 +104,6 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
             ),
             const SizedBox(height: AppPadding.small),
 
-            /// اليوم + التاريخ في صف واحد
             Row(
               children: [
                 const Icon(
@@ -125,7 +120,6 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
             ),
             const SizedBox(height: AppPadding.small),
 
-            /// الساعة لوحدها
             Row(
               children: [
                 const Icon(
@@ -142,7 +136,6 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
             ),
             const SizedBox(height: AppPadding.small),
 
-            /// المبلغ
             Row(
               children: [
                 const Icon(
@@ -160,9 +153,7 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
                 ),
               ],
             ),
-            // const SizedBox(height: AppPadding.small),
 
-            /// الأزرار
             if (children != null && children!.isNotEmpty) ...[
               SizedBox(height: heightMedium),
               ...children!,

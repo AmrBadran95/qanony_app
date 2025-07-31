@@ -4,24 +4,17 @@ final Dio _dio = Dio();
 
 class PaymentRepo {
   static Future<String?> createLawyerPayment({
-    required String clientId,
+    required String orderId,
     required String lawyerId,
-    required int amount,
-    required String paymentType,
   }) async {
     try {
       final response = await _dio.post(
-        'https://yourserver.com/api/payments/lawyer-payout',
-        data: {
-          "clientId": clientId,
-          "lawyerId": lawyerId,
-          "amount": amount,
-          "paymentType": paymentType,
-        },
+        'https://qanony-payment-production.up.railway.app/api/payments/create-client-payment-intent',
+        data: {"orderId": orderId, "lawyerId": lawyerId},
         options: Options(headers: {'Content-Type': 'application/json'}),
       );
 
-      final clientSecret = response.data['clientSecret'];
+      final clientSecret = response.data['result']['clientSecret'];
       return clientSecret;
     } catch (e) {
       print("Error creating lawyer payment: $e");

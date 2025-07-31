@@ -4,7 +4,7 @@ import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/data/repos/lawyer_repository.dart';
-import 'package:qanony/data/static/questionList.dart';
+import 'package:qanony/data/static/question_list.dart';
 import 'package:qanony/presentation/pages/ai_chat_screen.dart';
 import '../../data/static/Advertisements.dart';
 import '../../services/cubits/Lawyer/lawyer_cubit.dart';

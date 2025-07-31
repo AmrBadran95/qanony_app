@@ -25,13 +25,12 @@ class QanonyAppointmentsTab extends StatelessWidget {
     String? lawyerId = FirebaseAuth.instance.currentUser?.uid;
 
     String lawyerName = email != null ? email.split('@')[0] : '';
-    CallService callService= CallService();
+    CallService callService = CallService();
     callService.onUserLogin(lawyerId.toString(), lawyerName);
 
     return BlocProvider(
       create: (context) {
         final lawyerId = FirebaseAuth.instance.currentUser?.uid ?? '';
-
 
         return QanonyAppointmentsCubit(OrderFirestoreService(), lawyerId);
       },
@@ -43,8 +42,7 @@ class QanonyAppointmentsTab extends StatelessWidget {
             return Center(child: Text("حدث خطأ: ${state.message}"));
           } else if (state is QanonyAppointmentsLoaded) {
             final orders = state.appointments;
-            CallService callService= CallService();
-
+            CallService callService = CallService();
 
             if (orders.isEmpty) {
               return const Center(child: Text("لا توجد مواعيد حالياً"));
@@ -55,7 +53,9 @@ class QanonyAppointmentsTab extends StatelessWidget {
               itemBuilder: (context, index) {
                 final order = orders[index];
                 final now = DateTime.now();
-                final isTimeToJoin = now.isAfter(order.date.subtract(Duration(minutes: 5)));
+                final isTimeToJoin = now.isAfter(
+                  order.date.subtract(Duration(minutes: 5)),
+                );
                 print(isTimeToJoin);
 
                 return QanonyAppointmentCardWidget(
@@ -75,31 +75,31 @@ class QanonyAppointmentsTab extends StatelessWidget {
                             : AppColor.primary,
                       ),
                     ),
-                    order.status== OrderStatus.acceptedByLawyer?
-                    CustomButton(
-                      text: "انضم الى الجلسة",
-                      onTap: isTimeToJoin
-                          ? () async {
-                        await ZegoUIKitPrebuiltCallInvitationService().send(
-                          resourceID: "QanonyApp",
-                          invitees: [
-                            ZegoCallUser(
-                              order.userId,
-                              order.userName,
-                            ),
-                          ],
-                          isVideoCall: true,
-                        );
-                      }
-                          : null,
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.04,
-                      backgroundColor: isTimeToJoin
-                          ? AppColor.green
-                          : AppColor.grey.withOpacity(0.4),
-                      textStyle: AppText.bodySmall,
-                    )
-
+                    order.status == OrderStatus.paymentDone
+                        ? CustomButton(
+                            text: "انضم الى الجلسة",
+                            onTap: isTimeToJoin
+                                ? () async {
+                                    await ZegoUIKitPrebuiltCallInvitationService()
+                                        .send(
+                                          resourceID: "QanonyApp",
+                                          invitees: [
+                                            ZegoCallUser(
+                                              order.userId,
+                                              order.userName,
+                                            ),
+                                          ],
+                                          isVideoCall: true,
+                                        );
+                                  }
+                                : null,
+                            width: MediaQuery.of(context).size.width * 0.3,
+                            height: MediaQuery.of(context).size.height * 0.04,
+                            backgroundColor: isTimeToJoin
+                                ? AppColor.green
+                                : AppColor.grey.withOpacity(0.4),
+                            textStyle: AppText.bodySmall,
+                          )
                         : const SizedBox.shrink(),
                   ],
                 );
