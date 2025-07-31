@@ -1,15 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stripe/flutter_stripe.dart' hide Card;
 import 'package:intl/intl.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/core/styles/color.dart';
 import 'package:qanony/data/repos/order_repository.dart';
-import 'package:qanony/services/call/callService.dart';
 import 'package:qanony/services/cubits/UserOrder/user_order_cubit.dart';
+import 'package:qanony/services/cubits/payment/payment_cubit.dart';
+import 'package:qanony/services/cubits/payment/payment_state.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
-import 'package:zego_uikit/zego_uikit.dart';
 import '../../Core/widgets/custom_button.dart';
 import '../../data/models/order_status_enum.dart';
 import '../../services/firestore/lawyer_firestore_service.dart';
@@ -22,7 +23,6 @@ class AppointmentPageForUser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
-    final email = user?.email ?? '';
     final String userId = user?.uid ?? "";
     final orderService = OrderFirestoreService();
 
@@ -32,173 +32,238 @@ class AppointmentPageForUser extends StatelessWidget {
           create: (_) =>
               UserOrderCubit(OrderRepository())..streamUserOrders(userId),
         ),
+        BlocProvider(create: (_) => PaymentCubit()),
       ],
       child: UserBaseScreen(
         RequestsColor: AppColor.secondary,
-        body: Scaffold(
-          body: BlocBuilder<UserOrderCubit, UserOrderState>(
-            builder: (context, state) {
-              if (state is UserOrderLoading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state is UserOrderError) {
-                return Center(child: Text(state.message));
-              } else if (state is UserOrderLoaded) {
-                final order = state.orders;
+        body: BlocListener<PaymentCubit, PaymentState>(
+          listener: (context, state) async {
+            if (state is PaymentSuccess) {
+              await Stripe.instance.initPaymentSheet(
+                paymentSheetParameters: SetupPaymentSheetParameters(
+                  paymentIntentClientSecret: state.clientSecret,
+                  merchantDisplayName: 'Qanony',
+                  style: ThemeMode.light,
+                ),
+              );
 
-                return SizedBox(
-                  width: double.infinity,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: order.length,
-                          padding: AppPadding.paddingMedium,
-                          itemBuilder: (context, index) {
-                            final data = order[index];
+              try {
+                await Stripe.instance.presentPaymentSheet();
+                await orderService.updateOrder(state.orderId, {
+                  'status': orderStatusToString(OrderStatus.paymentDone),
+                });
+              } catch (e) {
+                print('Stripe payment failed: $e');
+              }
+            } else if (state is PaymentFailure) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.error)));
+            }
+          },
 
-                            print('Status from Firebase: ${data.status}');
+          child: Scaffold(
+            body: BlocBuilder<UserOrderCubit, UserOrderState>(
+              builder: (context, state) {
+                if (state is UserOrderLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is UserOrderError) {
+                  return Center(child: Text(state.message));
+                } else if (state is UserOrderLoaded) {
+                  final order = state.orders;
 
-                            return FutureBuilder(
-                              future: LawyerFirestoreService().getLawyerById(
-                                data.lawyerId,
-                              ),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasError ||
-                                    !snapshot.hasData ||
-                                    snapshot.data == null) {
-                                  return const SizedBox();
-                                }
+                  return SizedBox(
+                    width: double.infinity,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: order.length,
+                            padding: AppPadding.paddingMedium,
+                            itemBuilder: (context, index) {
+                              final data = order[index];
 
-                                final lawyer = snapshot.data!;
-                                final now = DateTime.now();
-                                final isTimeToJoin = now.isAfter(
-                                  data.date.subtract(Duration(minutes: 5)),
-                                );
+                              print('Status from Firebase: ${data.status}');
 
-                                return Card(
-                                  margin: EdgeInsets.only(
-                                    bottom:
-                                        MediaQuery.of(context).size.height *
-                                        0.015,
-                                  ),
-                                  elevation: 2,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Padding(
-                                    padding: AppPadding.paddingSmall,
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              width:
-                                                  MediaQuery.of(
-                                                    context,
-                                                  ).size.width *
-                                                  0.19,
-                                              height:
-                                                  MediaQuery.of(
-                                                    context,
-                                                  ).size.width *
-                                                  0.19,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                image: DecorationImage(
-                                                  image: NetworkImage(
-                                                    lawyer.profilePictureUrl
-                                                        .toString(),
+                              return FutureBuilder(
+                                future: LawyerFirestoreService().getLawyerById(
+                                  data.lawyerId,
+                                ),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasError ||
+                                      !snapshot.hasData ||
+                                      snapshot.data == null) {
+                                    return const SizedBox();
+                                  }
+
+                                  final lawyer = snapshot.data!;
+                                  final now = DateTime.now();
+                                  final isTimeToJoin = now.isAfter(
+                                    data.date.subtract(Duration(minutes: 5)),
+                                  );
+
+                                  return Card(
+                                    margin: EdgeInsets.only(
+                                      bottom:
+                                          MediaQuery.of(context).size.height *
+                                          0.015,
+                                    ),
+                                    elevation: 2,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Padding(
+                                      padding: AppPadding.paddingSmall,
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                width:
+                                                    MediaQuery.of(
+                                                      context,
+                                                    ).size.width *
+                                                    0.19,
+                                                height:
+                                                    MediaQuery.of(
+                                                      context,
+                                                    ).size.width *
+                                                    0.19,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(
+                                                      lawyer.profilePictureUrl
+                                                          .toString(),
+                                                    ),
+                                                    fit: BoxFit.cover,
                                                   ),
-                                                  fit: BoxFit.cover,
                                                 ),
                                               ),
-                                            ),
-                                            SizedBox(
-                                              width:
-                                                  MediaQuery.of(
-                                                    context,
-                                                  ).size.width *
-                                                  .025,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    SizedBox(
-                                                      height:
-                                                          MediaQuery.of(
-                                                            context,
-                                                          ).size.height *
-                                                          0.13,
+                                              SizedBox(
+                                                width:
+                                                    MediaQuery.of(
+                                                      context,
+                                                    ).size.width *
+                                                    .025,
+                                              ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      SizedBox(
+                                                        height:
+                                                            MediaQuery.of(
+                                                              context,
+                                                            ).size.height *
+                                                            0.13,
 
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                              lawyer.fullName
+                                                                  .toString(),
+                                                              style: AppText
+                                                                  .labelSmall
+                                                                  .copyWith(
+                                                                    color:
+                                                                        AppColor
+                                                                            .dark,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                  ),
+                                                            ),
+                                                            Text(
+                                                              data.caseType,
+                                                              style: AppText
+                                                                  .labelSmall
+                                                                  .copyWith(
+                                                                    color:
+                                                                        AppColor
+                                                                            .dark,
+                                                                  ),
+                                                            ),
+
+                                                            SizedBox(
+                                                              width:
+                                                                  MediaQuery.of(
+                                                                    context,
+                                                                  ).size.width *
+                                                                  .3,
+                                                              child: Row(
+                                                                children: [
+                                                                  Expanded(
+                                                                    child: Text(
+                                                                      "الوصف:${data.caseDescription}",
+                                                                      style: AppText
+                                                                          .labelSmall
+                                                                          .copyWith(
+                                                                            color:
+                                                                                AppColor.dark,
+                                                                          ),
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                      softWrap:
+                                                                          false,
+                                                                      maxLines:
+                                                                          1,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              data.contactMethod,
+                                                              style: AppText
+                                                                  .labelSmall
+                                                                  .copyWith(
+                                                                    color:
+                                                                        AppColor
+                                                                            .dark,
+                                                                  ),
+                                                            ),
+                                                            Text(
+                                                              DateFormat(
+                                                                'EEEE، yyyy/MM/dd – hh:mm a',
+                                                                'ar',
+                                                              ).format(
+                                                                data.date,
+                                                              ),
+                                                              style: AppText
+                                                                  .labelSmall
+                                                                  .copyWith(
+                                                                    color:
+                                                                        AppColor
+                                                                            .dark,
+                                                                  ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        width:
+                                                            MediaQuery.of(
+                                                              context,
+                                                            ).size.width *
+                                                            .01,
+                                                      ),
+                                                      Row(
                                                         children: [
                                                           Text(
-                                                            lawyer.fullName
-                                                                .toString(),
-                                                            style: AppText
-                                                                .labelSmall
-                                                                .copyWith(
-                                                                  color:
-                                                                      AppColor
-                                                                          .dark,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                          ),
-                                                          Text(
-                                                            data.caseType,
-                                                            style: AppText
-                                                                .labelSmall
-                                                                .copyWith(
-                                                                  color:
-                                                                      AppColor
-                                                                          .dark,
-                                                                ),
-                                                          ),
-
-                                                          SizedBox(
-                                                            width:
-                                                                MediaQuery.of(
-                                                                  context,
-                                                                ).size.width *
-                                                                .3,
-                                                            child: Row(
-                                                              children: [
-                                                                Expanded(
-                                                                  child: Text(
-                                                                    "الوصف:${data.caseDescription}",
-                                                                    style: AppText
-                                                                        .labelSmall
-                                                                        .copyWith(
-                                                                          color:
-                                                                              AppColor.dark,
-                                                                        ),
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                    softWrap:
-                                                                        false,
-                                                                    maxLines: 1,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            data.contactMethod,
+                                                            "المبلغ :${data.price} ",
                                                             style: AppText
                                                                 .labelSmall
                                                                 .copyWith(
@@ -208,10 +273,7 @@ class AppointmentPageForUser extends StatelessWidget {
                                                                 ),
                                                           ),
                                                           Text(
-                                                            DateFormat(
-                                                              'EEEE، yyyy/MM/dd – hh:mm a',
-                                                              'ar',
-                                                            ).format(data.date),
+                                                            "EGP",
                                                             style: AppText
                                                                 .labelSmall
                                                                 .copyWith(
@@ -222,215 +284,195 @@ class AppointmentPageForUser extends StatelessWidget {
                                                           ),
                                                         ],
                                                       ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height:
+                                                        MediaQuery.of(
+                                                          context,
+                                                        ).size.width *
+                                                        .01,
+                                                  ),
+                                                  Text(
+                                                    data.status ==
+                                                            OrderStatus.pending
+                                                        ? "في انتظار الموافقة"
+                                                        : data.status ==
+                                                              OrderStatus
+                                                                  .acceptedByLawyer
+                                                        ? "  تم قبول الطلب"
+                                                        : data.status ==
+                                                              OrderStatus
+                                                                  .rejectedByLawyer
+                                                        ? "تم رفض الطلب"
+                                                        : data.status ==
+                                                              OrderStatus
+                                                                  .paymentRejected
+                                                        ? "تم رفض الدفع"
+                                                        : data.status ==
+                                                              OrderStatus
+                                                                  .paymentDone
+                                                        ? "تم الدفع بنجاح"
+                                                        : "حالة غير معروفة",
+                                                    style: AppText.bodySmall.copyWith(
+                                                      color:
+                                                          data.status ==
+                                                              OrderStatus
+                                                                  .pending
+                                                          ? AppColor.secondary
+                                                          : data.status ==
+                                                                OrderStatus
+                                                                    .acceptedByLawyer
+                                                          ? AppColor.green
+                                                          : data.status ==
+                                                                OrderStatus
+                                                                    .rejectedByLawyer
+                                                          ? AppColor.primary
+                                                          : data.status ==
+                                                                OrderStatus
+                                                                    .paymentRejected
+                                                          ? AppColor.primary
+                                                          : data.status ==
+                                                                OrderStatus
+                                                                    .paymentDone
+                                                          ? AppColor.green
+                                                          : AppColor.grey,
                                                     ),
-                                                    SizedBox(
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.width *
+                                                .04,
+                                          ),
+
+                                          data.status ==
+                                                  OrderStatus.acceptedByLawyer
+                                              ? Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    CustomButton(
+                                                      text: "ادفع الآن",
+                                                      onTap: () {
+                                                        context
+                                                            .read<
+                                                              PaymentCubit
+                                                            >()
+                                                            .createPayment(
+                                                              lawyerId:
+                                                                  data.lawyerId,
+                                                              orderId:
+                                                                  data.orderId,
+                                                            );
+                                                      },
                                                       width:
                                                           MediaQuery.of(
                                                             context,
                                                           ).size.width *
-                                                          .01,
+                                                          0.3,
+                                                      height:
+                                                          MediaQuery.of(
+                                                            context,
+                                                          ).size.height *
+                                                          0.04,
+                                                      backgroundColor:
+                                                          AppColor.green,
+                                                      textStyle:
+                                                          AppText.bodySmall,
                                                     ),
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          "المبلغ :${data.price} ",
-                                                          style: AppText
-                                                              .labelSmall
-                                                              .copyWith(
-                                                                color: AppColor
-                                                                    .dark,
-                                                              ),
-                                                        ),
-                                                        Text(
-                                                          "EGP",
-                                                          style: AppText
-                                                              .labelSmall
-                                                              .copyWith(
-                                                                color: AppColor
-                                                                    .dark,
-                                                              ),
-                                                        ),
-                                                      ],
+                                                    CustomButton(
+                                                      text: "الغاء الطلب",
+                                                      onTap: () async {
+                                                        await orderService.updateOrder(
+                                                          data.orderId,
+                                                          {
+                                                            'status':
+                                                                orderStatusToString(
+                                                                  OrderStatus
+                                                                      .paymentRejected,
+                                                                ),
+                                                          },
+                                                        );
+                                                      },
+                                                      width:
+                                                          MediaQuery.of(
+                                                            context,
+                                                          ).size.width *
+                                                          0.3,
+                                                      height:
+                                                          MediaQuery.of(
+                                                            context,
+                                                          ).size.height *
+                                                          0.04,
+                                                      backgroundColor:
+                                                          AppColor.primary,
+                                                      textStyle:
+                                                          AppText.bodySmall,
                                                     ),
                                                   ],
-                                                ),
-                                                SizedBox(
-                                                  height:
+                                                )
+                                              : data.status ==
+                                                    OrderStatus.paymentDone
+                                              ? CustomButton(
+                                                  text: "انضم الى الجلسة",
+                                                  onTap: isTimeToJoin
+                                                      ? () async {
+                                                          await ZegoUIKitPrebuiltCallInvitationService().send(
+                                                            resourceID:
+                                                                "QanonyApp",
+                                                            invitees: [
+                                                              ZegoCallUser(
+                                                                data.lawyerId,
+                                                                lawyer.fullName
+                                                                    .toString(),
+                                                              ),
+                                                            ],
+                                                            isVideoCall: true,
+                                                          );
+                                                        }
+                                                      : null,
+                                                  width:
                                                       MediaQuery.of(
                                                         context,
                                                       ).size.width *
-                                                      .01,
-                                                ),
-                                                Text(
-                                                  data.status ==
-                                                          OrderStatus.pending
-                                                      ? "في انتظار الموافقة"
-                                                      : data.status ==
-                                                            OrderStatus
-                                                                .acceptedByLawyer
-                                                      ? "  تم قبول الطلب"
-                                                      : data.status ==
-                                                            OrderStatus
-                                                                .rejectedByLawyer
-                                                      ? "تم رفض الطلب"
-                                                      : data.status ==
-                                                            OrderStatus
-                                                                .paymentRejected
-                                                      ? "تم رفض الدفع"
-                                                      : data.status ==
-                                                            OrderStatus
-                                                                .paymentDone
-                                                      ? "تم الدفع بنجاح"
-                                                      : "حالة غير معروفة",
-                                                  style: AppText.bodySmall.copyWith(
-                                                    color:
-                                                        data.status ==
-                                                            OrderStatus.pending
-                                                        ? AppColor.secondary
-                                                        : data.status ==
-                                                              OrderStatus
-                                                                  .acceptedByLawyer
-                                                        ? AppColor.green
-                                                        : data.status ==
-                                                              OrderStatus
-                                                                  .rejectedByLawyer
-                                                        ? AppColor.primary
-                                                        : data.status ==
-                                                              OrderStatus
-                                                                  .paymentRejected
-                                                        ? AppColor.primary
-                                                        : data.status ==
-                                                              OrderStatus
-                                                                  .paymentDone
-                                                        ? AppColor.green
-                                                        : AppColor.grey,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height:
-                                              MediaQuery.of(
-                                                context,
-                                              ).size.width *
-                                              .04,
-                                        ),
-
-                                        data.status ==
-                                                OrderStatus.acceptedByLawyer
-                                            ? Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                children: [
-                                                  CustomButton(
-                                                    text: "ادفع الآن",
-                                                    onTap: () {},
-                                                    width:
-                                                        MediaQuery.of(
-                                                          context,
-                                                        ).size.width *
-                                                        0.3,
-                                                    height:
-                                                        MediaQuery.of(
-                                                          context,
-                                                        ).size.height *
-                                                        0.04,
-                                                    backgroundColor:
-                                                        AppColor.green,
-                                                    textStyle:
-                                                        AppText.bodySmall,
-                                                  ),
-                                                  CustomButton(
-                                                    text: "الغاء الطلب",
-                                                    onTap: () async {
-                                                      await orderService.updateOrder(
-                                                        data.orderId,
-                                                        {
-                                                          'status':
-                                                              orderStatusToString(
-                                                                OrderStatus
-                                                                    .paymentRejected,
-                                                              ),
-                                                        },
-                                                      );
-                                                    },
-                                                    width:
-                                                        MediaQuery.of(
-                                                          context,
-                                                        ).size.width *
-                                                        0.3,
-                                                    height:
-                                                        MediaQuery.of(
-                                                          context,
-                                                        ).size.height *
-                                                        0.04,
-                                                    backgroundColor:
-                                                        AppColor.primary,
-                                                    textStyle:
-                                                        AppText.bodySmall,
-                                                  ),
-                                                ],
-                                              )
-                                            : data.status ==
-                                                  OrderStatus.paymentDone
-                                            ? CustomButton(
-                                                text: "انضم الى الجلسة",
-                                                onTap: isTimeToJoin
-                                                    ? () async {
-                                                        await ZegoUIKitPrebuiltCallInvitationService()
-                                                            .send(
-                                                              resourceID:
-                                                                  "QanonyApp",
-                                                              invitees: [
-                                                                ZegoCallUser(
-                                                                  data.lawyerId,
-                                                                  lawyer
-                                                                      .fullName
-                                                                      .toString(),
-                                                                ),
-                                                              ],
-                                                              isVideoCall: true,
-                                                            );
-                                                      }
-                                                    : null,
-                                                width:
-                                                    MediaQuery.of(
-                                                      context,
-                                                    ).size.width *
-                                                    0.3,
-                                                height:
-                                                    MediaQuery.of(
-                                                      context,
-                                                    ).size.height *
-                                                    0.04,
-                                                backgroundColor: isTimeToJoin
-                                                    ? AppColor.green
-                                                    : AppColor.grey.withOpacity(
-                                                        0.4,
-                                                      ),
-                                                textStyle: AppText.bodySmall,
-                                              )
-                                            : const SizedBox.shrink(),
-                                      ],
+                                                      0.3,
+                                                  height:
+                                                      MediaQuery.of(
+                                                        context,
+                                                      ).size.height *
+                                                      0.04,
+                                                  backgroundColor: isTimeToJoin
+                                                      ? AppColor.green
+                                                      : AppColor.grey
+                                                            .withOpacity(0.4),
+                                                  textStyle: AppText.bodySmall,
+                                                )
+                                              : const SizedBox.shrink(),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                            );
-                          },
+                                  );
+                                },
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  );
+                }
+                return Center(
+                  child: Text('لا توجد طلبات حالياً', style: AppText.bodySmall),
                 );
-              }
-              return Center(
-                child: Text('لا توجد طلبات حالياً', style: AppText.bodySmall),
-              );
-            },
+              },
+            ),
           ),
         ),
       ),

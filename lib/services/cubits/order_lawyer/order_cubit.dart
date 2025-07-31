@@ -23,7 +23,6 @@ class OrderCubit extends Cubit<OrderState> {
     }
 
     final myId = currentUser.uid;
-    print("🔥 My UID: $myId");
     _orderService
         .streamOrdersByLawyerId(myId)
         .listen(

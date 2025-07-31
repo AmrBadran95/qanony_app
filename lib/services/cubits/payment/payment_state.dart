@@ -6,8 +6,9 @@ class PaymentLoading extends PaymentState {}
 
 class PaymentSuccess extends PaymentState {
   final String clientSecret;
+  final String orderId;
 
-  PaymentSuccess(this.clientSecret);
+  PaymentSuccess(this.clientSecret, this.orderId);
 }
 
 class PaymentFailure extends PaymentState {

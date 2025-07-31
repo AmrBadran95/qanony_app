@@ -6,22 +6,18 @@ class PaymentCubit extends Cubit<PaymentState> {
   PaymentCubit() : super(PaymentInitial());
 
   Future<void> createPayment({
-    required String clientId,
+    required String orderId,
     required String lawyerId,
-    required int amount,
-    required String paymentType,
   }) async {
     emit(PaymentLoading());
     try {
       final clientSecret = await PaymentRepo.createLawyerPayment(
-        clientId: clientId,
+        orderId: orderId,
         lawyerId: lawyerId,
-        amount: amount,
-        paymentType: paymentType,
       );
 
       if (clientSecret != null) {
-        emit(PaymentSuccess(clientSecret));
+        emit(PaymentSuccess(clientSecret, orderId));
       } else {
         emit(PaymentFailure("Client secret is null"));
       }

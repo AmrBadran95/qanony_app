@@ -168,6 +168,7 @@ class AiChatScreen extends StatelessWidget {
                 ),
                 Expanded(
                   child: TextField(
+                    maxLength: 1000,
                     controller: controller,
                     style: AppText.bodyLarge.copyWith(color: AppColor.dark),
                     cursorColor: AppColor.dark,
