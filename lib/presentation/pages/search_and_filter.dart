@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/core/styles/text.dart';
@@ -29,11 +30,11 @@ class SearchAndFilters extends StatelessWidget {
               fillColor: AppColor.grey,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(25),
-                borderSide: BorderSide(color: AppColor.grey, width: .7),
+                borderSide: BorderSide(color: AppColor.grey, width: .7.w),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(25),
-                borderSide: BorderSide(color: AppColor.primary, width: 1),
+                borderSide: BorderSide(color: AppColor.primary, width: 1.w),
               ),
             ),
             onChanged: (value) {
@@ -42,7 +43,7 @@ class SearchAndFilters extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: 10),
+         SizedBox(height: 10.h),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: BlocBuilder<SearchCubit, SearchState>(
@@ -60,7 +61,7 @@ class SearchAndFilters extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColor.darkgrey,
                           foregroundColor: AppColor.primary,
-                          padding: const EdgeInsets.symmetric(
+                          padding:  EdgeInsets.symmetric(
                             horizontal: 16,
                             vertical: 8,
                           ),
@@ -72,7 +73,7 @@ class SearchAndFilters extends StatelessWidget {
                         label: const Text("الكل"),
                       ),
                     ),
-                    const SizedBox(width: 10),
+                     SizedBox(width: 10.w),
                     SelectionDialog(
                       label: "النوع",
                       items: const ["ذكر", "أنثى"],
@@ -81,7 +82,7 @@ class SearchAndFilters extends StatelessWidget {
                         cubit.updateFilter(newType: val);
                       },
                     ),
-                    const SizedBox(width: 8),
+                     SizedBox(width: 8.w),
                     SelectionDialog(
                       label: "التخصص",
                       items: caseTypes,
@@ -90,7 +91,7 @@ class SearchAndFilters extends StatelessWidget {
                         cubit.updateFilter(newSpecialization: val);
                       },
                     ),
-                    const SizedBox(width: 8),
+                     SizedBox(width: 8.w),
                     SelectionDialog(
                       label: "التواصل عبر",
                       items: const [

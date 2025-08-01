@@ -150,7 +150,7 @@ class LawyerScreen extends StatelessWidget {
                                       child: Text(
                                         spec,
                                         textAlign: TextAlign.center,
-                                        style: AppText.bodyLarge.copyWith(
+                                        style: AppText.bodySmall.copyWith(
                                           color: AppColor.light,
                                         ),
                                       ),

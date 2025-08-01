@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/core/styles/padding.dart';
 import 'package:qanony/core/styles/text.dart';
@@ -46,7 +47,7 @@ class LawyersList extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
               child: ListView.separated(
                 separatorBuilder: (context, index) =>
-                    const SizedBox(height: 10),
+                     SizedBox(height: 10.h),
                 itemCount: state.lawyers.length,
                 itemBuilder: (context, index) {
                   final lawyer = state.lawyers[index];
@@ -67,7 +68,7 @@ class LawyersList extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
                             color: AppColor.grey.withAlpha((0.4 * 255).round()),
-                            width: 1,
+                            width: 1.sp,
                           ),
                           boxShadow: [
                             BoxShadow(
@@ -78,99 +79,104 @@ class LawyersList extends StatelessWidget {
                           ],
                         ),
 
-                        child: ListTile(
-                          contentPadding: EdgeInsets.all(AppPadding.small),
-                          tileColor: AppColor.light,
-                          leading: CircleAvatar(
-                            backgroundColor: AppColor.grey,
-                            backgroundImage: NetworkImage(
-                              lawyer.profilePictureUrl!,
-                            ),
-
-                            radius: 30,
-                          ),
-                          title: Text(
-                            lawyer.fullName.toString(),
-                            style: AppText.bodyMedium.copyWith(
-                              color: AppColor.dark,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          subtitle: Column(
+                        child:Padding(
+                          padding:  AppPadding.paddingMedium,
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "النوع: ${lawyer.gender}",
-                                style: AppText.bodySmall.copyWith(
-                                  color: AppColor.dark,
-                                ),
-                              ),
-                              SizedBox(width: 5),
-                              RichText(
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: "التواصل عبر: ",
-                                      style: AppText.bodySmall.copyWith(
-                                        color: AppColor.dark,
+
+                              Row(
+                                children: [
+                                  Column(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: Image.network(
+                                          lawyer.profilePictureUrl ?? '',
+                                          width: 60.sp,
+                                          height: 60.sp,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
-                                    ),
-                                    TextSpan(
-                                      text:
-                                          lawyer.offersCall == true &&
-                                              lawyer.offersOffice == true
-                                          ? "مكالمة صوتية/فيديو أو عبر المكتب"
-                                          : lawyer.offersCall == true
-                                          ? "مكالمة صوتية/فيديو"
-                                          : lawyer.offersOffice == true
-                                          ? "عبر المكتب"
-                                          : "لا توجد وسيلة تواصل محددة",
-                                      style: AppText.labelSmall.copyWith(
-                                        color: AppColor.primary,
-                                        fontWeight: FontWeight.w500,
+                                      SizedBox(height: 6.h,),
+                                      RatingBarIndicator(
+                                        rating: 2.5,
+                                        itemBuilder: (context, index) =>
+                                            Icon(Icons.star, color: AppColor.secondary),
+                                        itemCount: 5,
+                                        itemSize: 15.0.sp,
+                                        direction: Axis.horizontal,
                                       ),
-                                    ),
-                                  ],
-                                ),
+                                    ],
+                                  ),
+
+
+                                  SizedBox(width: 10.w),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        lawyer.fullName.toString(),
+                                        style: AppText.bodySmall.copyWith(
+                                          color: AppColor.dark,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+
+                                      ),
+                                      SizedBox(height: 5.h,),
+                                      Text(
+                                        " النوع : ${lawyer.gender}",
+                                        style: AppText.bodySmall.copyWith(
+                                          color: AppColor.dark,
+                                        ),
+                                      ),
+                                      SizedBox(height: 5.h,),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          if (lawyer.offersCall == true)
+                                            Text(
+                                              "مكالمة صوتية/فيديو - ${lawyer.callPrice} جنيه",
+                                              style: AppText.labelSmall.copyWith(
+                                                color: AppColor.primary,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          SizedBox(height: 5.h,),
+                                          if (lawyer.offersOffice == true)
+                                            Text(
+                                              "عبر المكتب - ${lawyer.officePrice} جنيه",
+                                              style: AppText.labelSmall.copyWith(
+                                                color: AppColor.primary,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          if (lawyer.offersCall != true && lawyer.offersOffice != true)
+                                            Text(
+                                              "لا توجد وسيلة تواصل محددة",
+                                              style: AppText.labelSmall.copyWith(
+                                                color: AppColor.primary,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+
+                                        ],
+                                      ),
+
+
+                                    ],
+                                  ),
+                                ],
                               ),
-                              RatingBarIndicator(
-                                rating: 2.5,
-                                itemBuilder: (context, index) =>
-                                    Icon(Icons.star, color: AppColor.secondary),
-                                itemCount: 5,
-                                itemSize: 15.0,
-                                direction: Axis.horizontal,
-                              ),
+
+
+
+
+
                             ],
                           ),
-                          trailing: RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: "السعر: ",
-                                  style: AppText.bodySmall.copyWith(
-                                    color: AppColor.dark,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text:
-                                      (lawyer.callPrice != null &&
-                                          lawyer.officePrice != null)
-                                      ? "مكالمة: ${lawyer.callPrice} جنيه\nمكتب: ${lawyer.officePrice} جنيه"
-                                      : (lawyer.callPrice != null)
-                                      ? "مكالمة: ${lawyer.callPrice} جنيه"
-                                      : (lawyer.officePrice != null)
-                                      ? "مكتب: ${lawyer.officePrice} جنيه"
-                                      : "لا توجد وسيلة تواصل محددة",
-                                  style: AppText.labelSmall.copyWith(
-                                    color: AppColor.primary,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        )
+
                       ),
                     ),
                   );
