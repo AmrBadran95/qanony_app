@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/core/styles/color.dart';
 import 'package:qanony/core/styles/padding.dart';
 import 'package:qanony/core/styles/text.dart';
@@ -35,7 +36,9 @@ class ContactForm extends StatelessWidget {
                       SizedBox(width: MediaQuery.of(context).size.width * 0.01),
                       Text(
                         "مكالمة صوتية / فيديو",
-                        style: AppText.bodyLarge.copyWith(color: AppColor.dark),
+                        style: AppText.bodyMedium.copyWith(
+                          color: AppColor.dark,
+                        ),
                       ),
                     ],
                   ),
@@ -48,14 +51,14 @@ class ContactForm extends StatelessWidget {
                             isChecked,
                           ),
                       width: double.infinity,
-                      height: 60,
+                      height: 60.sp,
                       label: "سعر الجلسة",
                       backgroundColor: AppColor.grey,
                       contentPadding: AppPadding.paddingMedium,
-                      textStyle: AppText.bodyLarge.copyWith(
+                      textStyle: AppText.bodyMedium.copyWith(
                         color: AppColor.dark,
                       ),
-                      labelStyle: AppText.bodyLarge.copyWith(
+                      labelStyle: AppText.bodyMedium.copyWith(
                         color: AppColor.dark,
                       ),
                       keyboardType: TextInputType.number,
@@ -84,7 +87,9 @@ class ContactForm extends StatelessWidget {
                       SizedBox(width: MediaQuery.of(context).size.width * 0.01),
                       Text(
                         "حجز في المكتب",
-                        style: AppText.bodyLarge.copyWith(color: AppColor.dark),
+                        style: AppText.bodyMedium.copyWith(
+                          color: AppColor.dark,
+                        ),
                       ),
                     ],
                   ),
@@ -101,10 +106,10 @@ class ContactForm extends StatelessWidget {
                       label: "سعر الجلسة",
                       backgroundColor: AppColor.grey,
                       contentPadding: AppPadding.paddingMedium,
-                      textStyle: AppText.bodyLarge.copyWith(
+                      textStyle: AppText.bodyMedium.copyWith(
                         color: AppColor.dark,
                       ),
-                      labelStyle: AppText.bodyLarge.copyWith(
+                      labelStyle: AppText.bodyMedium.copyWith(
                         color: AppColor.dark,
                       ),
                       keyboardType: TextInputType.number,

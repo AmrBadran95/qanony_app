@@ -55,7 +55,7 @@ class MultiStepperForm extends StatelessWidget {
             return Padding(
               padding: AppPadding.verticalSmall,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   if (!isLastStep)
                     CustomButton(
@@ -68,6 +68,7 @@ class MultiStepperForm extends StatelessWidget {
                         color: AppColor.light,
                       ),
                     ),
+                  SizedBox(width: 24.sp),
                   if (currentStep > 0)
                     CustomButton(
                       text: "رجوع",

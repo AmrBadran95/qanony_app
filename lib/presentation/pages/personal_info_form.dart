@@ -23,7 +23,7 @@ class PersonalInfoForm extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 10.h),
+          SizedBox(height: MediaQuery.of(context).size.height * .01),
 
           CustomTextFormField(
             controller: PersonalInfoControllers.fullNameController,
@@ -32,8 +32,8 @@ class PersonalInfoForm extends StatelessWidget {
             label: "الاسم رباعي",
             contentPadding: AppPadding.paddingMedium,
             backgroundColor: AppColor.grey,
-            labelStyle: AppText.bodySmall.copyWith(color: AppColor.dark),
-            textStyle: AppText.bodySmall.copyWith(color: AppColor.dark),
+            labelStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
+            textStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
           ),
           SizedBox(height: MediaQuery.of(context).size.height * .01),
 
@@ -44,8 +44,8 @@ class PersonalInfoForm extends StatelessWidget {
             label: "الرقم القومي",
             contentPadding: AppPadding.paddingMedium,
             backgroundColor: AppColor.grey,
-            labelStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
-            textStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
+            labelStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
+            textStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
             keyboardType: TextInputType.number,
           ),
           SizedBox(height: MediaQuery.of(context).size.height * .01),
@@ -67,11 +67,13 @@ class PersonalInfoForm extends StatelessWidget {
                           PersonalInfoControllers.governorate.value = newValue;
                           state.didChange(newValue);
                         },
-                        style: AppText.bodyLarge.copyWith(color: AppColor.dark),
+                        style: AppText.bodyMedium.copyWith(
+                          color: AppColor.dark,
+                        ),
                         dropdownColor: AppColor.grey,
                         decoration: InputDecoration(
                           labelText: "اختر المحافظة",
-                          labelStyle: AppText.bodyLarge.copyWith(
+                          labelStyle: AppText.bodyMedium.copyWith(
                             color: AppColor.dark,
                           ),
                           filled: true,
@@ -99,7 +101,12 @@ class PersonalInfoForm extends StatelessWidget {
                             .map(
                               (governorate) => DropdownMenuItem(
                                 value: governorate,
-                                child: Text(governorate),
+                                child: Text(
+                                  governorate,
+                                  style: AppText.bodyMedium.copyWith(
+                                    color: AppColor.dark,
+                                  ),
+                                ),
                               ),
                             )
                             .toList(),
@@ -130,8 +137,8 @@ class PersonalInfoForm extends StatelessWidget {
             label: "العنوان بالكامل",
             contentPadding: AppPadding.paddingMedium,
             backgroundColor: AppColor.grey,
-            labelStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
-            textStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
+            labelStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
+            textStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
           ),
           SizedBox(height: MediaQuery.of(context).size.height * .01),
 
@@ -191,7 +198,7 @@ class PersonalInfoForm extends StatelessWidget {
 
           Text(
             "النوع",
-            style: AppText.bodyLarge.copyWith(color: AppColor.dark),
+            style: AppText.bodyMedium.copyWith(color: AppColor.dark),
           ),
           SizedBox(height: MediaQuery.of(context).size.height * .01),
           FormField<String>(
@@ -215,7 +222,7 @@ class PersonalInfoForm extends StatelessWidget {
                                 PersonalInfoControllers.gender.value = val;
                                 state.didChange(val);
                               },
-                              title: Text("ذكر"),
+                              title: Text("ذكر", style: AppText.bodySmall),
                               activeColor: AppColor.dark,
                             ),
                           ),
@@ -227,7 +234,7 @@ class PersonalInfoForm extends StatelessWidget {
                                 PersonalInfoControllers.gender.value = val;
                                 state.didChange(val);
                               },
-                              title: Text("أنثى"),
+                              title: Text("أنثى", style: AppText.bodySmall),
                               activeColor: AppColor.dark,
                             ),
                           ),
@@ -267,10 +274,10 @@ class PersonalInfoForm extends StatelessWidget {
                       children: [
                         CustomButton(
                           text: "إضافة صورة شخصية",
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          height: 60,
+                          width: double.infinity,
+                          height: 50.h,
                           backgroundColor: AppColor.secondary,
-                          textStyle: AppText.bodyLarge.copyWith(
+                          textStyle: AppText.bodySmall.copyWith(
                             color: AppColor.dark,
                           ),
                           textColor: AppColor.dark,
@@ -293,7 +300,7 @@ class PersonalInfoForm extends StatelessWidget {
                                       ),
                                       title: Text(
                                         "اختيار من المعرض",
-                                        style: AppText.bodyLarge.copyWith(
+                                        style: AppText.bodySmall.copyWith(
                                           color: AppColor.dark,
                                         ),
                                       ),
@@ -312,7 +319,7 @@ class PersonalInfoForm extends StatelessWidget {
                                       ),
                                       title: Text(
                                         "استخدام الكاميرا",
-                                        style: AppText.bodyLarge.copyWith(
+                                        style: AppText.bodySmall.copyWith(
                                           color: AppColor.dark,
                                         ),
                                       ),
@@ -331,9 +338,9 @@ class PersonalInfoForm extends StatelessWidget {
                           },
                         ),
                         if (value != null) ...[
-                          const SizedBox(height: 10),
+                          SizedBox(height: 10.h),
                           ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(8.sp),
                             child: Image.network(
                               value,
                               height: 120,
@@ -344,7 +351,7 @@ class PersonalInfoForm extends StatelessWidget {
                         ],
                         if (state.hasError)
                           Padding(
-                            padding: const EdgeInsets.only(top: 8),
+                            padding: EdgeInsets.only(top: 8.sp),
                             child: Text(
                               state.errorText!,
                               style: AppText.bodySmall.copyWith(

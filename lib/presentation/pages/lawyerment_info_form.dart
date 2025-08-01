@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qanony/Core/widgets/custom_calendar.dart';
 import 'package:qanony/core/styles/color.dart';
@@ -28,12 +29,12 @@ class LawyermentInfoForm extends StatelessWidget {
             controller: LawyermentInfoControllers.aboutMeController,
             validator: LawyermentInfoValidators.validateAboutMe,
             width: double.infinity,
-            height: 100,
+            height: 100.sp,
             label: "نبذة عني",
             contentPadding: AppPadding.paddingMedium,
             backgroundColor: AppColor.grey,
-            textStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
-            labelStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
+            textStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
+            labelStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
             maxLines: 3,
           ),
 
@@ -43,13 +44,13 @@ class LawyermentInfoForm extends StatelessWidget {
             controller: LawyermentInfoControllers.registrationNumberController,
             validator: LawyermentInfoValidators.validateRegistrationNumber,
             width: double.infinity,
-            height: 60,
+            height: 60.sp,
             label: "رقم القيد بنقابة المحامين",
             keyboardType: TextInputType.number,
             contentPadding: AppPadding.paddingMedium,
             backgroundColor: AppColor.grey,
-            textStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
-            labelStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
+            textStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
+            labelStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
           ),
 
           SizedBox(height: MediaQuery.of(context).size.height * .01),
@@ -120,7 +121,7 @@ class LawyermentInfoForm extends StatelessWidget {
                             backgroundColor: AppColor.grey,
                             title: Text(
                               "اختر التخصصات",
-                              style: AppText.bodyLarge.copyWith(
+                              style: AppText.bodyMedium.copyWith(
                                 color: AppColor.dark,
                               ),
                             ),
@@ -136,7 +137,7 @@ class LawyermentInfoForm extends StatelessWidget {
                                     value: isSelected,
                                     title: Text(
                                       item,
-                                      style: AppText.bodyLarge.copyWith(
+                                      style: AppText.bodyMedium.copyWith(
                                         color: AppColor.dark,
                                       ),
                                     ),
@@ -157,7 +158,7 @@ class LawyermentInfoForm extends StatelessWidget {
                               TextButton(
                                 child: Text(
                                   "إلغاء",
-                                  style: AppText.bodyLarge.copyWith(
+                                  style: AppText.bodyMedium.copyWith(
                                     color: AppColor.dark,
                                   ),
                                 ),
@@ -167,7 +168,7 @@ class LawyermentInfoForm extends StatelessWidget {
                               TextButton(
                                 child: Text(
                                   "تم",
-                                  style: AppText.bodyLarge.copyWith(
+                                  style: AppText.bodyMedium.copyWith(
                                     color: AppColor.dark,
                                   ),
                                 ),
@@ -201,7 +202,7 @@ class LawyermentInfoForm extends StatelessWidget {
                               text: selectedList.join(', '),
                             ),
                             width: double.infinity,
-                            height: 60,
+                            height: 60.sp,
                             label: "التخصصات",
                             contentPadding: AppPadding.paddingMedium,
                             backgroundColor: AppColor.grey,
@@ -250,7 +251,7 @@ class LawyermentInfoForm extends StatelessWidget {
                           child: CustomButton(
                             text: "صورة كارنيه النقابة",
                             width: MediaQuery.of(context).size.width * 0.5,
-                            height: 60,
+                            height: 60.sp,
                             backgroundColor: AppColor.secondary,
                             textStyle: AppText.bodyLarge.copyWith(
                               color: AppColor.dark,
@@ -315,15 +316,13 @@ class LawyermentInfoForm extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         if (value != null) ...[
-                          Center(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.network(
-                                value,
-                                height: 120,
-                                width: 120,
-                                fit: BoxFit.cover,
-                              ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.network(
+                              value,
+                              height: 120,
+                              width: 120,
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ],

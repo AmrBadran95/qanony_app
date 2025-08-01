@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/core/styles/color.dart';
 import 'package:qanony/core/styles/text.dart';
 import 'package:qanony/core/widgets/custom_button.dart';
@@ -17,7 +18,7 @@ class LawyerConnect extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60),
+        preferredSize: Size.fromHeight(60.sp),
         child: AppBar(
           backgroundColor: AppColor.primary,
           title: Padding(
@@ -65,7 +66,7 @@ class LawyerConnect extends StatelessWidget {
                     SnackBar(
                       content: Text(
                         'تعذر فتح الرابط',
-                        style: AppText.bodyLarge.copyWith(
+                        style: AppText.bodySmall.copyWith(
                           color: AppColor.primary,
                         ),
                       ),
@@ -76,24 +77,41 @@ class LawyerConnect extends StatelessWidget {
               }
             }
           },
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: CustomButton(
-                text: "اربط حسابك البنكي",
-                onTap: () {
-                  context.read<ConnectCubit>().startOnboarding(
-                    lawyerId: lawyerId,
-                    email: email,
-                  );
-                },
-                width: double.infinity,
-                height: 60,
-                backgroundColor: AppColor.secondary,
-                textStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
-                textColor: AppColor.dark,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "شكراً لإنضمامك إلى عائلة قانوني",
+                style: AppText.title.copyWith(color: AppColor.primary),
               ),
-            ),
+              SizedBox(height: 20.h),
+              Text(
+                "سيتعين عليك تسجيل بيانات حسابك البنكي عبر منصة Stripe حتى تتمكن من الحصول على مستحقاتك المالية من عملائك",
+                style: AppText.bodyLarge.copyWith(color: AppColor.dark),
+              ),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: CustomButton(
+                    text: "اربط حسابك البنكي",
+                    onTap: () {
+                      context.read<ConnectCubit>().startOnboarding(
+                        lawyerId: lawyerId,
+                        email: email,
+                      );
+                    },
+                    width: double.infinity,
+                    height: 50.sp,
+                    backgroundColor: AppColor.secondary,
+                    textStyle: AppText.bodyMedium.copyWith(
+                      color: AppColor.dark,
+                    ),
+                    textColor: AppColor.dark,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

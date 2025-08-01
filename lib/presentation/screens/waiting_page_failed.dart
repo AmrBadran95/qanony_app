@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/Core/widgets/custom_button.dart';
@@ -47,7 +48,14 @@ class WaitingPageFailed extends StatelessWidget {
                 }
 
                 if (state is LawyerRejectionError) {
-                  return const Text('حدث خطأ أثناء جلب البيانات');
+                  return Center(
+                    child: Text(
+                      'حدث خطأ أثناء جلب البيانات',
+                      style: AppText.bodyLarge.copyWith(
+                        color: AppColor.primary,
+                      ),
+                    ),
+                  );
                 }
 
                 final reasons = state is LawyerRejectionLoaded
@@ -56,16 +64,16 @@ class WaitingPageFailed extends StatelessWidget {
 
                 return SingleChildScrollView(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: height * 0.04),
-                      Text(
-                        'عملية غير ناجحة!',
-                        style: AppText.headingMedium.copyWith(
-                          color: AppColor.primary,
-                          fontSize: width * 0.06,
+                      Center(
+                        child: Text(
+                          'عملية غير ناجحة!',
+                          style: AppText.headingMedium.copyWith(
+                            color: AppColor.primary,
+                          ),
                         ),
-                        textAlign: TextAlign.center,
                       ),
                       SizedBox(height: height * 0.03),
                       Text(
@@ -78,43 +86,42 @@ class WaitingPageFailed extends StatelessWidget {
                       ),
                       SizedBox(height: height * 0.03),
                       if (reasons.isNotEmpty) ...[
-                        Text(
-                          'الأسباب:',
-                          style: AppText.bodyLarge.copyWith(
-                            color: AppColor.primary,
-                            fontSize: width * 0.045,
+                        Center(
+                          child: Text(
+                            'الأسباب:',
+                            style: AppText.title.copyWith(
+                              color: AppColor.primary,
+                            ),
                           ),
                         ),
                         SizedBox(height: height * 0.015),
                         ...reasons.map(
-                          (reason) => Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: height * 0.005,
-                            ),
-                            child: Text(
-                              '• $reason',
-                              style: AppText.bodyLarge.copyWith(
-                                color: AppColor.dark,
-                                fontSize: width * 0.043,
+                          (reason) => Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "- $reason.",
+                                style: AppText.bodyLarge.copyWith(
+                                  color: AppColor.dark,
+                                ),
                               ),
-                              textAlign: TextAlign.right,
-                            ),
+                            ],
                           ),
                         ),
                         SizedBox(height: height * 0.02),
                       ],
                       CustomButton(
                         text: 'العودة إلى تسجيل الدخول',
-                        onTap: () {
+                        onTap: () async {
                           final uid = FirebaseAuth.instance.currentUser?.uid;
                           if (uid != null) {
-                            context
+                            await context
                                 .read<LawyerRejectionCubit>()
                                 .deleteLawyerData(uid);
                           }
                         },
                         width: double.infinity,
-                        height: height * 0.07,
+                        height: 60.h,
                         backgroundColor: AppColor.primary,
                         textStyle: AppText.bodyMedium.copyWith(
                           color: AppColor.light,

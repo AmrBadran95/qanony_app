@@ -4,8 +4,8 @@ import 'package:qanony/core/styles/text.dart';
 
 class CustomCalendar extends StatelessWidget {
   final String label;
-  final double width;
-  final double height;
+  final double? width;
+  final double? height;
   final EdgeInsets? padding;
   final Color color;
   final TextStyle? textStyle;
@@ -18,7 +18,7 @@ class CustomCalendar extends StatelessWidget {
     super.key,
     required this.label,
     this.width = double.infinity,
-    this.height = 60,
+    this.height,
     this.padding,
     this.color = AppColor.grey,
     this.textStyle,
@@ -33,7 +33,7 @@ class CustomCalendar extends StatelessWidget {
     return InputDecorator(
       decoration: InputDecoration(
         labelText: selectedDate != null ? label : null,
-        labelStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
+        labelStyle: AppText.bodySmall.copyWith(color: AppColor.dark),
         filled: true,
         fillColor: color,
         border: OutlineInputBorder(
@@ -73,10 +73,16 @@ class CustomCalendar extends StatelessWidget {
                     surface: AppColor.grey,
                     onSurface: AppColor.dark,
                   ),
+                  textTheme: TextTheme(
+                    titleLarge: AppText.title,
+                    bodyLarge: AppText.bodyLarge,
+                    bodyMedium: AppText.bodyMedium,
+                    labelLarge: AppText.bodySmall,
+                  ),
                   textButtonTheme: TextButtonThemeData(
                     style: TextButton.styleFrom(
                       foregroundColor: AppColor.dark,
-                      textStyle: AppText.bodyLarge,
+                      textStyle: AppText.bodyMedium,
                     ),
                   ),
                 ),
@@ -97,7 +103,8 @@ class CustomCalendar extends StatelessWidget {
                   ? "${selectedDate!.year}/${selectedDate!.month}/${selectedDate!.day}"
                   : label,
               style:
-                  textStyle ?? AppText.bodyLarge.copyWith(color: AppColor.dark),
+                  textStyle ??
+                  AppText.bodyMedium.copyWith(color: AppColor.dark),
             ),
             icon,
           ],
