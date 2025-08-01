@@ -50,41 +50,41 @@ class UserBaseScreen extends StatelessWidget {
                   style: AppText.headingMedium.copyWith(color: AppColor.light),
                 ),
 
-                Stack(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => BlocProvider(
-                              create: (_) =>
-                                  NotificationCubit()..loadNotifications(),
-                              child: const NotificationScreen(),
-                            ),
-                          ),
-                        );
-                      },
-                      icon: Icon(
-                        Icons.notifications_none_sharp,
-                        size: MediaQuery.of(context).size.width * 0.095,
-                        color: AppColor.light,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 12, top: 13),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.03,
-                        height: MediaQuery.of(context).size.width * 0.03,
-
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColor.secondary,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                // Stack(
+                //   children: [
+                //     IconButton(
+                //       onPressed: () {
+                //         Navigator.push(
+                //           context,
+                //           MaterialPageRoute(
+                //             builder: (_) => BlocProvider(
+                //               create: (_) =>
+                //                   NotificationCubit()..loadNotifications(),
+                //               child: const NotificationScreen(),
+                //             ),
+                //           ),
+                //         );
+                //       },
+                //       icon: Icon(
+                //         Icons.notifications_none_sharp,
+                //         size: MediaQuery.of(context).size.width * 0.095,
+                //         color: AppColor.light,
+                //       ),
+                //     ),
+                //     Padding(
+                //       padding: EdgeInsets.only(right: 12, top: 13),
+                //       child: Container(
+                //         width: MediaQuery.of(context).size.width * 0.03,
+                //         height: MediaQuery.of(context).size.width * 0.03,
+                //
+                //         decoration: const BoxDecoration(
+                //           shape: BoxShape.circle,
+                //           color: AppColor.secondary,
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
               ],
             ),
           ),
