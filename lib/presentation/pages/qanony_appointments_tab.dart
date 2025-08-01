@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/services/cubits/qanony_appointment/qanony_appointment_cubit.dart';
 import 'package:qanony/services/cubits/qanony_appointment/qanony_appointment_state.dart';
@@ -35,13 +36,23 @@ class QanonyAppointmentsTab extends StatelessWidget {
           if (state is QanonyAppointmentsLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is QanonyAppointmentsError) {
-            return Center(child: Text("حدث خطأ: ${state.message}"));
+            return Center(
+              child: Text(
+                "حدث خطأ: ${state.message}",
+                style: AppText.bodySmall.copyWith(color: AppColor.primary),
+              ),
+            );
           } else if (state is QanonyAppointmentsLoaded) {
             final orders = state.appointments;
             CallService callService = CallService();
 
             if (orders.isEmpty) {
-              return const Center(child: Text("لا توجد مواعيد حالياً"));
+              return Center(
+                child: Text(
+                  "لا توجد مواعيد حالياً",
+                  style: AppText.bodyMedium.copyWith(color: AppColor.dark),
+                ),
+              );
             }
 
             return ListView.builder(
@@ -70,7 +81,7 @@ class QanonyAppointmentsTab extends StatelessWidget {
                             : AppColor.primary,
                       ),
                     ),
-                    SizedBox(height: widthSmall),
+                    SizedBox(height: 10.h),
                     order.status == OrderStatus.paymentDone
                         ? CustomButton(
                             text: "انضم الى الجلسة",

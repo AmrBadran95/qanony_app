@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
@@ -25,11 +26,6 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-
-    final heightMedium = screenHeight * 0.015;
-
     final dateParts = date.split('•');
     final String dateOnly = dateParts[0].trim();
     final String timeOnly = dateParts.length > 1 ? dateParts[1].trim() : '';
@@ -48,10 +44,7 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      margin: EdgeInsets.symmetric(
-        horizontal: screenWidth * 0.04,
-        vertical: screenHeight * 0.01,
-      ),
+      margin: EdgeInsets.symmetric(vertical: 1.h),
       child: Padding(
         padding: EdgeInsets.all(AppPadding.large),
         child: Column(
@@ -62,23 +55,18 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.person, color: AppColor.dark, size: 20),
-                    const SizedBox(width: 2),
-                    SizedBox(
-                      width: screenWidth * 0.4,
-                      child: Text(
-                        name,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: AppText.title.copyWith(color: AppColor.dark),
-                      ),
+                    Icon(Icons.person, color: AppColor.dark, size: 20.sp),
+                    SizedBox(width: 2.w),
+                    Text(
+                      name,
+                      style: AppText.bodyLarge.copyWith(color: AppColor.dark),
                     ),
                   ],
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 4,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12.w,
+                    vertical: 4.h,
                   ),
                   decoration: BoxDecoration(
                     color: AppColor.primary,
@@ -97,7 +85,7 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
               specialty,
               style: AppText.bodyMedium.copyWith(color: AppColor.dark),
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: 4.h),
             Text(
               'الوصف: $description',
               style: AppText.bodyMedium.copyWith(color: AppColor.dark),
@@ -122,12 +110,8 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
 
             Row(
               children: [
-                const Icon(
-                  Icons.access_time,
-                  size: 18,
-                  color: AppColor.darkgrey,
-                ),
-                const SizedBox(width: 4),
+                Icon(Icons.access_time, size: 18.sp, color: AppColor.darkgrey),
+                SizedBox(width: 4.w),
                 Text(
                   timeOnly,
                   style: AppText.bodyMedium.copyWith(color: AppColor.dark),
@@ -138,12 +122,8 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
 
             Row(
               children: [
-                const Icon(
-                  Icons.attach_money,
-                  size: 18,
-                  color: AppColor.darkgrey,
-                ),
-                const SizedBox(width: 4),
+                Icon(Icons.attach_money, size: 18.sp, color: AppColor.darkgrey),
+                SizedBox(width: 4.w),
                 Text(
                   " $price",
                   style: AppText.bodyMedium.copyWith(
