@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/text.dart';
@@ -69,11 +70,17 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
                     children: [
                       _buildField(nameController, 'اسم العميل'),
                       DropdownButtonFormField<String>(
+                        dropdownColor: AppColor.grey,
                         value: selectedSpecialty,
                         items: lawyerSpecializations.map((type) {
                           return DropdownMenuItem(
                             value: type,
-                            child: Text(type),
+                            child: Text(
+                              type,
+                              style: AppText.bodyMedium.copyWith(
+                                color: AppColor.dark,
+                              ),
+                            ),
                           );
                         }).toList(),
                         onChanged: (value) {
@@ -81,15 +88,18 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
                             selectedSpecialty = value;
                           });
                         },
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'نوع القضية',
+                          labelStyle: AppText.bodyMedium.copyWith(
+                            color: AppColor.dark,
+                          ),
                         ),
                         validator: (value) => value == null ? 'مطلوب' : null,
                       ),
                       _buildField(descriptionController, 'وصف القضية'),
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10.sp),
                       _buildField(communicationType, 'طريقة التواصل مع العميل'),
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10.sp),
                       Row(
                         children: [
                           Expanded(
@@ -98,7 +108,7 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
                                   ? 'لم يتم اختيار التاريخ والوقت'
                                   : '  التاريخ: ${DateFormat('dd/MM/yyyy - hh:mm a', 'ar').format(selectedDate!)}',
                               style: selectedDate == null
-                                  ? AppText.bodyMedium.copyWith(
+                                  ? AppText.bodySmall.copyWith(
                                       color: AppColor.primary,
                                     )
                                   : AppText.bodyMedium.copyWith(
@@ -120,8 +130,20 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
                                       colorScheme: const ColorScheme.light(
                                         primary: AppColor.primary,
                                         onPrimary: AppColor.light,
-                                        surface: AppColor.light,
+                                        surface: AppColor.grey,
                                         onSurface: AppColor.dark,
+                                      ),
+                                      textTheme: TextTheme(
+                                        titleLarge: AppText.title,
+                                        bodyLarge: AppText.bodyLarge,
+                                        bodyMedium: AppText.bodyMedium,
+                                        labelLarge: AppText.bodySmall,
+                                      ),
+                                      textButtonTheme: TextButtonThemeData(
+                                        style: TextButton.styleFrom(
+                                          foregroundColor: AppColor.dark,
+                                          textStyle: AppText.bodyMedium,
+                                        ),
                                       ),
                                     ),
                                     child: child!,
@@ -136,32 +158,29 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
                                     builder: (context, child) {
                                       return Theme(
                                         data: Theme.of(context).copyWith(
-                                          timePickerTheme: const TimePickerThemeData(
-                                            confirmButtonStyle: ButtonStyle(
-                                              foregroundColor:
-                                                  WidgetStatePropertyAll(
-                                                    AppColor.green,
-                                                  ),
-                                            ),
-                                            dayPeriodColor: AppColor.secondary,
-                                            backgroundColor:
-                                                AppColor.grey,
-                                            hourMinuteTextColor:
-                                                AppColor.light,
-                                            dialHandColor: AppColor
-                                                .primary,
-                                            dialBackgroundColor: AppColor
-                                                .secondary,
-                                            dialTextColor: AppColor
-                                                .light, 
-                                            entryModeIconColor: AppColor
-                                                .dark, 
-                                          ),
+                                          timePickerTheme:
+                                              const TimePickerThemeData(
+                                                confirmButtonStyle: ButtonStyle(
+                                                  foregroundColor:
+                                                      WidgetStatePropertyAll(
+                                                        AppColor.green,
+                                                      ),
+                                                ),
+                                                dayPeriodColor:
+                                                    AppColor.secondary,
+                                                backgroundColor: AppColor.grey,
+                                                hourMinuteTextColor:
+                                                    AppColor.light,
+                                                dialHandColor: AppColor.primary,
+                                                dialBackgroundColor:
+                                                    AppColor.secondary,
+                                                dialTextColor: AppColor.light,
+                                                entryModeIconColor:
+                                                    AppColor.dark,
+                                              ),
                                           colorScheme: const ColorScheme.dark(
-                                            primary: AppColor
-                                                .primary,
-                                            onSurface: AppColor
-                                                .secondary,
+                                            primary: AppColor.primary,
+                                            onSurface: AppColor.secondary,
                                           ),
                                         ),
                                         child: child!,
@@ -247,12 +266,15 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
     bool isNumber = false,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: EdgeInsets.symmetric(vertical: 6.sp),
       child: TextFormField(
         controller: controller,
-        style: AppText.bodyLarge.copyWith(color: AppColor.dark),
+        style: AppText.bodyMedium.copyWith(color: AppColor.dark),
         keyboardType: isNumber ? TextInputType.number : TextInputType.text,
-        decoration: InputDecoration(labelText: label),
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
+        ),
         validator: (value) => value == null || value.isEmpty ? 'مطلوب' : null,
       ),
     );
