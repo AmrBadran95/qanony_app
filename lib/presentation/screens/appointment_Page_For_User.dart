@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart' hide Card;
 import 'package:intl/intl.dart';
 import 'package:qanony/Core/styles/padding.dart';
@@ -130,28 +132,41 @@ class AppointmentPageForUser extends StatelessWidget {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Container(
-                                                width:
-                                                    MediaQuery.of(
-                                                      context,
-                                                    ).size.width *
-                                                    0.19,
-                                                height:
-                                                    MediaQuery.of(
-                                                      context,
-                                                    ).size.width *
-                                                    0.19,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                  image: DecorationImage(
-                                                    image: NetworkImage(
-                                                      lawyer.profilePictureUrl
-                                                          .toString(),
+                                              Column(
+                                                children: [
+                                                  Container(
+                                                    width:
+                                                        MediaQuery.of(
+                                                          context,
+                                                        ).size.width *
+                                                        0.19,
+                                                    height:
+                                                        MediaQuery.of(
+                                                          context,
+                                                        ).size.width *
+                                                        0.19,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(20),
+                                                      image: DecorationImage(
+                                                        image: NetworkImage(
+                                                          lawyer.profilePictureUrl
+                                                              .toString(),
+                                                        ),
+                                                        fit: BoxFit.cover,
+                                                      ),
                                                     ),
-                                                    fit: BoxFit.cover,
                                                   ),
-                                                ),
+                                                  SizedBox(height: 5.h,),
+                                                  RatingBarIndicator(
+                                                    rating: 2.5,
+                                                    itemBuilder: (context, index) =>
+                                                        Icon(Icons.star, color: AppColor.secondary),
+                                                    itemCount: 5,
+                                                    itemSize: 15.0.sp,
+                                                    direction: Axis.horizontal,
+                                                  ),
+                                                ],
                                               ),
                                               SizedBox(
                                                 width:
@@ -236,7 +251,7 @@ class AppointmentPageForUser extends StatelessWidget {
                                                               ),
                                                             ),
                                                             Text(
-                                                              data.contactMethod,
+                                                             "${data.contactMethod} - ${data.price} جنيه",
                                                               style: AppText
                                                                   .labelSmall
                                                                   .copyWith(
@@ -263,37 +278,8 @@ class AppointmentPageForUser extends StatelessWidget {
                                                           ],
                                                         ),
                                                       ),
-                                                      SizedBox(
-                                                        width:
-                                                            MediaQuery.of(
-                                                              context,
-                                                            ).size.width *
-                                                            .01,
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Text(
-                                                            "المبلغ :${data.price} ",
-                                                            style: AppText
-                                                                .labelSmall
-                                                                .copyWith(
-                                                                  color:
-                                                                      AppColor
-                                                                          .dark,
-                                                                ),
-                                                          ),
-                                                          Text(
-                                                            "EGP",
-                                                            style: AppText
-                                                                .labelSmall
-                                                                .copyWith(
-                                                                  color:
-                                                                      AppColor
-                                                                          .dark,
-                                                                ),
-                                                          ),
-                                                        ],
-                                                      ),
+
+
                                                     ],
                                                   ),
                                                   SizedBox(
