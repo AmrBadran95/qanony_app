@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:qanony/Core/styles/color.dart';
-import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/core/styles/text.dart';
 
 class CustomCalendar extends StatelessWidget {
   final String label;
   final double width;
   final double height;
-  final EdgeInsets padding;
+  final EdgeInsets? padding;
   final Color color;
   final TextStyle? textStyle;
   final Widget icon;
@@ -20,7 +19,7 @@ class CustomCalendar extends StatelessWidget {
     required this.label,
     this.width = double.infinity,
     this.height = 60,
-    this.padding = AppPadding.paddingMedium,
+    this.padding,
     this.color = AppColor.grey,
     this.textStyle,
     this.icon = const Icon(Icons.calendar_today, color: AppColor.dark),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/core/styles/color.dart';
 import 'package:qanony/core/widgets/custom_button.dart';
 import 'package:qanony/core/styles/padding.dart';
@@ -21,7 +22,7 @@ class MultiStepperForm extends StatelessWidget {
             SnackBar(
               content: Text(
                 'تم إرسال البيانات بنجاح',
-                style: AppText.bodyLarge.copyWith(color: AppColor.green),
+                style: AppText.bodySmall.copyWith(color: AppColor.green),
               ),
               backgroundColor: AppColor.grey,
             ),
@@ -31,7 +32,7 @@ class MultiStepperForm extends StatelessWidget {
             SnackBar(
               content: Text(
                 'يرجى تعبئة جميع الحقول المطلوبة',
-                style: AppText.bodyLarge.copyWith(color: AppColor.primary),
+                style: AppText.bodySmall.copyWith(color: AppColor.primary),
               ),
               backgroundColor: AppColor.grey,
             ),
@@ -60,10 +61,10 @@ class MultiStepperForm extends StatelessWidget {
                     CustomButton(
                       text: "متابعة",
                       onTap: details.onStepContinue ?? () {},
-                      width: 120,
-                      height: 50,
+                      width: 120.w,
+                      height: 50.h,
                       backgroundColor: AppColor.green,
-                      textStyle: AppText.bodyLarge.copyWith(
+                      textStyle: AppText.bodySmall.copyWith(
                         color: AppColor.light,
                       ),
                     ),
@@ -71,10 +72,10 @@ class MultiStepperForm extends StatelessWidget {
                     CustomButton(
                       text: "رجوع",
                       onTap: details.onStepCancel ?? () {},
-                      width: 120,
-                      height: 50,
+                      width: 120.w,
+                      height: 50.h,
                       backgroundColor: AppColor.primary,
-                      textStyle: AppText.bodyLarge.copyWith(
+                      textStyle: AppText.bodySmall.copyWith(
                         color: AppColor.light,
                       ),
                     ),
@@ -84,7 +85,10 @@ class MultiStepperForm extends StatelessWidget {
           },
           steps: [
             Step(
-              title: Text('البيانات الشخصية'),
+              title: Text(
+                'البيانات الشخصية',
+                style: AppText.bodyMedium.copyWith(color: AppColor.dark),
+              ),
               content: const PersonalInfoForm(),
               isActive: currentStep >= 0,
               state: currentStep > 0
@@ -94,7 +98,10 @@ class MultiStepperForm extends StatelessWidget {
                   : StepState.indexed,
             ),
             Step(
-              title: Text('بيانات المحاماة'),
+              title: Text(
+                'بيانات المحاماة',
+                style: AppText.bodyMedium.copyWith(color: AppColor.dark),
+              ),
               content: const LawyermentInfoForm(),
               isActive: currentStep >= 1,
               state: currentStep > 1
@@ -104,7 +111,10 @@ class MultiStepperForm extends StatelessWidget {
                   : StepState.indexed,
             ),
             Step(
-              title: Text('طريفة التواصل'),
+              title: Text(
+                'طريفة التواصل',
+                style: AppText.bodyMedium.copyWith(color: AppColor.dark),
+              ),
               content: const ContactForm(),
               isActive: currentStep >= 2,
               state: state is MultiStepperStepError && currentStep == 2

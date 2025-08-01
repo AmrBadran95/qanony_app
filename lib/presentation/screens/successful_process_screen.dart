@@ -169,10 +169,26 @@ class SuccessfulProcessScreen extends StatelessWidget {
 
                                 if (result.status ==
                                     ShareResultStatus.dismissed) {
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'تم إلغاء المشاركة',
+                                          style: AppText.bodyMedium.copyWith(
+                                            color: AppColor.primary,
+                                          ),
+                                        ),
+                                        backgroundColor: AppColor.grey,
+                                      ),
+                                    );
+                                  }
+                                }
+                              } catch (e) {
+                                if (context.mounted) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                        'تم إلغاء المشاركة',
+                                        'حدث خطأ أثناء المشاركة: $e',
                                         style: AppText.bodyMedium.copyWith(
                                           color: AppColor.primary,
                                         ),
@@ -181,18 +197,6 @@ class SuccessfulProcessScreen extends StatelessWidget {
                                     ),
                                   );
                                 }
-                              } catch (e) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      'حدث خطأ أثناء المشاركة: $e',
-                                      style: AppText.bodyMedium.copyWith(
-                                        color: AppColor.primary,
-                                      ),
-                                    ),
-                                    backgroundColor: AppColor.grey,
-                                  ),
-                                );
                               }
                             },
 

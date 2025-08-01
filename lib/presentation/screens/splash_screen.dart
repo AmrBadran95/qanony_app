@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/core/styles/padding.dart';
 import 'package:qanony/core/styles/text.dart';
@@ -115,12 +116,12 @@ class SplashScreen extends StatelessWidget {
               ),
               Text(
                 "قانوني",
-                style: AppText.appHeading.copyWith(color: AppColor.light),
+                style: AppText.title.copyWith(color: AppColor.light),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * .05),
+              SizedBox(height: 20.h),
               Text(
                 "للمحـاماة و الأستشارات القانونية ",
-                style: AppText.title.copyWith(color: AppColor.secondary),
+                style: AppText.bodySmall.copyWith(color: AppColor.secondary),
               ),
             ],
           ),

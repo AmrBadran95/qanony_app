@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/core/styles/color.dart';
 import 'package:qanony/core/styles/padding.dart';
 import 'package:qanony/core/styles/text.dart';
@@ -62,7 +63,7 @@ class LawyerInformation extends StatelessWidget {
                             SnackBar(
                               content: Text(
                                 msg,
-                                style: AppText.bodyLarge.copyWith(
+                                style: AppText.bodySmall.copyWith(
                                   color: AppColor.primary,
                                 ),
                               ),
@@ -90,30 +91,31 @@ class LawyerInformation extends StatelessWidget {
                         if (state is LawyerConfirmationValidationSuccess) {
                           Future.microtask(() {
                             DateTime? dob;
-                            final dobState = context
-                                .read<DateOfBirthCubit>()
-                                .state;
-                            if (dobState is DateOfBirthSelected) {
-                              dob = dobState.selectedDate;
-                            }
-
                             DateTime? regDate;
-                            final regDateState = context
-                                .read<RegistrationDateCubit>()
-                                .state;
-                            if (regDateState is RegistrationDateSelected) {
-                              regDate = regDateState.selectedDate;
-                            }
 
-                            context
-                                .read<LawyerConfirmationCubit>()
-                                .submitLawyerData(
-                                  uid: uid,
-                                  email: email,
-                                  phone: phone,
-                                  dateOfBirth: dob,
-                                  registrationDate: regDate,
-                                );
+                            if (context.mounted) {
+                              final dobState = context
+                                  .read<DateOfBirthCubit>()
+                                  .state;
+                              if (dobState is DateOfBirthSelected) {
+                                dob = dobState.selectedDate;
+                              }
+                              final regDateState = context
+                                  .read<RegistrationDateCubit>()
+                                  .state;
+                              if (regDateState is RegistrationDateSelected) {
+                                regDate = regDateState.selectedDate;
+                              }
+                              context
+                                  .read<LawyerConfirmationCubit>()
+                                  .submitLawyerData(
+                                    uid: uid,
+                                    email: email,
+                                    phone: phone,
+                                    dateOfBirth: dob,
+                                    registrationDate: regDate,
+                                  );
+                            }
                           });
                         }
                       },
@@ -121,7 +123,7 @@ class LawyerInformation extends StatelessWidget {
                         final isLoading = state is LawyerConfirmationLoading;
 
                         return Padding(
-                          padding: AppPadding.paddingSmall,
+                          padding: AppPadding.verticalLarge,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -134,7 +136,7 @@ class LawyerInformation extends StatelessWidget {
                                       color: AppColor.dark,
                                     ),
                                   ),
-                                  const SizedBox(width: 8),
+                                  SizedBox(width: 10.w),
                                   const Icon(
                                     Icons.person,
                                     color: AppColor.dark,
@@ -142,9 +144,9 @@ class LawyerInformation extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 16),
+                              SizedBox(height: 10.h),
                               const Expanded(child: MultiStepperForm()),
-                              const SizedBox(height: 16),
+                              SizedBox(height: 10.h),
                               ValueListenableBuilder<bool>(
                                 valueListenable:
                                     ConfirmationControllers.confirmedInfo,
@@ -157,8 +159,8 @@ class LawyerInformation extends StatelessWidget {
                                                 .value =
                                             val ?? false,
                                     title: Text(
-                                      "أقر أن البيانات السابقة صحيحة وأنا مسئول عنها",
-                                      style: AppText.bodyMedium.copyWith(
+                                      "أقر أن البيانات السابقة صحيحة وأنا مسئول عنها.",
+                                      style: AppText.bodySmall.copyWith(
                                         color: AppColor.dark,
                                       ),
                                     ),
@@ -168,7 +170,7 @@ class LawyerInformation extends StatelessWidget {
                                   );
                                 },
                               ),
-                              const SizedBox(height: 8),
+
                               ValueListenableBuilder<bool>(
                                 valueListenable:
                                     ConfirmationControllers.agreedToTerms,
@@ -181,8 +183,8 @@ class LawyerInformation extends StatelessWidget {
                                                 .value =
                                             val ?? false,
                                     title: Text(
-                                      "أوافق على الشروط والأحكام",
-                                      style: AppText.bodyMedium.copyWith(
+                                      "أوافق على الشروط والأحكام.",
+                                      style: AppText.bodySmall.copyWith(
                                         color: AppColor.dark,
                                       ),
                                     ),
@@ -192,39 +194,41 @@ class LawyerInformation extends StatelessWidget {
                                   );
                                 },
                               ),
-                              const SizedBox(height: 16),
-                              CustomButton(
-                                text: isLoading
-                                    ? "جارٍ الإرسال..."
-                                    : "تأكيد البيانات",
-                                onTap: () {
-                                  if (isLoading) return;
 
-                                  final confirmed = ConfirmationControllers
-                                      .confirmedInfo
-                                      .value;
-                                  final agreed = ConfirmationControllers
-                                      .agreedToTerms
-                                      .value;
+                              Padding(
+                                padding: AppPadding.horizontalLarge,
+                                child: CustomButton(
+                                  text: isLoading
+                                      ? "جارٍ الإرسال..."
+                                      : "تأكيد البيانات",
+                                  onTap: () {
+                                    if (isLoading) return;
 
-                                  context
-                                      .read<LawyerConfirmationCubit>()
-                                      .validateAllForms(
-                                        agreedToTerms: agreed,
-                                        confirmedData: confirmed,
-                                      );
-                                },
-                                width: double.infinity,
-                                height: 60,
-                                backgroundColor: isLoading
-                                    ? AppColor.grey
-                                    : AppColor.secondary,
-                                textStyle: AppText.bodyLarge.copyWith(
-                                  color: AppColor.dark,
+                                    final confirmed = ConfirmationControllers
+                                        .confirmedInfo
+                                        .value;
+                                    final agreed = ConfirmationControllers
+                                        .agreedToTerms
+                                        .value;
+
+                                    context
+                                        .read<LawyerConfirmationCubit>()
+                                        .validateAllForms(
+                                          agreedToTerms: agreed,
+                                          confirmedData: confirmed,
+                                        );
+                                  },
+                                  width: double.infinity,
+                                  height: 60,
+                                  backgroundColor: isLoading
+                                      ? AppColor.grey
+                                      : AppColor.secondary,
+                                  textStyle: AppText.bodySmall.copyWith(
+                                    color: AppColor.dark,
+                                  ),
+                                  textColor: AppColor.dark,
                                 ),
-                                textColor: AppColor.dark,
                               ),
-                              const SizedBox(height: 16),
                             ],
                           ),
                         );

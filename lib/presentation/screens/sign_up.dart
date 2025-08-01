@@ -103,170 +103,178 @@ class SignUpScreen extends StatelessWidget {
           final isLoading = state is AuthLoading;
 
           return Scaffold(
+            resizeToAvoidBottomInset: true,
             backgroundColor: AppColor.grey,
             body: SafeArea(
-              child: Center(
-                child: Padding(
-                  padding: AppPadding.paddingLarge,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'مرحباً , سجل للانضمام إلينا',
-                          style: AppText.headingMedium.copyWith(
-                            color: AppColor.primary,
+              child: SingleChildScrollView(
+                child: Center(
+                  child: Padding(
+                    padding: AppPadding.paddingLarge,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'مرحباً , سجل للانضمام إلينا',
+                            style: AppText.title.copyWith(
+                              color: AppColor.primary,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 50),
-                        Form(
-                          key: SignUpFormKey.formKey,
-                          child: Column(
-                            children: [
-                              CustomTextFormField(
-                                logo: const Icon(
-                                  Icons.email_outlined,
-                                  color: AppColor.dark,
-                                ),
-                                label: 'البريد الالكتروني',
-                                controller: SignUpControllers.emailController,
-                                textStyle: AppText.bodyMedium.copyWith(
-                                  color: AppColor.dark,
-                                ),
-                                labelStyle: AppText.bodyMedium.copyWith(
-                                  color: AppColor.dark,
-                                ),
-                                contentPadding: AppPadding.paddingMedium,
-                                width: double.infinity,
-                                height: 60,
-                                backgroundColor: AppColor.light,
-                                keyboardType: TextInputType.emailAddress,
-                                validator: AppValidators.validateEmail,
-                              ),
-                              const SizedBox(height: 20),
-                              CustomTextFormField(
-                                logo: const Icon(
-                                  Icons.phone,
-                                  color: AppColor.dark,
-                                ),
-                                label: 'رقم الهاتف',
-                                controller: SignUpControllers.phoneController,
-                                textStyle: AppText.bodyMedium.copyWith(
-                                  color: AppColor.dark,
-                                ),
-                                labelStyle: AppText.bodyMedium.copyWith(
-                                  color: AppColor.dark,
-                                ),
-                                contentPadding: AppPadding.paddingMedium,
-                                width: double.infinity,
-                                height: 60,
-                                backgroundColor: AppColor.light,
-                                keyboardType: TextInputType.phone,
-                                validator: AppValidators.validatePhone,
-                              ),
-                              const SizedBox(height: 20),
-                              CustomTextFormField(
-                                logo: const Icon(
-                                  Icons.visibility_off,
-                                  color: AppColor.dark,
-                                ),
-                                label: 'كلمة المرور',
-                                controller:
-                                    SignUpControllers.passwordController,
-                                textStyle: AppText.bodyMedium.copyWith(
-                                  color: AppColor.dark,
-                                ),
-                                labelStyle: AppText.bodyMedium.copyWith(
-                                  color: AppColor.dark,
-                                ),
-                                contentPadding: AppPadding.paddingMedium,
-                                width: double.infinity,
-                                height: 60,
-                                backgroundColor: AppColor.light,
-                                obscureText: true,
-                                keyboardType: TextInputType.visiblePassword,
-                                validator: AppValidators.validatePassword,
-                              ),
-                              const SizedBox(height: 20),
-                              CustomTextFormField(
-                                logo: const Icon(
-                                  Icons.visibility_off,
-                                  color: AppColor.dark,
-                                ),
-                                label: 'تأكيد كلمة المرور',
-                                controller:
-                                    SignUpControllers.confirmPasswordController,
-                                textStyle: AppText.bodyMedium.copyWith(
-                                  color: AppColor.dark,
-                                ),
-                                labelStyle: AppText.bodyMedium.copyWith(
-                                  color: AppColor.dark,
-                                ),
-                                contentPadding: AppPadding.paddingMedium,
-                                width: double.infinity,
-                                height: 60,
-                                backgroundColor: AppColor.light,
-                                obscureText: true,
-                                keyboardType: TextInputType.visiblePassword,
-                                validator: (value) =>
-                                    AppValidators.validateConfirmPassword(
-                                      value,
-                                      SignUpControllers.passwordController.text,
-                                    ),
-                              ),
-                              const SizedBox(height: 30),
-                              CustomButton(
-                                text: isLoading
-                                    ? '...جارٍ تسجيل الحساب'
-                                    : 'تسجيل الحساب',
-                                onTap: () {
-                                  if (SignUpFormKey.formKey.currentState!
-                                      .validate()) {
-                                    context.read<AuthCubit>().register(
-                                      SignUpControllers.emailController.text
-                                          .trim(),
-                                      SignUpControllers.passwordController.text
-                                          .trim(),
-                                    );
-                                  }
-                                },
-                                width: double.infinity,
-                                height: 55,
-                                backgroundColor: AppColor.primary,
-                                textStyle: AppText.title.copyWith(
-                                  color: AppColor.light,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 30),
-                        Center(
-                          child: Text.rich(
-                            TextSpan(
-                              text: 'هل لديك حساب بالفعل؟ ',
-                              style: AppText.bodySmall,
+                          SizedBox(height: 50),
+                          Form(
+                            key: SignUpFormKey.formKey,
+                            child: Column(
                               children: [
-                                TextSpan(
-                                  text: 'تسجيل دخول',
-                                  style: AppText.bodyMedium.copyWith(
-                                    color: AppColor.primary,
+                                CustomTextFormField(
+                                  logo: const Icon(
+                                    Icons.email_outlined,
+                                    color: AppColor.dark,
                                   ),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) => const SignInScreen(),
-                                        ),
+                                  label: 'البريد الالكتروني',
+                                  controller: SignUpControllers.emailController,
+                                  textStyle: AppText.bodyMedium.copyWith(
+                                    color: AppColor.dark,
+                                  ),
+                                  labelStyle: AppText.bodyMedium.copyWith(
+                                    color: AppColor.dark,
+                                  ),
+                                  contentPadding: AppPadding.paddingMedium,
+                                  width: double.infinity,
+                                  height: 60,
+                                  backgroundColor: AppColor.light,
+                                  keyboardType: TextInputType.emailAddress,
+                                  validator: AppValidators.validateEmail,
+                                ),
+                                const SizedBox(height: 20),
+                                CustomTextFormField(
+                                  logo: const Icon(
+                                    Icons.phone,
+                                    color: AppColor.dark,
+                                  ),
+                                  label: 'رقم الهاتف',
+                                  controller: SignUpControllers.phoneController,
+                                  textStyle: AppText.bodyMedium.copyWith(
+                                    color: AppColor.dark,
+                                  ),
+                                  labelStyle: AppText.bodyMedium.copyWith(
+                                    color: AppColor.dark,
+                                  ),
+                                  contentPadding: AppPadding.paddingMedium,
+                                  width: double.infinity,
+                                  height: 60,
+                                  backgroundColor: AppColor.light,
+                                  keyboardType: TextInputType.phone,
+                                  validator: AppValidators.validatePhone,
+                                ),
+                                const SizedBox(height: 20),
+                                CustomTextFormField(
+                                  logo: const Icon(
+                                    Icons.visibility_off,
+                                    color: AppColor.dark,
+                                  ),
+                                  label: 'كلمة المرور',
+                                  controller:
+                                      SignUpControllers.passwordController,
+                                  textStyle: AppText.bodyMedium.copyWith(
+                                    color: AppColor.dark,
+                                  ),
+                                  labelStyle: AppText.bodyMedium.copyWith(
+                                    color: AppColor.dark,
+                                  ),
+                                  contentPadding: AppPadding.paddingMedium,
+                                  width: double.infinity,
+                                  height: 60,
+                                  backgroundColor: AppColor.light,
+                                  obscureText: true,
+                                  keyboardType: TextInputType.visiblePassword,
+                                  validator: AppValidators.validatePassword,
+                                ),
+                                const SizedBox(height: 20),
+                                CustomTextFormField(
+                                  logo: const Icon(
+                                    Icons.visibility_off,
+                                    color: AppColor.dark,
+                                  ),
+                                  label: 'تأكيد كلمة المرور',
+                                  controller: SignUpControllers
+                                      .confirmPasswordController,
+                                  textStyle: AppText.bodyMedium.copyWith(
+                                    color: AppColor.dark,
+                                  ),
+                                  labelStyle: AppText.bodyMedium.copyWith(
+                                    color: AppColor.dark,
+                                  ),
+                                  contentPadding: AppPadding.paddingMedium,
+                                  width: double.infinity,
+                                  height: 60,
+                                  backgroundColor: AppColor.light,
+                                  obscureText: true,
+                                  keyboardType: TextInputType.visiblePassword,
+                                  validator: (value) =>
+                                      AppValidators.validateConfirmPassword(
+                                        value,
+                                        SignUpControllers
+                                            .passwordController
+                                            .text,
+                                      ),
+                                ),
+                                const SizedBox(height: 30),
+                                CustomButton(
+                                  text: isLoading
+                                      ? '...جارٍ تسجيل الحساب'
+                                      : 'تسجيل الحساب',
+                                  onTap: () {
+                                    if (SignUpFormKey.formKey.currentState!
+                                        .validate()) {
+                                      context.read<AuthCubit>().register(
+                                        SignUpControllers.emailController.text
+                                            .trim(),
+                                        SignUpControllers
+                                            .passwordController
+                                            .text
+                                            .trim(),
                                       );
-                                    },
+                                    }
+                                  },
+                                  width: double.infinity,
+                                  height: 55,
+                                  backgroundColor: AppColor.primary,
+                                  textStyle: AppText.title.copyWith(
+                                    color: AppColor.light,
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                        ),
-                      ],
+                          SizedBox(height: 30),
+                          Center(
+                            child: Text.rich(
+                              TextSpan(
+                                text: 'هل لديك حساب؟ ',
+                                style: AppText.bodySmall,
+                                children: [
+                                  TextSpan(
+                                    text: 'تسجيل دخول',
+                                    style: AppText.bodySmall.copyWith(
+                                      color: AppColor.primary,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (_) =>
+                                                const SignInScreen(),
+                                          ),
+                                        );
+                                      },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

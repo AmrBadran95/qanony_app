@@ -19,7 +19,7 @@ class SearchScreen extends StatelessWidget {
       child: UserBaseScreen(
         searchColor: AppColor.secondary,
         body: Column(
-          children: const [
+          children: [
             Padding(
               padding: EdgeInsets.all(AppPadding.small),
               child: SearchAndFilters(),
@@ -41,7 +41,7 @@ class LawyersList extends StatelessWidget {
       builder: (context, state) {
         if (state is SearchLoading) {
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppPadding.small),
+            padding: EdgeInsets.symmetric(horizontal: AppPadding.small),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: ListView.separated(
@@ -66,7 +66,7 @@ class LawyersList extends StatelessWidget {
                           color: AppColor.light,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: AppColor.grey.withOpacity(0.4),
+                            color: AppColor.grey.withAlpha((0.4 * 255).round()),
                             width: 1,
                           ),
                           boxShadow: [

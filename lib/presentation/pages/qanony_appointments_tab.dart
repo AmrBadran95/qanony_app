@@ -10,16 +10,13 @@ import '../../Core/styles/text.dart';
 import '../../Core/widgets/custom_button.dart';
 import '../../Core/widgets/qanony_appointment_widget.dart';
 import '../../data/models/order_status_enum.dart';
-import '../../services/call/callService.dart';
+import '../../services/call/call_service.dart';
 
 class QanonyAppointmentsTab extends StatelessWidget {
   const QanonyAppointmentsTab({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final widthSmall = screenWidth * 0.02;
-    final widthMedium = screenWidth * 0.04;
     String? email = FirebaseAuth.instance.currentUser?.email;
     String? lawyerId = FirebaseAuth.instance.currentUser?.uid;
 
@@ -95,7 +92,7 @@ class QanonyAppointmentsTab extends StatelessWidget {
                             height: MediaQuery.of(context).size.height * 0.04,
                             backgroundColor: isTimeToJoin
                                 ? AppColor.green
-                                : AppColor.grey.withOpacity(0.4),
+                                : AppColor.grey.withAlpha((0.4 * 255).round()),
                             textStyle: AppText.bodySmall,
                           )
                         : const SizedBox.shrink(),

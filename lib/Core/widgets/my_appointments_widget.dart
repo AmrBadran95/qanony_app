@@ -30,7 +30,7 @@ class MyAppointmentCardWidget extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Padding(
-        padding: const EdgeInsets.all(AppPadding.medium),
+        padding: EdgeInsets.all(AppPadding.medium),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

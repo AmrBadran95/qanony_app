@@ -3,9 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../../../data/models/lawyer_model.dart';
 part 'search_state.dart';
+
 class SearchCubit extends Cubit<SearchState> {
   List<LawyerModel> originalLawyers = [];
-  List<LawyerModel> AllLawyer = [];
+  List<LawyerModel> allLawyers = [];
 
   String? type;
   String? specialization;
@@ -27,9 +28,9 @@ class SearchCubit extends Cubit<SearchState> {
           .map((doc) => LawyerModel.fromJson(doc.data()))
           .toList();
 
-      AllLawyer = List.from(originalLawyers);
+      allLawyers = List.from(originalLawyers);
 
-      emit(SearchLoading(AllLawyer));
+      emit(SearchLoading(allLawyers));
     } catch (e) {
       emit(SearchError('فشل تحميل بيانات المحاميين  $e'));
     }
@@ -50,22 +51,19 @@ class SearchCubit extends Cubit<SearchState> {
   }
 
   void filter() {
-    AllLawyer = originalLawyers.where((lawyer) {
+    allLawyers = originalLawyers.where((lawyer) {
       final matchesType = type == null || lawyer.gender == type;
 
       final matchesSpecialization =
-    specialization == null ||
-           lawyer.specialty!.contains(specialization!);
-      print('Filtered Lawyers: ${AllLawyer.map((e) => e.fullName)}');
-
+          specialization == null || lawyer.specialty!.contains(specialization!);
 
       final matchesContactMethod =
           contactMethod == null ||
-              (contactMethod == 'call' && lawyer.offersCall == true) ||
-              (contactMethod == 'office' && lawyer.offersOffice == true);
+          (contactMethod == 'call' && lawyer.offersCall == true) ||
+          (contactMethod == 'office' && lawyer.offersOffice == true);
 
-      final matchesName = nameQuery == null ||
-          (lawyer.fullName?.contains(nameQuery!) ?? false);
+      final matchesName =
+          nameQuery == null || (lawyer.fullName?.contains(nameQuery!) ?? false);
 
       return matchesType &&
           matchesSpecialization &&
@@ -73,7 +71,7 @@ class SearchCubit extends Cubit<SearchState> {
           matchesName;
     }).toList();
 
-    emit(SearchLoading(AllLawyer));
+    emit(SearchLoading(allLawyers));
   }
 
   void clearFilters() {
@@ -81,8 +79,7 @@ class SearchCubit extends Cubit<SearchState> {
     specialization = null;
     nameQuery = null;
     contactMethod = null;
-    AllLawyer = List.from(originalLawyers);
-    emit(SearchLoading(AllLawyer));
+    allLawyers = List.from(originalLawyers);
+    emit(SearchLoading(allLawyers));
   }
 }
-

@@ -116,7 +116,7 @@ class AppointmentPageForUser extends StatelessWidget {
                                     margin: EdgeInsets.only(
                                       bottom:
                                           MediaQuery.of(context).size.height *
-                                          0.015,
+                                          0.014,
                                     ),
                                     elevation: 2,
                                     shape: RoundedRectangleBorder(
@@ -496,8 +496,9 @@ class AppointmentPageForUser extends StatelessWidget {
                                                       0.04,
                                                   backgroundColor: isTimeToJoin
                                                       ? AppColor.green
-                                                      : AppColor.grey
-                                                            .withOpacity(0.4),
+                                                      : AppColor.grey.withAlpha(
+                                                          (0.4 * 255).round(),
+                                                        ),
                                                   textStyle: AppText.bodySmall,
                                                 )
                                               : const SizedBox.shrink(),

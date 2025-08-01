@@ -5,7 +5,7 @@ class LawyerRepository {
   final FirebaseFirestore _firestore;
 
   LawyerRepository({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+    : _firestore = firestore ?? FirebaseFirestore.instance;
 
   Future<LawyerModel?> fetchLawyerById(String uid) async {
     try {
@@ -15,10 +15,10 @@ class LawyerRepository {
       }
       return null;
     } catch (e) {
-      print("Error fetching lawyer: $e");
       rethrow;
     }
   }
+
   Future<List<LawyerModel>> fetchAllLawyers() async {
     try {
       final snapshot = await _firestore.collection('lawyers').get();
@@ -29,6 +29,7 @@ class LawyerRepository {
       throw Exception(' فشل تحميل المحامين المميزين: $e');
     }
   }
+
   Future<List<LawyerModel>> fetchPremiumLawyers() async {
     final snapshot = await FirebaseFirestore.instance
         .collection('lawyers')
@@ -39,6 +40,4 @@ class LawyerRepository {
         .map((doc) => LawyerModel.fromJson(doc.data()))
         .toList();
   }
-
-
 }

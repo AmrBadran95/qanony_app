@@ -1,35 +1,30 @@
 import 'package:flutter/rendering.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppPadding {
-  static const double small = 8.0;
-  static const double medium = 16.0;
-  static const double large = 24.0;
-  static const double extraLarge = 32.0;
+  static double small = 8.w;
+  static double medium = 16.w;
+  static double large = 24.w;
+  static double extraLarge = 32.w;
 
-  static const EdgeInsets paddingSmall = EdgeInsets.all(small);
-  static const EdgeInsets paddingMedium = EdgeInsets.all(medium);
-  static const EdgeInsets paddingLarge = EdgeInsets.all(large);
-  static const EdgeInsets paddingExtraLarge = EdgeInsets.all(extraLarge);
+  static EdgeInsets get paddingSmall => EdgeInsets.all(small);
+  static EdgeInsets get paddingMedium => EdgeInsets.all(medium);
+  static EdgeInsets get paddingLarge => EdgeInsets.all(large);
+  static EdgeInsets get paddingExtraLarge => EdgeInsets.all(extraLarge);
 
-  static const EdgeInsets horizontalSmall = EdgeInsets.symmetric(
-    horizontal: small,
-  );
-  static const EdgeInsets horizontalMedium = EdgeInsets.symmetric(
-    horizontal: medium,
-  );
-  static const EdgeInsets horizontalLarge = EdgeInsets.symmetric(
-    horizontal: large,
-  );
-  static const EdgeInsets horizontalExtraLarge = EdgeInsets.symmetric(
-    horizontal: extraLarge,
-  );
+  static EdgeInsets get horizontalSmall =>
+      EdgeInsets.symmetric(horizontal: small);
+  static EdgeInsets get horizontalMedium =>
+      EdgeInsets.symmetric(horizontal: medium);
+  static EdgeInsets get horizontalLarge =>
+      EdgeInsets.symmetric(horizontal: large);
+  static EdgeInsets get horizontalExtraLarge =>
+      EdgeInsets.symmetric(horizontal: extraLarge);
 
-  static const EdgeInsets verticalSmall = EdgeInsets.symmetric(vertical: small);
-  static const EdgeInsets verticalMedium = EdgeInsets.symmetric(
-    vertical: medium,
-  );
-  static const EdgeInsets verticalLarge = EdgeInsets.symmetric(vertical: large);
-  static const EdgeInsets verticalExtraLarge = EdgeInsets.symmetric(
-    vertical: extraLarge,
-  );
+  static EdgeInsets get verticalSmall => EdgeInsets.symmetric(vertical: small);
+  static EdgeInsets get verticalMedium =>
+      EdgeInsets.symmetric(vertical: medium);
+  static EdgeInsets get verticalLarge => EdgeInsets.symmetric(vertical: large);
+  static EdgeInsets get verticalExtraLarge =>
+      EdgeInsets.symmetric(vertical: extraLarge);
 }

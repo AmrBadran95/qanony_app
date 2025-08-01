@@ -5,7 +5,7 @@ import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/presentation/screens/choose_role_screen.dart';
-import 'package:qanony/presentation/screens/notification-screen.dart';
+import 'package:qanony/presentation/screens/notification_screen.dart';
 import 'package:qanony/services/cubits/notification/notification_cubit.dart';
 import '../../services/auth/auth_service.dart';
 import '../screens/appointment_page_for_user.dart';
@@ -203,14 +203,15 @@ class UserBaseScreen extends StatelessWidget {
 
                                 AppCache.setLoggedIn(false);
                                 AppCache.setIsLawyer(false);
-
-                                Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const ChooseRoleScreen(),
-                                  ),
-                                  (route) => false,
-                                );
+                                if (context.mounted) {
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ChooseRoleScreen(),
+                                    ),
+                                    (route) => false,
+                                  );
+                                }
                               },
 
                               child: Text(

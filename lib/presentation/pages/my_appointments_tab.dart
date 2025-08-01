@@ -128,56 +128,58 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
                                   );
                                 },
                               );
-                              if (pickedDate != null) {
-                                final pickedTime = await showTimePicker(
-                                  context: context,
-                                  initialTime: TimeOfDay.now(),
-                                  builder: (context, child) {
-                                    return Theme(
-                                      data: Theme.of(context).copyWith(
-                                        timePickerTheme: const TimePickerThemeData(
-                                          confirmButtonStyle: ButtonStyle(
-                                            foregroundColor:
-                                                WidgetStatePropertyAll(
-                                                  AppColor.green,
-                                                ),
+                              if (context.mounted) {
+                                if (pickedDate != null) {
+                                  final pickedTime = await showTimePicker(
+                                    context: context,
+                                    initialTime: TimeOfDay.now(),
+                                    builder: (context, child) {
+                                      return Theme(
+                                        data: Theme.of(context).copyWith(
+                                          timePickerTheme: const TimePickerThemeData(
+                                            confirmButtonStyle: ButtonStyle(
+                                              foregroundColor:
+                                                  WidgetStatePropertyAll(
+                                                    AppColor.green,
+                                                  ),
+                                            ),
+                                            dayPeriodColor: AppColor.secondary,
+                                            backgroundColor:
+                                                AppColor.grey,
+                                            hourMinuteTextColor:
+                                                AppColor.light,
+                                            dialHandColor: AppColor
+                                                .primary,
+                                            dialBackgroundColor: AppColor
+                                                .secondary,
+                                            dialTextColor: AppColor
+                                                .light, 
+                                            entryModeIconColor: AppColor
+                                                .dark, 
                                           ),
-                                          dayPeriodColor: AppColor.secondary,
-                                          backgroundColor:
-                                              AppColor.grey, // خلفية الدايلوج
-                                          hourMinuteTextColor:
-                                              AppColor.light, // لون الأرقام
-                                          dialHandColor: AppColor
-                                              .primary, // لون عقرب الاختيار
-                                          dialBackgroundColor: AppColor
-                                              .secondary, // خلفية الدائرة
-                                          dialTextColor: AppColor
-                                              .light, // لون الأرقام داخل الدائرة
-                                          entryModeIconColor: AppColor
-                                              .dark, // لون أيقونة الكتابة
+                                          colorScheme: const ColorScheme.dark(
+                                            primary: AppColor
+                                                .primary,
+                                            onSurface: AppColor
+                                                .secondary,
+                                          ),
                                         ),
-                                        colorScheme: const ColorScheme.dark(
-                                          primary: AppColor
-                                              .primary, // لون الساعة المختارة والزراير
-                                          onSurface: AppColor
-                                              .secondary, // لون النصوص العادية
-                                        ),
-                                      ),
-                                      child: child!,
-                                    );
-                                  },
-                                );
-                                if (pickedTime != null) {
-                                  final fullDateTime = DateTime(
-                                    pickedDate.year,
-                                    pickedDate.month,
-                                    pickedDate.day,
-                                    pickedTime.hour,
-                                    pickedTime.minute,
+                                        child: child!,
+                                      );
+                                    },
                                   );
-                                  setState(() {
-                                    selectedDate = fullDateTime;
-                                  });
+                                  if (pickedTime != null) {
+                                    final fullDateTime = DateTime(
+                                      pickedDate.year,
+                                      pickedDate.month,
+                                      pickedDate.day,
+                                      pickedTime.hour,
+                                      pickedTime.minute,
+                                    );
+                                    setState(() {
+                                      selectedDate = fullDateTime;
+                                    });
+                                  }
                                 }
                               }
                             },
