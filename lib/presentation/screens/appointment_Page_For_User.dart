@@ -18,6 +18,7 @@ import 'package:qanony/services/firestore/user_firestore_service.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import '../../Core/widgets/custom_button.dart';
 import '../../data/models/order_status_enum.dart';
+import '../../services/call/AppointmentPageForUser .dart';
 import '../../services/firestore/lawyer_firestore_service.dart';
 import '../../services/firestore/order_firestore_service.dart';
 import '../pages/user_base_screen.dart';
@@ -338,8 +339,6 @@ class AppointmentPageForUser extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-
-
                                               Expanded(
                                                 child: Row(
                                                   mainAxisAlignment: MainAxisAlignment.end,
@@ -468,42 +467,37 @@ class AppointmentPageForUser extends StatelessWidget {
                                                   ],
                                                 )
                                               : data.status == OrderStatus.paymentDone
-                                              ? CustomButton(
-                                                  text: "انضم الى الجلسة",
-                                                  onTap: isTimeToJoin
-                                                      ? () async {
-                                                          await ZegoUIKitPrebuiltCallInvitationService().send(
-                                                            resourceID:
-                                                                "QanonyApp",
-                                                            invitees: [
-                                                              ZegoCallUser(
-                                                                data.lawyerId,
-                                                                lawyer.fullName
-                                                                    .toString(),
-                                                              ),
-                                                            ],
-                                                            isVideoCall: true,
-                                                          );
-                                                        }
-                                                      : null,
-                                                  width:
-                                                      MediaQuery.of(
-                                                        context,
-                                                      ).size.width *
-                                                      0.3,
-                                                  height:
-                                                      MediaQuery.of(
-                                                        context,
-                                                      ).size.height *
-                                                      0.04,
-                                                  backgroundColor: isTimeToJoin
-                                                      ? AppColor.green
-                                                      : AppColor.grey.withAlpha(
-                                                          (0.4 * 255).round(),
-                                                        ),
-                                                  textStyle: AppText.bodySmall,
-                                                )
-                                              : const SizedBox.shrink(),
+                                              ? StreamBuilder<bool>(
+                                            stream: timeToJoinStream(sessionTime),
+                                            builder: (context, snapshot) {
+                                              final isTimeToJoin = snapshot.data ?? false;
+
+                                              return CustomButton(
+                                                text: "انضم الى الجلسة",
+                                                onTap: isTimeToJoin
+                                                    ? () async {
+                                                  await ZegoUIKitPrebuiltCallInvitationService().send(
+                                                    resourceID: "QanonyApp",
+                                                    invitees: [
+                                                      ZegoCallUser(
+                                                        data.lawyerId,
+                                                        lawyer.fullName.toString(),
+                                                      ),
+                                                    ],
+                                                    isVideoCall: true,
+                                                  );
+                                                }
+                                                    : null,
+                                                width: MediaQuery.of(context).size.width * 0.3,
+                                                height: MediaQuery.of(context).size.height * 0.04,
+                                                backgroundColor: isTimeToJoin
+                                                    ? AppColor.green
+                                                    : AppColor.grey.withAlpha((0.4 * 255).round()),
+                                                textStyle: AppText.bodySmall,
+                                              );
+                                            },
+                                          )
+                                        : const SizedBox.shrink(),
                                         ],
                                       ),
                                     ),
