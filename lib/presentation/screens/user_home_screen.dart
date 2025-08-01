@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
@@ -36,7 +37,7 @@ class UserHomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: 160,
+                    height: 160.h,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: adsList.length,
@@ -44,7 +45,7 @@ class UserHomeScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final ad = adsList[index];
                         return Padding(
-                          padding: const EdgeInsets.only(left: 5),
+                          padding:  EdgeInsets.only(left: 5.w),
                           child: Container(
                             width: 300,
                             decoration: BoxDecoration(
@@ -76,7 +77,7 @@ class UserHomeScreen extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(height: 8),
+                                       SizedBox(height: 8.h),
                                       Padding(
                                         padding: AppPadding.horizontalSmall,
                                         child: Text(
@@ -86,7 +87,7 @@ class UserHomeScreen extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(height: 5),
+                                       SizedBox(height: 5.h),
                                     ],
                                   ),
                                 ),
@@ -100,7 +101,7 @@ class UserHomeScreen extends StatelessWidget {
                 ],
               ),
 
-              const SizedBox(height: 5),
+               SizedBox(height: 5.h),
 
               GestureDetector(
                 onTap: () {

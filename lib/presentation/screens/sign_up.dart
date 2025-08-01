@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/Core/shared/app_cache.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/text.dart';
@@ -114,21 +115,23 @@ class SignUpScreen extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          SizedBox(height: 40.h,),
                           Text(
                             'مرحباً , سجل للانضمام إلينا',
-                            style: AppText.title.copyWith(
+                            style: AppText.headingMedium.copyWith(
                               color: AppColor.primary,
                             ),
                           ),
-                          SizedBox(height: 50),
+                          SizedBox(height: 50.h),
                           Form(
                             key: SignUpFormKey.formKey,
                             child: Column(
                               children: [
                                 CustomTextFormField(
-                                  logo: const Icon(
+                                  logo:  Icon(
                                     Icons.email_outlined,
                                     color: AppColor.dark,
+                                    size: 24.sp,
                                   ),
                                   label: 'البريد الالكتروني',
                                   controller: SignUpControllers.emailController,
@@ -140,16 +143,17 @@ class SignUpScreen extends StatelessWidget {
                                   ),
                                   contentPadding: AppPadding.paddingMedium,
                                   width: double.infinity,
-                                  height: 60,
+                                  height: 60.sp,
                                   backgroundColor: AppColor.light,
                                   keyboardType: TextInputType.emailAddress,
                                   validator: AppValidators.validateEmail,
                                 ),
-                                const SizedBox(height: 20),
+                                 SizedBox(height: 20.h),
                                 CustomTextFormField(
-                                  logo: const Icon(
+                                  logo:  Icon(
                                     Icons.phone,
                                     color: AppColor.dark,
+                                    size: 24.sp,
                                   ),
                                   label: 'رقم الهاتف',
                                   controller: SignUpControllers.phoneController,
@@ -161,16 +165,17 @@ class SignUpScreen extends StatelessWidget {
                                   ),
                                   contentPadding: AppPadding.paddingMedium,
                                   width: double.infinity,
-                                  height: 60,
+                                  height: 60.sp,
                                   backgroundColor: AppColor.light,
                                   keyboardType: TextInputType.phone,
                                   validator: AppValidators.validatePhone,
                                 ),
-                                const SizedBox(height: 20),
+                                SizedBox(height: 20.h),
                                 CustomTextFormField(
-                                  logo: const Icon(
+                                  logo:  Icon(
                                     Icons.visibility_off,
                                     color: AppColor.dark,
+                                    size: 24.sp,
                                   ),
                                   label: 'كلمة المرور',
                                   controller:
@@ -183,17 +188,18 @@ class SignUpScreen extends StatelessWidget {
                                   ),
                                   contentPadding: AppPadding.paddingMedium,
                                   width: double.infinity,
-                                  height: 60,
+                                  height: 60.sp,
                                   backgroundColor: AppColor.light,
                                   obscureText: true,
                                   keyboardType: TextInputType.visiblePassword,
                                   validator: AppValidators.validatePassword,
                                 ),
-                                const SizedBox(height: 20),
+                                 SizedBox(height: 20.h),
                                 CustomTextFormField(
-                                  logo: const Icon(
+                                  logo:  Icon(
                                     Icons.visibility_off,
                                     color: AppColor.dark,
+                                    size: 24.sp,
                                   ),
                                   label: 'تأكيد كلمة المرور',
                                   controller: SignUpControllers
@@ -206,7 +212,7 @@ class SignUpScreen extends StatelessWidget {
                                   ),
                                   contentPadding: AppPadding.paddingMedium,
                                   width: double.infinity,
-                                  height: 60,
+                                  height: 60.sp,
                                   backgroundColor: AppColor.light,
                                   obscureText: true,
                                   keyboardType: TextInputType.visiblePassword,
@@ -218,7 +224,7 @@ class SignUpScreen extends StatelessWidget {
                                             .text,
                                       ),
                                 ),
-                                const SizedBox(height: 30),
+                                 SizedBox(height: 30.h),
                                 CustomButton(
                                   text: isLoading
                                       ? '...جارٍ تسجيل الحساب'
@@ -237,7 +243,7 @@ class SignUpScreen extends StatelessWidget {
                                     }
                                   },
                                   width: double.infinity,
-                                  height: 55,
+                                  height: 50.sp,
                                   backgroundColor: AppColor.primary,
                                   textStyle: AppText.title.copyWith(
                                     color: AppColor.light,
@@ -246,12 +252,13 @@ class SignUpScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          SizedBox(height: 30),
+                          SizedBox(height: 30.h),
                           Center(
                             child: Text.rich(
                               TextSpan(
                                 text: 'هل لديك حساب؟ ',
-                                style: AppText.bodySmall,
+                                style: AppText.bodySmall.copyWith(color:AppColor.dark),
+
                                 children: [
                                   TextSpan(
                                     text: 'تسجيل دخول',

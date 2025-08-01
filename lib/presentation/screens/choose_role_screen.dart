@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/core/styles/padding.dart';
 import 'package:qanony/core/widgets/role_container.dart';
@@ -27,7 +28,7 @@ class ChooseRoleScreen extends StatelessWidget {
           height: double.infinity,
           color: AppColor.grey,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               RoleContainer(
@@ -40,6 +41,7 @@ class ChooseRoleScreen extends StatelessWidget {
                     "كمحامٍ، يمكنك تقديم خدماتك، إدارة جلساتك، والتواصل مع عملائك بسهولة.",
                 text3: "ابدأ رحلتك القانونية الآن.",
               ),
+              SizedBox(height: 32.h,),
               RoleContainer(
                 color: AppColor.secondary,
                 onTap: () {

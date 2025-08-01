@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
@@ -30,18 +31,22 @@ class RoleContainer extends StatelessWidget {
           color: color,
           borderRadius: BorderRadius.circular(20),
         ),
-        padding: AppPadding.paddingMedium,
+        padding: AppPadding.paddingLarge,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+
           children: [
             Center(
               child: Text(
                 text1,
-                style: AppText.title.copyWith(color: textColor),
+                style: AppText.headingMedium.copyWith(color: textColor),
                 textAlign: TextAlign.center,
               ),
             ),
+            SizedBox(height: 15.h),
             Text(text2, style: AppText.bodySmall.copyWith(color: textColor)),
+            SizedBox(height: 15.h),
+
             Text(text3, style: AppText.bodySmall.copyWith(color: textColor)),
           ],
         ),
