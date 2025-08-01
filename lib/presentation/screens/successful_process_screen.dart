@@ -10,7 +10,7 @@ import 'package:qanony/presentation/screens/lawyer_account.dart';
 import 'package:qanony/services/helpers/pdf_generator.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../data/repos/lawyer_repository.dart';
-import '../../services/cubits/Lawyer/lawyer_cubit.dart';
+import '../../services/cubits/lawyer/lawyer_cubit.dart';
 
 class SuccessfulProcessScreen extends StatelessWidget {
   const SuccessfulProcessScreen({super.key});

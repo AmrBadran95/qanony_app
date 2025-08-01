@@ -7,7 +7,7 @@ import '../../Core/styles/text.dart';
 import '../../Core/widgets/custom_button.dart';
 import '../../data/repos/lawyer_repository.dart';
 import '../../data/static/reviews.dart';
-import '../../services/cubits/Lawyer/lawyer_cubit.dart';
+import '../../services/cubits/lawyer/lawyer_cubit.dart';
 import '../../services/show_appointment_bottom_sheet/show_appointment_bottom_sheet.dart';
 
 class LawyerScreen extends StatelessWidget {
@@ -374,8 +374,7 @@ class LawyerScreen extends StatelessWidget {
                                                     ),
                                                   ),
                                                   FractionallySizedBox(
-                                                    widthFactor:
-                                                        .5, //دى النسبه هنحسبها ب fun بعدين
+                                                    widthFactor: .5,
                                                     child: Container(
                                                       height:
                                                           MediaQuery.of(

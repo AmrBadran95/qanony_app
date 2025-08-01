@@ -7,9 +7,12 @@ import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/core/styles/color.dart';
 import 'package:qanony/data/repos/order_repository.dart';
-import 'package:qanony/services/cubits/UserOrder/user_order_cubit.dart';
+import 'package:qanony/data/repos/server_notifications_repo.dart';
 import 'package:qanony/services/cubits/payment/payment_cubit.dart';
 import 'package:qanony/services/cubits/payment/payment_state.dart';
+import 'package:qanony/services/cubits/server_notifications/server_notifications_cubit.dart';
+import 'package:qanony/services/cubits/user_order/user_order_cubit.dart';
+import 'package:qanony/services/firestore/user_firestore_service.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import '../../Core/widgets/custom_button.dart';
 import '../../data/models/order_status_enum.dart';
@@ -33,9 +36,12 @@ class AppointmentPageForUser extends StatelessWidget {
               UserOrderCubit(OrderRepository())..streamUserOrders(userId),
         ),
         BlocProvider(create: (_) => PaymentCubit()),
+        BlocProvider(
+          create: (_) => ServerNotificationsCubit(ServerNotificationsRepo()),
+        ),
       ],
       child: UserBaseScreen(
-        RequestsColor: AppColor.secondary,
+        requestsColor: AppColor.secondary,
         body: BlocListener<PaymentCubit, PaymentState>(
           listener: (context, state) async {
             if (state is PaymentSuccess) {
@@ -53,12 +59,18 @@ class AppointmentPageForUser extends StatelessWidget {
                   'status': orderStatusToString(OrderStatus.paymentDone),
                 });
               } catch (e) {
-                print('Stripe payment failed: $e');
+                rethrow;
               }
             } else if (state is PaymentFailure) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(state.error)));
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    state.error,
+                    style: AppText.bodyMedium.copyWith(color: AppColor.primary),
+                  ),
+                  backgroundColor: AppColor.grey,
+                ),
+              );
             }
           },
 
@@ -82,8 +94,6 @@ class AppointmentPageForUser extends StatelessWidget {
                             padding: AppPadding.paddingMedium,
                             itemBuilder: (context, index) {
                               final data = order[index];
-
-                              print('Status from Firebase: ${data.status}');
 
                               return FutureBuilder(
                                 future: LawyerFirestoreService().getLawyerById(
@@ -400,6 +410,42 @@ class AppointmentPageForUser extends StatelessWidget {
                                                                 ),
                                                           },
                                                         );
+
+                                                        final userData =
+                                                            await UserFirestoreService()
+                                                                .getUserById(
+                                                                  data.userId,
+                                                                );
+                                                        final lawyerData =
+                                                            await LawyerFirestoreService()
+                                                                .getLawyerById(
+                                                                  data.lawyerId,
+                                                                );
+
+                                                        final lawyerFcmToken =
+                                                            lawyerData
+                                                                ?.fcmToken;
+                                                        final userName =
+                                                            userData?.username;
+                                                        if (context.mounted) {
+                                                          context
+                                                              .read<
+                                                                ServerNotificationsCubit
+                                                              >()
+                                                              .sendNotification(
+                                                                fcmToken:
+                                                                    lawyerFcmToken ??
+                                                                    "",
+                                                                title:
+                                                                    "تم إلغاء الطلب",
+                                                                body:
+                                                                    "قام العميل $userName برفض الدفع و تم إلغاء الطلب.",
+                                                                data: {
+                                                                  "type":
+                                                                      "user_order",
+                                                                },
+                                                              );
+                                                        }
                                                       },
                                                       width:
                                                           MediaQuery.of(

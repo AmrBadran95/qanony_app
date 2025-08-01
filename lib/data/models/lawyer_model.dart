@@ -33,6 +33,8 @@ class LawyerModel {
   final DateTime? subscriptionEnd;
   final List<DateTime> availableAppointments;
 
+  final String? fcmToken;
+
   LawyerModel({
     required this.uid,
     required this.email,
@@ -60,6 +62,7 @@ class LawyerModel {
     this.subscriptionStart,
     this.subscriptionEnd,
     this.availableAppointments = const [],
+    this.fcmToken,
   });
 
   factory LawyerModel.fromJson(Map<String, dynamic> json) {
@@ -120,6 +123,7 @@ class LawyerModel {
               ),
             )
           : [],
+      fcmToken: json['fcmToken'],
     );
   }
 
@@ -151,6 +155,7 @@ class LawyerModel {
       'subscriptionStart': subscriptionStart,
       'subscriptionEnd': subscriptionEnd,
       'availableAppointments': availableAppointments,
+      'fcmToken': fcmToken,
     };
   }
 
@@ -202,6 +207,8 @@ class LawyerModel {
       data['availableAppointments'] = availableAppointments;
     }
 
+    if (fcmToken != null) data['fcmToken'] = fcmToken;
+
     return data;
   }
 
@@ -232,6 +239,7 @@ class LawyerModel {
     DateTime? subscriptionStart,
     DateTime? subscriptionEnd,
     List<DateTime>? availableAppointments,
+    String? fcmToken,
   }) {
     return LawyerModel(
       uid: uid ?? this.uid,
@@ -261,6 +269,7 @@ class LawyerModel {
       subscriptionEnd: subscriptionEnd ?? this.subscriptionEnd,
       availableAppointments:
           availableAppointments ?? this.availableAppointments,
+      fcmToken: fcmToken ?? this.fcmToken,
     );
   }
 }

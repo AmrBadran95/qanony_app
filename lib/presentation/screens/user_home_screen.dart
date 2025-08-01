@@ -7,7 +7,7 @@ import 'package:qanony/data/repos/lawyer_repository.dart';
 import 'package:qanony/data/static/question_list.dart';
 import 'package:qanony/presentation/pages/ai_chat_screen.dart';
 import '../../data/static/Advertisements.dart';
-import '../../services/cubits/Lawyer/lawyer_cubit.dart';
+import '../../services/cubits/lawyer/lawyer_cubit.dart';
 import '../pages/user_base_screen.dart';
 import 'lawyer_card.dart';
 
@@ -20,7 +20,7 @@ class UserHomeScreen extends StatelessWidget {
       create: (_) => LawyerCubit(LawyerRepository())..getPremiumLawyers(),
 
       child: UserBaseScreen(
-        HomeColor: AppColor.secondary,
+        homeColor: AppColor.secondary,
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
