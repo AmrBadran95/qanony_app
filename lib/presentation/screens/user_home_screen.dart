@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qanony/Core/styles/color.dart';
@@ -6,6 +7,7 @@ import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/data/repos/lawyer_repository.dart';
 import 'package:qanony/data/static/question_list.dart';
 import 'package:qanony/presentation/pages/ai_chat_screen.dart';
+import 'package:qanony/services/call/callService.dart';
 import '../../data/static/Advertisements.dart';
 import '../../services/cubits/lawyer/lawyer_cubit.dart';
 import '../pages/user_base_screen.dart';
@@ -16,6 +18,11 @@ class UserHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+    final email = user?.email ?? '';
+    final String userId = user?.uid ?? "";
+    final String userName = user?.displayName ?? email.split('@')[0];
+    CallService().onUserLogin(userId, userName);
     return BlocProvider(
       create: (_) => LawyerCubit(LawyerRepository())..getPremiumLawyers(),
 
