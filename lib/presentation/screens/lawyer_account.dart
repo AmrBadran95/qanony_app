@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/Core/shared/app_cache.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/widgets/lawyer_calender.dart';
+import 'package:qanony/core/styles/padding.dart';
 import 'package:qanony/core/styles/text.dart';
 import 'package:qanony/data/models/lawyer_model.dart';
 import 'package:qanony/data/static/egypt_governorates.dart';
@@ -40,7 +42,12 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
       child: BlocBuilder<LawyerInfoCubit, LawyerInfoState>(
         builder: (context, state) {
           if (state is LawyerInitial) {
-            return Center(child: Text('الرجاء انتظار تحميل البيانات...'));
+            return Center(
+              child: Text(
+                'الرجاء انتظار تحميل البيانات...',
+                style: AppText.bodyLarge.copyWith(color: AppColor.dark),
+              ),
+            );
           }
           if (state is LawyerLoading || state is LawyerUpdating) {
             return const Center(child: CircularProgressIndicator());
@@ -57,13 +64,14 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
                 : 'غير متوفر';
 
             return SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
+              padding: AppPadding.paddingMedium,
               child: Column(
                 children: [
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       CircleAvatar(
-                        radius: 40,
+                        radius: 50.sp,
                         backgroundImage:
                             (lawyer.profilePictureUrl != null &&
                                 lawyer.profilePictureUrl!.isNotEmpty)
@@ -73,14 +81,14 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
                                   )
                                   as ImageProvider,
                       ),
-                      SizedBox(height: 8),
+                      SizedBox(height: 8.sp),
                       Text(
                         lawyer.fullName ?? '',
                         style: AppText.title.copyWith(color: AppColor.dark),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.sp),
 
                   sectionCard(
                     title: "البيانات الشخصية",
@@ -188,12 +196,12 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
                     ],
                   ),
                   sectionCard(
-                    title: 'المواعيد المتاحه',
+                    title: 'المواعيد المتاحة',
                     children: [WeeklyCalendarWidget(lawyerId: lawyer.uid)],
                   ),
 
                   sectionCard(
-                    title: 'معلومات اضافيه',
+                    title: 'معلومات اضافية',
                     children: [
                       TextButton(
                         onPressed: () =>
@@ -211,7 +219,12 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
               ),
             );
           } else if (state is LawyerError) {
-            return Center(child: Text(state.message));
+            return Center(
+              child: Text(
+                state.message,
+                style: AppText.bodySmall.copyWith(color: AppColor.primary),
+              ),
+            );
           }
           return const SizedBox();
         },
@@ -226,10 +239,10 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
     required List<Widget> children,
   }) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: EdgeInsets.only(bottom: AppPadding.medium),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: AppPadding.paddingMedium,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -242,12 +255,12 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
                 ),
                 if (icon != null)
                   IconButton(
-                    icon: Icon(icon, color: AppColor.darkgrey),
+                    icon: Icon(icon, color: AppColor.dark),
                     onPressed: onPressed,
                   ),
               ],
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10.sp),
             ...children,
           ],
         ),
@@ -257,7 +270,7 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
 
   Widget infoRow(String label, String value) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: EdgeInsets.only(bottom: AppPadding.small),
       child: Row(
         children: [
           Expanded(
@@ -302,7 +315,7 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
         return AlertDialog(
           title: Text(
             'تعديل البيانات الشخصية',
-            style: AppText.headingMedium.copyWith(color: AppColor.dark),
+            style: AppText.title.copyWith(color: AppColor.dark),
           ),
           content: SingleChildScrollView(
             child: Column(
@@ -312,22 +325,27 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
                   controller: phoneController,
                   decoration: InputDecoration(
                     labelText: 'رقم الهاتف',
-                    labelStyle: AppText.title.copyWith(color: AppColor.dark),
+                    labelStyle: AppText.bodyLarge.copyWith(
+                      color: AppColor.dark,
+                    ),
                   ),
-                  style: AppText.bodyLarge.copyWith(color: AppColor.dark),
+                  style: AppText.bodyMedium.copyWith(color: AppColor.dark),
                   keyboardType: TextInputType.phone,
                 ),
                 TextFormField(
                   controller: emailController,
                   decoration: InputDecoration(
                     labelText: 'البريد الالكتروني',
-                    labelStyle: AppText.title.copyWith(color: AppColor.dark),
+                    labelStyle: AppText.bodyLarge.copyWith(
+                      color: AppColor.dark,
+                    ),
                   ),
-                  style: AppText.bodyLarge.copyWith(color: AppColor.dark),
+                  style: AppText.bodyMedium.copyWith(color: AppColor.dark),
                   keyboardType: TextInputType.emailAddress,
                 ),
 
                 DropdownButtonFormField<String>(
+                  dropdownColor: AppColor.grey,
                   value: selectedGovernorate.isNotEmpty
                       ? selectedGovernorate
                       : null,
@@ -336,13 +354,17 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
                       value: gov,
                       child: Text(
                         gov,
-                        style: AppText.bodyLarge.copyWith(color: AppColor.dark),
+                        style: AppText.bodyMedium.copyWith(
+                          color: AppColor.dark,
+                        ),
                       ),
                     );
                   }).toList(),
                   decoration: InputDecoration(
                     labelText: 'المحافظة',
-                    labelStyle: AppText.title.copyWith(color: AppColor.dark),
+                    labelStyle: AppText.bodyLarge.copyWith(
+                      color: AppColor.dark,
+                    ),
                   ),
                   onChanged: (String? newValue) {
                     if (newValue != null) selectedGovernorate = newValue;
@@ -356,7 +378,7 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
               onPressed: () => Navigator.pop(context),
               child: Text(
                 'إلغاء',
-                style: AppText.bodyMedium.copyWith(color: AppColor.primary),
+                style: AppText.bodySmall.copyWith(color: AppColor.primary),
               ),
             ),
             ElevatedButton(
@@ -375,7 +397,7 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
               },
               child: Text(
                 'حفظ',
-                style: AppText.bodyMedium.copyWith(color: AppColor.green),
+                style: AppText.bodySmall.copyWith(color: AppColor.green),
               ),
             ),
           ],
@@ -393,14 +415,22 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: const Text('اختر التخصصات'),
+              title: Text(
+                'اختر التخصصات',
+                style: AppText.title.copyWith(color: AppColor.dark),
+              ),
               content: SingleChildScrollView(
                 child: Column(
                   children: lawyerSpecializations.map((specialty) {
                     return CheckboxListTile(
                       activeColor: AppColor.green,
                       checkColor: AppColor.light,
-                      title: Text(specialty),
+                      title: Text(
+                        specialty,
+                        style: AppText.bodyMedium.copyWith(
+                          color: AppColor.dark,
+                        ),
+                      ),
                       value: selectedSpecialties.contains(specialty),
                       onChanged: (bool? value) {
                         setState(() {
@@ -420,7 +450,7 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
                   onPressed: () => Navigator.pop(context),
                   child: Text(
                     'إلغاء',
-                    style: AppText.bodyMedium.copyWith(color: AppColor.primary),
+                    style: AppText.bodySmall.copyWith(color: AppColor.primary),
                   ),
                 ),
                 ElevatedButton(
@@ -432,7 +462,7 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
                   },
                   child: Text(
                     'حفظ',
-                    style: AppText.bodyMedium.copyWith(color: AppColor.green),
+                    style: AppText.bodySmall.copyWith(color: AppColor.green),
                   ),
                 ),
               ],
@@ -454,23 +484,24 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
         return AlertDialog(
           title: Text(
             'تعديل السيرة الذاتية',
-            style: AppText.headingMedium.copyWith(color: AppColor.dark),
+            style: AppText.title.copyWith(color: AppColor.dark),
           ),
           content: TextField(
             controller: bioController,
             maxLines: 5,
             decoration: InputDecoration(
               hintText: 'اكتب نبذة عنك هنا...',
-              hintStyle: AppText.title.copyWith(color: AppColor.dark),
+              hintStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
               border: OutlineInputBorder(),
             ),
+            style: AppText.bodyMedium.copyWith(color: AppColor.dark),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: Text(
                 'إلغاء',
-                style: AppText.bodyMedium.copyWith(color: AppColor.primary),
+                style: AppText.bodySmall.copyWith(color: AppColor.primary),
               ),
             ),
             ElevatedButton(
@@ -482,7 +513,7 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
               },
               child: Text(
                 'حفظ',
-                style: AppText.bodyMedium.copyWith(color: AppColor.green),
+                style: AppText.bodySmall.copyWith(color: AppColor.green),
               ),
             ),
           ],
@@ -507,13 +538,24 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: const Text('تعديل طرق التواصل'),
+              title: Text(
+                'تعديل طرق التواصل',
+                style: AppText.title.copyWith(color: AppColor.dark),
+              ),
               content: SingleChildScrollView(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     CheckboxListTile(
-                      title: const Text('مكالمة فيديو/صوت'),
+                      activeColor: AppColor.green,
+                      checkColor: AppColor.light,
+                      title: Text(
+                        'مكالمة فيديو/صوت',
+                        style: AppText.bodyMedium.copyWith(
+                          color: AppColor.dark,
+                        ),
+                      ),
                       value: offersCall,
                       onChanged: (bool? value) {
                         setState(() {
@@ -525,14 +567,24 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
                       TextField(
                         controller: callPriceController,
                         keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'سعر المكالمة',
+                          labelStyle: AppText.bodySmall.copyWith(
+                            color: AppColor.dark,
+                          ),
                           border: OutlineInputBorder(),
                         ),
                       ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12.sp),
                     CheckboxListTile(
-                      title: const Text('جلسة بالمكتب'),
+                      activeColor: AppColor.green,
+                      checkColor: AppColor.light,
+                      title: Text(
+                        'جلسة بالمكتب',
+                        style: AppText.bodyMedium.copyWith(
+                          color: AppColor.dark,
+                        ),
+                      ),
                       value: offersOffice,
                       onChanged: (bool? value) {
                         setState(() {
@@ -544,8 +596,11 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
                       TextField(
                         controller: officePriceController,
                         keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'سعر الجلسة بالمكتب',
+                          labelStyle: AppText.bodySmall.copyWith(
+                            color: AppColor.dark,
+                          ),
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -555,7 +610,10 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text('إلغاء'),
+                  child: Text(
+                    'إلغاء',
+                    style: AppText.bodyMedium.copyWith(color: AppColor.primary),
+                  ),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -575,7 +633,10 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
                     });
                     Navigator.pop(context);
                   },
-                  child: const Text('حفظ'),
+                  child: Text(
+                    'حفظ',
+                    style: AppText.bodyMedium.copyWith(color: AppColor.green),
+                  ),
                 ),
               ],
             );

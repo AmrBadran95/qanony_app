@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:qanony/core/styles/text.dart';
 import 'package:qanony/core/styles/color.dart';
@@ -32,7 +33,7 @@ class SubscriptionScreen extends StatelessWidget {
                 SnackBar(
                   content: Text(
                     "حدث خطأ: clientSecret غير متوفر",
-                    style: AppText.bodyMedium.copyWith(color: AppColor.primary),
+                    style: AppText.bodySmall.copyWith(color: AppColor.primary),
                   ),
                   backgroundColor: AppColor.grey,
                 ),
@@ -55,7 +56,7 @@ class SubscriptionScreen extends StatelessWidget {
                   SnackBar(
                     content: Text(
                       'تم الاشتراك بنجاح',
-                      style: AppText.bodyMedium.copyWith(color: AppColor.green),
+                      style: AppText.bodySmall.copyWith(color: AppColor.green),
                     ),
                     backgroundColor: AppColor.grey,
                   ),
@@ -78,7 +79,7 @@ class SubscriptionScreen extends StatelessWidget {
                     SnackBar(
                       content: Text(
                         'خطأ في Stripe: ${e.error.localizedMessage}',
-                        style: AppText.bodyMedium.copyWith(
+                        style: AppText.bodySmall.copyWith(
                           color: AppColor.primary,
                         ),
                       ),
@@ -92,7 +93,7 @@ class SubscriptionScreen extends StatelessWidget {
                     SnackBar(
                       content: Text(
                         'حدث خطأ أثناء الدفع',
-                        style: AppText.bodyMedium.copyWith(
+                        style: AppText.bodySmall.copyWith(
                           color: AppColor.primary,
                         ),
                       ),
@@ -124,7 +125,7 @@ class SubscriptionScreen extends StatelessWidget {
                 color: Colors.black54,
               ),
               SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(vertical: 48),
+                padding: EdgeInsets.symmetric(vertical: 48.sp),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -135,11 +136,11 @@ class SubscriptionScreen extends StatelessWidget {
                           children: [
                             Text(
                               "Go Pro",
-                              style: AppText.headingLarge.copyWith(
+                              style: AppText.headingMedium.copyWith(
                                 color: AppColor.primary,
                               ),
                             ),
-                            const SizedBox(width: 8),
+                            SizedBox(width: 8.sp),
                             Icon(
                               Icons.star_rounded,
                               color: AppColor.primary,
@@ -152,9 +153,8 @@ class SubscriptionScreen extends StatelessWidget {
                         ),
                         Text(
                           "اختر نظام الاشتراك المناسب لك",
-                          style: AppText.bodyMedium.copyWith(
+                          style: AppText.title.copyWith(
                             color: AppColor.primary,
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
@@ -168,7 +168,7 @@ class SubscriptionScreen extends StatelessWidget {
                               SnackBar(
                                 content: Text(
                                   'يجب تسجيل الدخول أولاً',
-                                  style: AppText.bodyMedium.copyWith(
+                                  style: AppText.bodySmall.copyWith(
                                     color: AppColor.primary,
                                   ),
                                 ),
@@ -217,7 +217,7 @@ class SubscriptionScreen extends StatelessWidget {
                               SnackBar(
                                 content: Text(
                                   'يجب تسجيل الدخول أولاً',
-                                  style: AppText.bodyMedium.copyWith(
+                                  style: AppText.bodySmall.copyWith(
                                     color: AppColor.primary,
                                   ),
                                 ),
@@ -266,7 +266,7 @@ class SubscriptionScreen extends StatelessWidget {
                               SnackBar(
                                 content: Text(
                                   'يجب تسجيل الدخول أولاً',
-                                  style: AppText.bodyMedium.copyWith(
+                                  style: AppText.bodySmall.copyWith(
                                     color: AppColor.primary,
                                   ),
                                 ),
@@ -286,7 +286,7 @@ class SubscriptionScreen extends StatelessWidget {
                         label: "الباقه الشهريه",
                         labelColor: AppColor.dark,
                         icon: Icons.attach_money_outlined,
-                        priceText: "600 شهرياً",
+                        priceText: "5000 شهرياً",
                         title: "باقه شهريه",
                         option1: "3 استشارات مجانية من العمولة",
                         text1: "أول 3 استشارات بدون خصم رسوم من التطبيق",

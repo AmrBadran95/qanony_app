@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qanony/Core/shared/app_cache.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/presentation/screens/choose_role_screen.dart';
-import 'package:qanony/presentation/screens/notification_screen.dart';
-import 'package:qanony/services/cubits/notification/notification_cubit.dart';
 import '../../services/auth/auth_service.dart';
 import '../screens/appointment_page_for_user.dart';
 import '../screens/search_screen.dart';
@@ -42,50 +39,9 @@ class UserBaseScreen extends StatelessWidget {
               right: MediaQuery.of(context).size.width * 0.01,
               bottom: MediaQuery.of(context).size.height * 0.01,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "قانوني",
-                  style: AppText.headingMedium.copyWith(color: AppColor.light),
-                ),
-
-                Stack(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => BlocProvider(
-                              create: (_) =>
-                                  NotificationCubit()..loadNotifications(),
-                              child: const NotificationScreen(),
-                            ),
-                          ),
-                        );
-                      },
-                      icon: Icon(
-                        Icons.notifications_none_sharp,
-                        size: MediaQuery.of(context).size.width * 0.095,
-                        color: AppColor.light,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 12, top: 13),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.03,
-                        height: MediaQuery.of(context).size.width * 0.03,
-
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColor.secondary,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+            child: Text(
+              "قانوني",
+              style: AppText.headingMedium.copyWith(color: AppColor.light),
             ),
           ),
         ),

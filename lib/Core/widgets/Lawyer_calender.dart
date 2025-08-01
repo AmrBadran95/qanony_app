@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:qanony/Core/styles/color.dart';
+import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/core/styles/text.dart';
 import 'package:qanony/services/cubits/lawyer_caleder/calender_cubit.dart';
 
@@ -21,54 +23,56 @@ class WeeklyCalendarWidget extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
+                padding: EdgeInsets.symmetric(horizontal: AppPadding.medium),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       "${cubit.selectedDate.day} ${DateFormat.MMMM('ar').format(cubit.selectedDate)}",
                       style: AppText.title.copyWith(color: AppColor.dark),
                     ),
-                    const Spacer(),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.chevron_left,
-                        color: AppColor.dark,
-                      ),
-                      onPressed: () {
-                        final previousWeekStart = DateTime.now().add(
-                          Duration(days: 7 * (cubit.weekOffset - 1)),
-                        );
-                        final now = DateTime.now();
-                        final todayOnly = DateTime(
-                          now.year,
-                          now.month,
-                          now.day,
-                        );
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(
+                            Icons.chevron_left,
+                            color: AppColor.dark,
+                          ),
+                          onPressed: () {
+                            final previousWeekStart = DateTime.now().add(
+                              Duration(days: 7 * (cubit.weekOffset - 1)),
+                            );
+                            final now = DateTime.now();
+                            final todayOnly = DateTime(
+                              now.year,
+                              now.month,
+                              now.day,
+                            );
 
-                        if (previousWeekStart.isBefore(todayOnly)) return;
+                            if (previousWeekStart.isBefore(todayOnly)) return;
 
-                        cubit.changeWeek(-1);
-                      },
-                    ),
+                            cubit.changeWeek(-1);
+                          },
+                        ),
 
-                    IconButton(
-                      icon: const Icon(
-                        Icons.chevron_right,
-                        color: AppColor.dark,
-                      ),
-                      onPressed: () => cubit.changeWeek(1),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.chevron_right,
+                            color: AppColor.dark,
+                          ),
+                          onPressed: () => cubit.changeWeek(1),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
 
-              const SizedBox(height: 8),
+              SizedBox(height: 8.sp),
 
-              // Days Row
               SizedBox(
-                height: 80,
+                height: 80.h,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: weekDates.length,
@@ -89,8 +93,10 @@ class WeeklyCalendarWidget extends StatelessWidget {
                       child: Opacity(
                         opacity: isPastDate ? 0.4 : 1.0,
                         child: Container(
-                          width: 60,
-                          margin: const EdgeInsets.symmetric(horizontal: 6),
+                          width: 60.w,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: AppPadding.small,
+                          ),
                           decoration: BoxDecoration(
                             color: isSelected
                                 ? AppColor.primary
@@ -109,7 +115,7 @@ class WeeklyCalendarWidget extends StatelessWidget {
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              const SizedBox(height: 6),
+                              SizedBox(height: 6.sp),
                               Text(
                                 '${date.day}',
                                 style: AppText.title.copyWith(
@@ -127,31 +133,30 @@ class WeeklyCalendarWidget extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 16),
+              SizedBox(height: 16.sp),
 
-              // Appointments
               ...cubit.appointments.asMap().entries.map((entry) {
                 final index = entry.key;
                 final dateTime = entry.value;
 
                 return Container(
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 4,
-                    horizontal: 12,
+                  margin: EdgeInsets.symmetric(
+                    vertical: 4.sp,
+                    horizontal: 12.sp,
                   ),
-                  padding: const EdgeInsets.all(12),
+                  padding: EdgeInsets.all(AppPadding.medium),
                   decoration: BoxDecoration(
                     color: AppColor.grey,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.calendar_today,
-                        size: 20,
+                        size: 24.sp,
                         color: AppColor.dark,
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8.sp),
                       Expanded(
                         child: Text(
                           '${DateFormat.yMMMMEEEEd('ar').format(dateTime)} - ${DateFormat.jm('ar').format(dateTime)}',
@@ -161,10 +166,10 @@ class WeeklyCalendarWidget extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.edit,
                           color: AppColor.dark,
-                          size: 20,
+                          size: 24.sp,
                         ),
                         onPressed: () => cubit.selectDate(
                           context,
@@ -174,10 +179,10 @@ class WeeklyCalendarWidget extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.delete,
                           color: AppColor.primary,
-                          size: 20,
+                          size: 24.sp,
                         ),
                         onPressed: () =>
                             cubit.deleteAppointment(lawyerId, index),
