@@ -105,14 +105,15 @@ class AppointmentPageForUser extends StatelessWidget {
                                   if (snapshot.hasError ||
                                       !snapshot.hasData ||
                                       snapshot.data == null) {
-                                    return const SizedBox();
+                                    return  SizedBox();
                                   }
 
                                   final lawyer = snapshot.data!;
                                   final now = DateTime.now();
-                                  final isTimeToJoin = now.isAfter(
-                                    data.date.subtract(Duration(minutes: 5)),
-                                  );
+                                  final sessionTime = data.date;
+                                  final endTime = sessionTime.add(Duration(hours: 1));
+                                  final isTimeToJoin = now.isAfter(sessionTime) && now.isBefore(endTime);
+
 
                                   return Card(
                                     margin: EdgeInsets.only(
@@ -337,6 +338,22 @@ class AppointmentPageForUser extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
+
+
+                                              Expanded(
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  children: [
+                                                    Padding(
+                                                      padding: AppPadding.paddingSmall,
+                                                      child: GestureDetector(
+                                                          onTap: (){
+                                                            orderService .deleteOrder(data.orderId);                                                         },
+                                                          child: Icon(Icons.delete,size: 24.sp,color: AppColor.primary,)),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
                                             ],
                                           ),
                                           SizedBox(
@@ -450,8 +467,7 @@ class AppointmentPageForUser extends StatelessWidget {
                                                     ),
                                                   ],
                                                 )
-                                              : data.status ==
-                                                    OrderStatus.paymentDone
+                                              : data.status == OrderStatus.paymentDone
                                               ? CustomButton(
                                                   text: "انضم الى الجلسة",
                                                   onTap: isTimeToJoin
