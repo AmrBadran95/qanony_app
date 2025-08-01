@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/core/styles/text.dart';
 
@@ -14,7 +15,6 @@ class SelectionDialog extends StatelessWidget {
     required this.items,
     required this.value,
     required this.onChanged,
-
   });
 
   void _showSelectionDialog(BuildContext context) {
@@ -23,12 +23,15 @@ class SelectionDialog extends StatelessWidget {
       builder: (_) => AlertDialog(
         title: Text('اختر $label'),
         content: SizedBox(
-          height: 200,
+          height: 200.h,
           width: double.maxFinite,
           child: ListView(
             children: items.map((item) {
               return RadioListTile<String>(
-                title: Text(item),
+                title: Text(
+                  item,
+                  style: AppText.bodySmall.copyWith(color: AppColor.dark),
+                ),
                 value: item,
                 groupValue: value,
                 onChanged: (val) {
@@ -48,8 +51,8 @@ class SelectionDialog extends StatelessWidget {
     return GestureDetector(
       onTap: () => _showSelectionDialog(context),
       child: Container(
-        width: 120,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        width: 120.w,
+        padding: EdgeInsets.symmetric(horizontal: 12.sp, vertical: 10.sp),
         decoration: BoxDecoration(
           border: Border.all(color: AppColor.grey),
           color: AppColor.light,
@@ -65,7 +68,6 @@ class SelectionDialog extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-
           ],
         ),
       ),

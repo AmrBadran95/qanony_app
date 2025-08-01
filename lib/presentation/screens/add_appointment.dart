@@ -39,24 +39,32 @@ class AddAppointment extends StatelessWidget {
               CustomTextFormField(
                 width: double.infinity,
                 label: 'اسم العميل',
-                textStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
-                labelStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
+                textStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
+                labelStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
                 contentPadding: AppPadding.paddingSmall,
                 backgroundColor: AppColor.grey,
               ),
               SizedBox(height: pageHeight * 0.02),
               DropdownButtonFormField<String>(
+                dropdownColor: AppColor.grey,
                 value: null,
                 items: caseTypes
                     .map(
-                      (type) =>
-                          DropdownMenuItem(value: type, child: Text(type)),
+                      (type) => DropdownMenuItem(
+                        value: type,
+                        child: Text(
+                          type,
+                          style: AppText.bodyMedium.copyWith(
+                            color: AppColor.dark,
+                          ),
+                        ),
+                      ),
                     )
                     .toList(),
                 onChanged: (_) {},
                 decoration: InputDecoration(
                   labelText: 'نوع القضية',
-                  labelStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
+                  labelStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
                   filled: true,
                   fillColor: AppColor.grey,
                   border: OutlineInputBorder(
@@ -68,8 +76,8 @@ class AddAppointment extends StatelessWidget {
               SizedBox(height: pageHeight * 0.02),
               CustomTextFormField(
                 label: 'وصف الموعد',
-                textStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
-                labelStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
+                textStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
+                labelStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
                 contentPadding: AppPadding.paddingSmall,
                 width: double.infinity,
                 backgroundColor: AppColor.grey,
@@ -78,8 +86,8 @@ class AddAppointment extends StatelessWidget {
               CustomTextFormField(
                 label: 'السعر بالجنيه',
                 keyboardType: TextInputType.number,
-                textStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
-                labelStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
+                textStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
+                labelStyle: AppText.bodyMedium.copyWith(color: AppColor.dark),
                 contentPadding: AppPadding.paddingSmall,
                 width: double.infinity,
                 backgroundColor: AppColor.grey,

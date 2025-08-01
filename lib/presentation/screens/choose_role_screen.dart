@@ -41,7 +41,7 @@ class ChooseRoleScreen extends StatelessWidget {
                     "كمحامٍ، يمكنك تقديم خدماتك، إدارة جلساتك، والتواصل مع عملائك بسهولة.",
                 text3: "ابدأ رحلتك القانونية الآن.",
               ),
-              SizedBox(height: 32.h,),
+              SizedBox(height: 32.h),
               RoleContainer(
                 color: AppColor.secondary,
                 onTap: () {

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/Core/shared/app_cache.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/text.dart';
@@ -30,35 +31,9 @@ class LawyerBaseScreen extends StatelessWidget {
             right: MediaQuery.of(context).size.width * 0.01,
             bottom: MediaQuery.of(context).size.height * 0.01,
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "قانوني",
-                style: AppText.headingMedium.copyWith(color: AppColor.light),
-              ),
-              Stack(
-                children: [
-                  Icon(
-                    Icons.notifications_none_sharp,
-                    size: MediaQuery.of(context).size.width * 0.095,
-                    color: AppColor.light,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 4, top: 4),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.03,
-                      height: MediaQuery.of(context).size.width * 0.03,
-
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppColor.secondary,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+          child: Text(
+            "قانوني",
+            style: AppText.headingMedium.copyWith(color: AppColor.light),
           ),
         ),
       ),
@@ -102,13 +77,13 @@ class LawyerBaseScreen extends StatelessWidget {
                     onTap: () => _showLogoutDialog(context),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
-                      children: const [
+                      children: [
                         Icon(
                           Icons.exit_to_app,
-                          size: 20,
+                          size: 20.sp,
                           color: AppColor.light,
                         ),
-                        SizedBox(height: 4),
+                        SizedBox(height: 4.sp),
                         Text(
                           "تسجيل الخروج",
                           style: TextStyle(color: AppColor.light),
@@ -149,14 +124,14 @@ class LawyerBaseScreen extends StatelessWidget {
         children: [
           Icon(
             icon,
-            size: 20,
-            color: isSelected ? Colors.yellow : AppColor.light,
+            size: 20.sp,
+            color: isSelected ? AppColor.secondary : AppColor.light,
           ),
           const SizedBox(height: 4),
           Text(
             label,
             style: AppText.labelSmall.copyWith(
-              color: isSelected ? Colors.yellow : AppColor.light,
+              color: isSelected ? AppColor.secondary : AppColor.light,
             ),
           ),
         ],
@@ -172,7 +147,10 @@ class LawyerBaseScreen extends StatelessWidget {
           'تسجيل الخروج',
           style: AppText.title.copyWith(color: AppColor.dark),
         ),
-        content: const Text('هل أنت متأكد أنك تريد تسجيل الخروج؟'),
+        content: Text(
+          'هل أنت متأكد أنك تريد تسجيل الخروج؟',
+          style: AppText.bodyMedium.copyWith(color: AppColor.dark),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
