@@ -26,7 +26,7 @@ class AppointmentPageForUser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
-    final String userId = user?.uid ?? "";
+    final String userId = user?.uid ?? " ";
     final orderService = OrderFirestoreService();
 
     return MultiBlocProvider(

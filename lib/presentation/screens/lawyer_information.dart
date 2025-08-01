@@ -137,10 +137,10 @@ class LawyerInformation extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(width: 10.w),
-                                  const Icon(
+                                  Icon(
                                     Icons.person,
                                     color: AppColor.dark,
-                                    size: 40,
+                                    size: 40.sp,
                                   ),
                                 ],
                               ),
@@ -219,11 +219,11 @@ class LawyerInformation extends StatelessWidget {
                                         );
                                   },
                                   width: double.infinity,
-                                  height: 60,
+                                  height: 50.sp,
                                   backgroundColor: isLoading
                                       ? AppColor.grey
                                       : AppColor.secondary,
-                                  textStyle: AppText.bodySmall.copyWith(
+                                  textStyle: AppText.bodyMedium.copyWith(
                                     color: AppColor.dark,
                                   ),
                                   textColor: AppColor.dark,
