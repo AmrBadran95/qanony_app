@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qanony/Core/shared/app_cache.dart';
@@ -9,7 +8,6 @@ import 'package:qanony/presentation/screens/choose_role_screen.dart';
 import 'package:qanony/presentation/screens/notification-screen.dart';
 import 'package:qanony/services/cubits/notification/notification_cubit.dart';
 import '../../services/auth/auth_service.dart';
-import '../../services/call/callService.dart';
 import '../screens/appointment_page_for_user.dart';
 import '../screens/search_screen.dart';
 import '../screens/user_home_screen.dart';
@@ -32,12 +30,6 @@ class UserBaseScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
-    final email = user?.email ?? '';
-    final String userId = user?.uid ?? "";
-    final String userName = user?.displayName ?? email.split('@')[0];
-    CallService().onUserLogin(userId, userName);
-
     return Scaffold(
       backgroundColor: AppColor.light,
       appBar: PreferredSize(
