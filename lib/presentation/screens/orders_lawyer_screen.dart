@@ -7,7 +7,11 @@ import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/Core/widgets/custom_button.dart';
 import 'package:qanony/Core/widgets/qanony_appointment_widget.dart';
 import 'package:qanony/data/models/order_status_enum.dart';
+import 'package:qanony/data/repos/server_notifications_repo.dart';
 import 'package:qanony/services/cubits/order_lawyer/order_cubit.dart';
+import 'package:qanony/services/cubits/server_notifications/server_notifications_cubit.dart';
+import 'package:qanony/services/firestore/lawyer_firestore_service.dart';
+import 'package:qanony/services/firestore/user_firestore_service.dart';
 
 class OrdersLawyerScreen extends StatelessWidget {
   const OrdersLawyerScreen({super.key});
@@ -17,8 +21,13 @@ class OrdersLawyerScreen extends StatelessWidget {
     final buttonWidth = screenWidth * 0.35;
     const buttonHeight = 40.0;
 
-    return BlocProvider(
-      create: (context) => OrderCubit()..loadMyOrders(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => OrderCubit()..loadMyOrders()),
+        BlocProvider(
+          create: (_) => ServerNotificationsCubit(ServerNotificationsRepo()),
+        ),
+      ],
       child: BlocBuilder<OrderCubit, OrderState>(
         builder: (context, state) {
           if (state is OrderLoading) {
@@ -43,7 +52,7 @@ class OrdersLawyerScreen extends StatelessWidget {
                     name: order.userName,
                     specialty: order.caseType,
                     description: order.caseDescription,
-                    price: '${order.price} EGP',
+                    price: '//${order.price} EGP',
                     date: dateFormat.format(order.date),
                     communication: order.contactMethod,
                     children: [
@@ -61,13 +70,33 @@ class OrdersLawyerScreen extends StatelessWidget {
                                       OrderStatus.acceptedByLawyer,
                                     ),
                                   );
+                              final userData = await UserFirestoreService()
+                                  .getUserById(order.userId);
+                              final lawyerData = await LawyerFirestoreService()
+                                  .getLawyerById(order.lawyerId);
 
+                              final userFcmToken = userData?.fcmToken;
+                              final lawyerName = lawyerData?.fullName;
                               if (context.mounted) {
+                                context
+                                    .read<ServerNotificationsCubit>()
+                                    .sendNotification(
+                                      fcmToken: userFcmToken ?? "",
+                                      title: "تم قبول طلبك",
+                                      body:
+                                          "المحامي $lawyerName وافق على الاستشارة.",
+                                      data: {"type": "lawyer_order"},
+                                    );
+
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
+                                  SnackBar(
                                     content: Text(
                                       "تم قبول الطلب بنجاح بانتظار اكمال الطلب",
+                                      style: AppText.bodyMedium.copyWith(
+                                        color: AppColor.green,
+                                      ),
                                     ),
+                                    backgroundColor: AppColor.grey,
                                   ),
                                 );
                               }
@@ -89,9 +118,34 @@ class OrdersLawyerScreen extends StatelessWidget {
                                     ),
                                   );
 
+                              final userData = await UserFirestoreService()
+                                  .getUserById(order.userId);
+                              final lawyerData = await LawyerFirestoreService()
+                                  .getLawyerById(order.lawyerId);
+
+                              final userFcmToken = userData?.fcmToken;
+                              final lawyerName = lawyerData?.fullName;
                               if (context.mounted) {
+                                context
+                                    .read<ServerNotificationsCubit>()
+                                    .sendNotification(
+                                      fcmToken: userFcmToken ?? "",
+                                      title: "تم رفض طلبك",
+                                      body:
+                                          "المحامي $lawyerName قام برفض الاستشارة.",
+                                      data: {"type": "lawyer_order"},
+                                    );
+
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text("تم رفض الطلب")),
+                                  SnackBar(
+                                    content: Text(
+                                      "تم رفض الطلب",
+                                      style: AppText.bodyMedium.copyWith(
+                                        color: AppColor.primary,
+                                      ),
+                                    ),
+                                    backgroundColor: AppColor.grey,
+                                  ),
                                 );
                               }
                             },

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/text.dart';
-import 'package:qanony/services/cubits/notification/cubit/notification_cubit.dart';
+import 'package:qanony/services/cubits/notification/notification_cubit.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({super.key});

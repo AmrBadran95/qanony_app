@@ -4,6 +4,7 @@ class UserModel {
   final String phone;
   final String role;
   final String? username;
+  final String? fcmToken;
 
   UserModel({
     required this.uid,
@@ -11,6 +12,7 @@ class UserModel {
     required this.phone,
     this.role = "user",
     this.username,
+    this.fcmToken,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class UserModel {
       phone: json['phone'],
       role: json['role'],
       username: json['username'] ?? "غير معرف",
+      fcmToken: json['fcmToken'] ?? "غير معرف",
     );
   }
 
@@ -30,6 +33,7 @@ class UserModel {
       'phone': phone,
       'role': role,
       'username': username,
+      'fcmToken': fcmToken,
     };
   }
 }

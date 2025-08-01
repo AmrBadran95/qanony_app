@@ -19,6 +19,7 @@ import 'package:qanony/services/cubits/role/role_cubit.dart';
 import 'package:qanony/services/cubits/splash/splash_cubit.dart';
 import 'package:qanony/services/cubits/subscription/stripe_subscription_cubit.dart';
 import 'package:qanony/services/firestore/lawyer_firestore_service.dart';
+import 'package:qanony/services/notifications/notification_service.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'package:zego_uikit/zego_uikit.dart';
@@ -36,6 +37,14 @@ void main() async {
   Stripe.publishableKey = key;
 
   await Stripe.instance.applySettings();
+  await NotificationService().init(
+    onNotificationTap: (payload) {
+      if (payload != null) {
+        navigatorKey.currentState?.pushNamed(payload);
+      }
+    },
+  );
+  
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await ZegoUIKit().initLog().then((value) async {

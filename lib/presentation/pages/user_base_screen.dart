@@ -7,35 +7,34 @@ import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/presentation/screens/choose_role_screen.dart';
 import 'package:qanony/presentation/screens/notification-screen.dart';
-import 'package:qanony/services/cubits/notification/cubit/notification_cubit.dart';
-
+import 'package:qanony/services/cubits/notification/notification_cubit.dart';
 import '../../services/auth/auth_service.dart';
 import '../../services/call/callService.dart';
 import '../screens/appointment_page_for_user.dart';
 import '../screens/search_screen.dart';
-import '../screens/sign_in.dart';
 import '../screens/user_home_screen.dart';
 
 class UserBaseScreen extends StatelessWidget {
   final Widget body;
-  final Color HomeColor;
-  final Color SearchColor;
-  final Color AppointmentsColor;
-  final Color RequestsColor;
+  final Color homeColor;
+  final Color searchColor;
+  final Color appointmentsColor;
+  final Color requestsColor;
 
-  const UserBaseScreen({super.key, required this.body,
-    this.HomeColor=AppColor.light,
-    this.SearchColor=AppColor.light,
-    this.AppointmentsColor=AppColor.light,
-    this.RequestsColor=AppColor.light
-
+  const UserBaseScreen({
+    super.key,
+    required this.body,
+    this.homeColor = AppColor.light,
+    this.searchColor = AppColor.light,
+    this.appointmentsColor = AppColor.light,
+    this.requestsColor = AppColor.light,
   });
 
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
     final email = user?.email ?? '';
-    final String userId = user?.uid??"";
+    final String userId = user?.uid ?? "";
     final String userName = user?.displayName ?? email.split('@')[0];
     CallService().onUserLogin(userId, userName);
 
@@ -48,7 +47,6 @@ class UserBaseScreen extends StatelessWidget {
 
           title: Padding(
             padding: EdgeInsets.only(
-
               right: MediaQuery.of(context).size.width * 0.01,
               bottom: MediaQuery.of(context).size.height * 0.01,
             ),
@@ -101,8 +99,6 @@ class UserBaseScreen extends StatelessWidget {
         ),
       ),
 
-
-
       bottomNavigationBar: Container(
         padding: AppPadding.paddingSmall,
         width: double.infinity,
@@ -117,71 +113,69 @@ class UserBaseScreen extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>UserHomeScreen()));
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UserHomeScreen(),
+                        ),
+                      );
+                    },
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.home_sharp, size: 20, color: homeColor),
+                        const SizedBox(height: 4),
+                        Text(
+                          "الرئيسية",
+                          style: AppText.labelSmall.copyWith(color: homeColor),
+                        ),
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => SearchScreen()),
+                      );
+                    },
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.search, size: 20, color: searchColor),
+                        const SizedBox(height: 4),
+                        Text(
+                          "البحث",
+                          style: AppText.labelSmall.copyWith(
+                            color: searchColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AppointmentPageForUser(),
+                        ),
+                      );
                     },
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(
-                          Icons.home_sharp,
-                          size: 20,
-                          color: HomeColor,
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          "الرئيسية",
-                          style: AppText.labelSmall.copyWith(
-                            color: HomeColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SearchScreen()));
-                    },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                         Icon(
-                          Icons.search,
-                          size: 20,
-                          color: SearchColor,
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          "البحث",
-                          style: AppText.labelSmall.copyWith(
-                            color: SearchColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  GestureDetector(
-
-                    onTap: () {
-
-
-
-
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>AppointmentPageForUser()));
-                    },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                         Icon(
                           Icons.assignment_sharp,
                           size: 20,
-                          color: RequestsColor,
+                          color: requestsColor,
                         ),
                         const SizedBox(height: 4),
                         Text(
                           "طلباتي",
                           style: AppText.labelSmall.copyWith(
-                            color: RequestsColor,
+                            color: requestsColor,
                           ),
                         ),
                       ],
@@ -189,70 +183,64 @@ class UserBaseScreen extends StatelessWidget {
                   ),
                   GestureDetector(
                     //>>>اظهر الدايلوج الاولر وبعدين ف الزرار احط الكود داااا
-                    onTap: ()  {
+                    onTap: () {
                       showDialog(
-                          context: context,
-                          builder: (_) => AlertDialog(
-                              title: Text(
-                                'تسجيل الخروج',
-                                style: AppText.title.copyWith(color: AppColor.dark),
-                              ),
-                              content: const Text('هل أنت متأكد أنك تريد تسجيل الخروج؟'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: Text(
-                                    'إلغاء',
-                                    style: AppText.bodyMedium.copyWith(color: AppColor.primary),
-                                  ),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () async {
-                                    final authService = AuthService();
-                                    await authService.logout();
-
-                                    AppCache.setLoggedIn(false);
-                                    AppCache.setIsLawyer(false);
-
-                                    Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(builder: (context) => const ChooseRoleScreen()),
-                                          (route) => false,
-                                    );
-                                  },
-
-                                  child: Text(
-                                    'خروج',
-                                    style: AppText.bodyMedium.copyWith(color: AppColor.green),
-                                  ),
-                                ),
-                              ],
+                        context: context,
+                        builder: (_) => AlertDialog(
+                          title: Text(
+                            'تسجيل الخروج',
+                            style: AppText.title.copyWith(color: AppColor.dark),
                           ),
-                          );
+                          content: const Text(
+                            'هل أنت متأكد أنك تريد تسجيل الخروج؟',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: Text(
+                                'إلغاء',
+                                style: AppText.bodyMedium.copyWith(
+                                  color: AppColor.primary,
+                                ),
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                final authService = AuthService();
+                                await authService.logout();
 
+                                AppCache.setLoggedIn(false);
+                                AppCache.setIsLawyer(false);
 
+                                Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ChooseRoleScreen(),
+                                  ),
+                                  (route) => false,
+                                );
+                              },
 
-
-
-
-
-
-
-
-
+                              child: Text(
+                                'خروج',
+                                style: AppText.bodyMedium.copyWith(
+                                  color: AppColor.green,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
                     },
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(
-                            Icons.logout,
-                            size: 20,
-                            color:AppointmentsColor
-                        ),
+                        Icon(Icons.logout, size: 20, color: appointmentsColor),
                         const SizedBox(height: 4),
                         Text(
                           "تسجيل الخروج",
                           style: AppText.labelSmall.copyWith(
-                              color:AppointmentsColor
+                            color: appointmentsColor,
                           ),
                         ),
                       ],
@@ -268,4 +256,3 @@ class UserBaseScreen extends StatelessWidget {
     );
   }
 }
-

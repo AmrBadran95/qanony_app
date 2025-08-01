@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../../../../data/models/lawyer_model.dart';
+import '../../../data/models/lawyer_model.dart';
 part 'search_state.dart';
 class SearchCubit extends Cubit<SearchState> {
   List<LawyerModel> originalLawyers = [];

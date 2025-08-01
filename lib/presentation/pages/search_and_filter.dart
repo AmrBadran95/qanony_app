@@ -5,8 +5,7 @@ import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/core/styles/text.dart';
 import 'package:qanony/data/static/case_types.dart';
 import 'package:qanony/presentation/pages/selection_dialog.dart';
-
-import 'package:qanony/services/cubits/Search/cubit/search_cubit.dart';
+import 'package:qanony/services/cubits/Search/search_cubit.dart';
 
 class SearchAndFilters extends StatelessWidget {
   const SearchAndFilters({super.key});
@@ -30,11 +29,11 @@ class SearchAndFilters extends StatelessWidget {
               fillColor: AppColor.grey,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(25),
-                borderSide:  BorderSide(color: AppColor.grey, width: .7),
+                borderSide: BorderSide(color: AppColor.grey, width: .7),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(25),
-                borderSide:  BorderSide(color: AppColor.primary, width: 1),
+                borderSide: BorderSide(color: AppColor.primary, width: 1),
               ),
             ),
             onChanged: (value) {
@@ -49,7 +48,7 @@ class SearchAndFilters extends StatelessWidget {
           child: BlocBuilder<SearchCubit, SearchState>(
             builder: (context, state) {
               return Padding(
-                padding:AppPadding.horizontalSmall,
+                padding: AppPadding.horizontalSmall,
                 child: Row(
                   children: [
                     Align(
@@ -81,8 +80,6 @@ class SearchAndFilters extends StatelessWidget {
                       onChanged: (val) {
                         cubit.updateFilter(newType: val);
                       },
-
-
                     ),
                     const SizedBox(width: 8),
                     SelectionDialog(
@@ -96,7 +93,11 @@ class SearchAndFilters extends StatelessWidget {
                     const SizedBox(width: 8),
                     SelectionDialog(
                       label: "التواصل عبر",
-                      items: const ["مكالمه فيديو", "مكالمه صوتيه", "فى المكتب"],
+                      items: const [
+                        "مكالمه فيديو",
+                        "مكالمه صوتيه",
+                        "فى المكتب",
+                      ],
                       value: cubit.contactMethod,
                       onChanged: (val) {
                         String? method;
@@ -107,11 +108,7 @@ class SearchAndFilters extends StatelessWidget {
                         }
                         cubit.updateFilter(newContactMethod: method);
                       },
-
                     ),
-
-
-
                   ],
                 ),
               );

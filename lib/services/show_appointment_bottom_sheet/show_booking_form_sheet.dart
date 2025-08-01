@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:qanony/data/repos/server_notifications_repo.dart';
 import 'package:qanony/services/auth/auth_service.dart';
 import 'package:qanony/services/cubits/order_form/order_form_cubit.dart';
 import 'package:qanony/services/cubits/order_form/order_form_state.dart';
+import 'package:qanony/services/cubits/server_notifications/server_notifications_cubit.dart';
+import 'package:qanony/services/firestore/lawyer_firestore_service.dart';
 import '../../Core/styles/color.dart';
 import '../../Core/styles/text.dart';
 import '../../Core/widgets/custom_button.dart';
@@ -35,8 +38,16 @@ void showBookingForm({
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
     builder: (context) {
-      return BlocProvider(
-        create: (_) => OrderFormCubit(orderService: OrderFirestoreService()),
+      return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) =>
+                OrderFormCubit(orderService: OrderFirestoreService()),
+          ),
+          BlocProvider(
+            create: (_) => ServerNotificationsCubit(ServerNotificationsRepo()),
+          ),
+        ],
         child: StatefulBuilder(
           builder: (context, setState) {
             final media = MediaQuery.of(context).size;
@@ -152,7 +163,11 @@ void showBookingForm({
                           _buildDisabledField("نوع الحجز", bookingType, media),
                           _buildDisabledField("السعر", price, media),
                           _buildDisabledField("اليوم", day, media),
-                          _buildDisabledField("التاريخ", DateFormat.yMMMMd('ar').format(date), media),
+                          _buildDisabledField(
+                            "التاريخ",
+                            DateFormat.yMMMMd('ar').format(date),
+                            media,
+                          ),
 
                           _buildDisabledField("الساعة", time, media),
                           SizedBox(height: media.height * 0.03),
@@ -177,7 +192,7 @@ void showBookingForm({
                                 backgroundColor: AppColor.primary,
                                 onTap: isLoading
                                     ? null
-                                    : () {
+                                    : () async {
                                         final uid =
                                             AuthService().currentUser?.uid;
                                         if (uid == null) return;
@@ -206,7 +221,7 @@ void showBookingForm({
                                           lawyerId: lawyerId,
                                           status: OrderStatus.pending,
                                           date: date,
-                                          userName: nameController.text.trim(),
+                                          userName: nameController.text,
                                           caseType: selectedSpecialty!,
                                           caseDescription: problemController
                                               .text
@@ -219,6 +234,23 @@ void showBookingForm({
                                         context
                                             .read<OrderFormCubit>()
                                             .submitOrder(order);
+
+                                        final lawyerData =
+                                            await LawyerFirestoreService()
+                                                .getLawyerById(lawyerId);
+                                        final lawyerFcmToken =
+                                            lawyerData?.fcmToken;
+                                        if (context.mounted) {
+                                          context
+                                              .read<ServerNotificationsCubit>()
+                                              .sendNotification(
+                                                fcmToken: lawyerFcmToken ?? "",
+                                                title: "طلب جديد",
+                                                body:
+                                                    "لديك طلب جديد من العميل ${nameController.text}",
+                                                data: {"type": "user_order"},
+                                              );
+                                        }
                                       },
                               );
                             },

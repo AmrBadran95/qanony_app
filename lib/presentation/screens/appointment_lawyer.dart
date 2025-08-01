@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/presentation/screens/subscription_screen.dart';
-import 'package:qanony/services/cubits/IsSubscribtion/is_subscription_cubit.dart';
+import 'package:qanony/services/cubits/is_subscription/is_subscription_cubit.dart';
 
 import '../../services/call/callService.dart';
 import '../pages/my_appointments_tab.dart';
