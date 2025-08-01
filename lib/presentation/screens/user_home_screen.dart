@@ -47,7 +47,7 @@ class UserHomeScreen extends StatelessWidget {
                         return Padding(
                           padding:  EdgeInsets.only(left: 5.w),
                           child: Container(
-                            width: 300,
+                            width: 300.w,
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 image: AssetImage("${ad['image']}"),
@@ -72,7 +72,7 @@ class UserHomeScreen extends StatelessWidget {
                                         padding: AppPadding.horizontalSmall,
                                         child: Text(
                                           ad['title']!,
-                                          style: AppText.title.copyWith(
+                                          style: AppText.bodyMedium.copyWith(
                                             color: AppColor.light,
                                           ),
                                         ),
@@ -132,16 +132,16 @@ class UserHomeScreen extends StatelessWidget {
                         Expanded(
                           child: Text(
                             'مساعدك القانوني الذكي\nأحصل على إجابات دقيقة وفورية على استفساراتك القانونية.',
-                            style: AppText.bodyMedium.copyWith(
+                            style: AppText.bodySmall.copyWith(
                               color: AppColor.light,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                        const SizedBox(width: 10),
+                         SizedBox(width: 10.w),
                         Icon(
                           Icons.chat_outlined,
-                          size: 60,
+                          size: 60.sp,
                           color: AppColor.light,
                         ),
                       ],
@@ -150,20 +150,20 @@ class UserHomeScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 5),
+               SizedBox(height: 5.h),
 
               Padding(
                 padding: AppPadding.paddingSmall,
                 child: Text(
                   'المحاميون المميزون',
-                  style: AppText.bodyMedium.copyWith(
+                  style: AppText.bodySmall.copyWith(
                     color: AppColor.dark,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
               SizedBox(
-                height: 200,
+                height: 200.h,
                 child: BlocBuilder<LawyerCubit, LawyerState>(
                   builder: (context, state) {
                     if (state is LawyerLoading) {
@@ -187,7 +187,7 @@ class UserHomeScreen extends StatelessWidget {
                               );
                             },
                             child: Container(
-                              width: 130,
+                              width: 130.w,
                               padding: AppPadding.paddingSmall,
                               decoration: BoxDecoration(color: AppColor.light),
                               child: Column(
@@ -205,13 +205,15 @@ class UserHomeScreen extends StatelessWidget {
                                         ? Icon(Icons.person)
                                         : null,
                                   ),
-                                  const SizedBox(height: 4),
+                                   SizedBox(height: 4.h),
                                   Text(
                                     lawyer.fullName ?? "غير معروف",
                                     style: AppText.bodySmall.copyWith(
                                       color: AppColor.dark,
                                     ),
                                     textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
                                   ),
                                   Text(
                                     lawyer.role,
@@ -220,14 +222,14 @@ class UserHomeScreen extends StatelessWidget {
                                     ),
                                   ),
 
-                                  const SizedBox(height: 4),
+                                   SizedBox(height: 4.h),
 
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: List.generate(5, (starIndex) {
                                       return Icon(
                                         Icons.star,
-                                        size: 14,
+                                        size: 14.sp,
                                         color: starIndex < rating
                                             ? AppColor.secondary
                                             : AppColor.grey,
@@ -247,17 +249,17 @@ class UserHomeScreen extends StatelessWidget {
               ),
 
               Padding(
-                padding: AppPadding.paddingMedium,
+                padding: AppPadding.paddingSmall,
                 child: Text(
                   'الأسئلة الشائعة',
-                  style: AppText.title.copyWith(
+                  style: AppText.bodySmall.copyWith(
                     color: AppColor.dark,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
               SizedBox(
-                height: 170,
+                height: 120.h,
                 child: ListView.builder(
                   itemCount: questionList.length,
                   itemBuilder: (context, index) {
@@ -274,7 +276,7 @@ class UserHomeScreen extends StatelessWidget {
                       children: [
                         Container(
                           width: double.infinity,
-                          padding: AppPadding.paddingMedium,
+                          padding: AppPadding.paddingSmall,
                           color: AppColor.grey,
                           child: Text(
                             question['answer'] ?? '',
