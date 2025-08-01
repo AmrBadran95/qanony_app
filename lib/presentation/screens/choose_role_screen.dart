@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qanony/Core/styles/color.dart';
+import 'package:qanony/core/styles/padding.dart';
 import 'package:qanony/core/widgets/role_container.dart';
 import 'package:qanony/presentation/screens/sign_in.dart';
 import 'package:qanony/services/cubits/role/role_cubit.dart';
@@ -21,11 +22,13 @@ class ChooseRoleScreen extends StatelessWidget {
           }
         },
         child: Container(
+          padding: AppPadding.paddingExtraLarge,
           width: double.infinity,
           height: double.infinity,
           color: AppColor.grey,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               RoleContainer(
                 color: AppColor.primary,
@@ -37,7 +40,6 @@ class ChooseRoleScreen extends StatelessWidget {
                     "كمحامٍ، يمكنك تقديم خدماتك، إدارة جلساتك، والتواصل مع عملائك بسهولة.",
                 text3: "ابدأ رحلتك القانونية الآن.",
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.06),
               RoleContainer(
                 color: AppColor.secondary,
                 onTap: () {

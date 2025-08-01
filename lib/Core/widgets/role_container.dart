@@ -23,14 +23,9 @@ class RoleContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: screenWidth * 0.9,
-        height: screenHeight * 0.23,
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(20),
@@ -42,14 +37,12 @@ class RoleContainer extends StatelessWidget {
             Center(
               child: Text(
                 text1,
-                style: AppText.appHeading.copyWith(color: textColor),
+                style: AppText.title.copyWith(color: textColor),
                 textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(height: screenHeight * 0.015),
-            Text(text2, style: AppText.bodyMedium.copyWith(color: textColor)),
-            SizedBox(height: screenHeight * 0.01),
-            Text(text3, style: AppText.bodyMedium.copyWith(color: textColor)),
+            Text(text2, style: AppText.bodySmall.copyWith(color: textColor)),
+            Text(text3, style: AppText.bodySmall.copyWith(color: textColor)),
           ],
         ),
       ),

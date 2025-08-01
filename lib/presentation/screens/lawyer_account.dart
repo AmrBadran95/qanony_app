@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qanony/Core/shared/app_cache.dart';
 import 'package:qanony/Core/styles/color.dart';
-import 'package:qanony/Core/widgets/Lawyer_calender.dart';
+import 'package:qanony/Core/widgets/lawyer_calender.dart';
 import 'package:qanony/core/styles/text.dart';
 import 'package:qanony/data/models/lawyer_model.dart';
 import 'package:qanony/data/static/egypt_governorates.dart';
@@ -612,19 +612,24 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
                       .delete();
                   AppCache.setLoggedIn(false);
                   AppCache.setIsLawyer(false);
-
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (_) => const ChooseRoleScreen()),
-                    (route) => false,
-                  );
+                  if (context.mounted) {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const ChooseRoleScreen(),
+                      ),
+                      (route) => false,
+                    );
+                  }
                 } catch (e) {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('فشل حذف الحساب، حاول مرة أخرى.'),
-                    ),
-                  );
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('فشل حذف الحساب، حاول مرة أخرى.'),
+                      ),
+                    );
+                  }
                 }
               },
               child: const Text('حذف', style: TextStyle(color: AppColor.light)),

@@ -17,7 +17,6 @@ class PaymentRepo {
       final clientSecret = response.data['result']['clientSecret'];
       return clientSecret;
     } catch (e) {
-      print("Error creating lawyer payment: $e");
       return null;
     }
   }

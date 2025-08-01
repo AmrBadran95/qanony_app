@@ -60,17 +60,19 @@ class LawyerConnect extends StatelessWidget {
                   await launchUrlString(state.url);
                 }
               } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      'تعذر فتح الرابط',
-                      style: AppText.bodyLarge.copyWith(
-                        color: AppColor.primary,
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'تعذر فتح الرابط',
+                        style: AppText.bodyLarge.copyWith(
+                          color: AppColor.primary,
+                        ),
                       ),
+                      backgroundColor: AppColor.grey,
                     ),
-                    backgroundColor: AppColor.grey,
-                  ),
-                );
+                  );
+                }
               }
             }
           },

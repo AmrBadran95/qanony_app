@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/data/repos/gemini_repo.dart';
@@ -44,14 +45,20 @@ void main() async {
       }
     },
   );
-  
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await ZegoUIKit().initLog().then((value) async {
     await ZegoUIKitPrebuiltCallInvitationService().useSystemCallingUI([
       ZegoUIKitSignalingPlugin(),
     ]);
-    runApp(const QanonyApp());
+    runApp(
+      ScreenUtilInit(
+        designSize: Size(375, 812),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) => const QanonyApp(),
+      ),
+    );
   });
 }
 

@@ -7,8 +7,8 @@ import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/data/repos/lawyer_repository.dart';
 import 'package:qanony/data/static/question_list.dart';
 import 'package:qanony/presentation/pages/ai_chat_screen.dart';
-import 'package:qanony/services/call/callService.dart';
-import '../../data/static/Advertisements.dart';
+import 'package:qanony/services/call/call_service.dart';
+import '../../data/static/advertisements.dart';
 import '../../services/cubits/lawyer/lawyer_cubit.dart';
 import '../pages/user_base_screen.dart';
 import 'lawyer_card.dart';
@@ -59,7 +59,9 @@ class UserHomeScreen extends StatelessWidget {
                               children: [
                                 Container(
                                   width: double.infinity,
-                                  color: AppColor.dark.withOpacity(.5),
+                                  color: AppColor.dark.withAlpha(
+                                    (0.5 * 255).round(),
+                                  ),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -113,7 +115,7 @@ class UserHomeScreen extends StatelessWidget {
                   width: double.infinity,
 
                   decoration: BoxDecoration(
-                    color: AppColor.dark.withOpacity(.6),
+                    color: AppColor.dark.withAlpha((0.6 * 255).round()),
                     image: DecorationImage(
                       image: AssetImage('assets/images/image.png'),
                       fit: BoxFit.cover,
@@ -122,7 +124,7 @@ class UserHomeScreen extends StatelessWidget {
                   child: Container(
                     width: double.infinity,
                     padding: AppPadding.paddingMedium,
-                    color: AppColor.dark.withOpacity(.3),
+                    color: AppColor.dark.withAlpha((0.3 * 255).round()),
                     child: Row(
                       textDirection: TextDirection.rtl,
                       children: [

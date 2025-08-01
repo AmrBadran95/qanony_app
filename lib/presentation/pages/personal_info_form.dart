@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/padding.dart';
@@ -22,7 +23,7 @@ class PersonalInfoForm extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: MediaQuery.of(context).size.height * .01),
+          SizedBox(height: 10.h),
 
           CustomTextFormField(
             controller: PersonalInfoControllers.fullNameController,
@@ -31,8 +32,8 @@ class PersonalInfoForm extends StatelessWidget {
             label: "الاسم رباعي",
             contentPadding: AppPadding.paddingMedium,
             backgroundColor: AppColor.grey,
-            labelStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
-            textStyle: AppText.bodyLarge.copyWith(color: AppColor.dark),
+            labelStyle: AppText.bodySmall.copyWith(color: AppColor.dark),
+            textStyle: AppText.bodySmall.copyWith(color: AppColor.dark),
           ),
           SizedBox(height: MediaQuery.of(context).size.height * .01),
 

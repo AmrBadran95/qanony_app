@@ -15,7 +15,6 @@ class AddAppointment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final pageWidth = MediaQuery.of(context).size.width;
     final pageHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
@@ -31,7 +30,7 @@ class AddAppointment extends StatelessWidget {
         backgroundColor: AppColor.primary,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(AppPadding.medium),
+        padding: EdgeInsets.all(AppPadding.medium),
         child: BlocProvider(
           create: (context) => CalendarCubit(),
           child: Column(

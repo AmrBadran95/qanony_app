@@ -32,7 +32,7 @@ class OnboardingPage extends StatelessWidget {
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.05),
 
-            Text(text, style: AppText.title.copyWith(color: AppColor.grey)),
+            Text(text, style: AppText.bodyLarge.copyWith(color: AppColor.grey)),
             SizedBox(height: MediaQuery.of(context).size.height * 0.06),
 
             Text(

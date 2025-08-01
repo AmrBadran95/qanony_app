@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
 
 part 'appointments_state.dart';
 
@@ -13,14 +13,12 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
   final CollectionReference appointmentsRef = FirebaseFirestore.instance
       .collection('appointments');
 
-  // ✅ استعراض مواعيد المحامي الحالي فقط
   Stream<QuerySnapshot> getAppointmentsStream() {
     return appointmentsRef
         .where('lawyerId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
         .snapshots();
   }
 
-  // ✅ إضافة موعد
   Future<void> addAppointment({
     required String name,
     required String specialty,
@@ -43,7 +41,6 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
     }
   }
 
-  // ✅ حذف الموعد فقط إذا ينتمي للمحامي الحالي
   Future<void> deleteAppointment(String id) async {
     try {
       final doc = await appointmentsRef.doc(id).get();
@@ -60,7 +57,6 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
     }
   }
 
-  // ✅ تعديل الموعد فقط إذا ينتمي للمحامي الحالي
   Future<void> updateAppointment({
     required String id,
     required String name,
@@ -95,7 +91,6 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
     emit(SpecialtyChanged(value));
   }
 
-  // ✅ مواعيد قانوني للحالات المطلوبة
   Future<void> getQanonyAppointments() async {
     emit(AppointmentsLoading());
 

@@ -6,7 +6,7 @@ import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/presentation/screens/subscription_screen.dart';
 import 'package:qanony/services/cubits/is_subscription/is_subscription_cubit.dart';
 
-import '../../services/call/callService.dart';
+import '../../services/call/call_service.dart';
 import '../pages/my_appointments_tab.dart';
 import '../pages/qanony_appointments_tab.dart';
 

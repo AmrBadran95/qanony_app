@@ -1,50 +1,59 @@
 import 'package:flutter/rendering.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/core/styles/font.dart';
 
 class AppText {
-  static const TextStyle appHeading = TextStyle(
+  static TextStyle get appHeading => TextStyle(
     fontFamily: AppFont.mainFont,
-    fontSize: 32,
+    fontSize: 32.sp,
     fontWeight: FontWeight.bold,
   );
-  static const TextStyle headingLarge = TextStyle(
+
+  static TextStyle get headingLarge => TextStyle(
     fontFamily: AppFont.mainFont,
-    fontSize: 28,
+    fontSize: 28.sp,
     fontWeight: FontWeight.bold,
   );
-  static const TextStyle headingMedium = TextStyle(
+
+  static TextStyle get headingMedium => TextStyle(
     fontFamily: AppFont.mainFont,
-    fontSize: 24,
+    fontSize: 24.sp,
     fontWeight: FontWeight.w600,
   );
-  static const TextStyle title = TextStyle(
+
+  static TextStyle get title => TextStyle(
     fontFamily: AppFont.mainFont,
-    fontSize: 20,
+    fontSize: 20.sp,
     fontWeight: FontWeight.w600,
   );
-  static const TextStyle bodyLarge = TextStyle(
+
+  static TextStyle get bodyLarge => TextStyle(
     fontFamily: AppFont.mainFont,
-    fontSize: 18,
+    fontSize: 18.sp,
     fontWeight: FontWeight.w500,
   );
-  static const TextStyle bodyMedium = TextStyle(
+
+  static TextStyle get bodyMedium => TextStyle(
     fontFamily: AppFont.mainFont,
-    fontSize: 16,
+    fontSize: 16.sp,
     fontWeight: FontWeight.normal,
   );
-  static const TextStyle bodySmall = TextStyle(
+
+  static TextStyle get bodySmall => TextStyle(
     fontFamily: AppFont.mainFont,
-    fontSize: 14,
+    fontSize: 14.sp,
     fontWeight: FontWeight.normal,
   );
-  static const TextStyle labelLarge = TextStyle(
+
+  static TextStyle get labelLarge => TextStyle(
     fontFamily: AppFont.mainFont,
-    fontSize: 14,
+    fontSize: 14.sp,
     fontWeight: FontWeight.w600,
   );
-  static const TextStyle labelSmall = TextStyle(
+
+  static TextStyle get labelSmall => TextStyle(
     fontFamily: AppFont.mainFont,
-    fontSize: 12,
+    fontSize: 12.sp,
     fontWeight: FontWeight.normal,
   );
 }

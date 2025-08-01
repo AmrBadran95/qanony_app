@@ -53,7 +53,7 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
         vertical: screenHeight * 0.01,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(AppPadding.large),
+        padding: EdgeInsets.all(AppPadding.large),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -91,7 +91,7 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: AppPadding.small),
+            SizedBox(height: AppPadding.small),
 
             Text(
               specialty,
@@ -102,7 +102,7 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
               'الوصف: $description',
               style: AppText.bodyMedium.copyWith(color: AppColor.dark),
             ),
-            const SizedBox(height: AppPadding.small),
+            SizedBox(height: AppPadding.small),
 
             Row(
               children: [
@@ -118,7 +118,7 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: AppPadding.small),
+            SizedBox(height: AppPadding.small),
 
             Row(
               children: [
@@ -134,7 +134,7 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: AppPadding.small),
+            SizedBox(height: AppPadding.small),
 
             Row(
               children: [

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/core/styles/color.dart';
@@ -36,13 +37,13 @@ class OnboardingScreen extends StatelessWidget {
               autoScrollDuration: 2000,
               controlsMargin: EdgeInsets.all(48),
               dotsDecorator: DotsDecorator(
-                size: const Size.square(10.0),
-                activeSize: const Size(20.0, 10.0),
+                size: Size.square(10.sp),
+                activeSize: Size(20.sp, 10.sp),
                 activeColor: AppColor.secondary,
                 color: AppColor.grey,
                 spacing: const EdgeInsets.symmetric(horizontal: 4),
                 activeShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25.0),
+                  borderRadius: BorderRadius.circular(25),
                 ),
               ),
               showDoneButton: false,
@@ -50,15 +51,15 @@ class OnboardingScreen extends StatelessWidget {
               showSkipButton: false,
             ),
             Positioned(
-              top: 80,
-              left: 40,
+              top: 80.sp,
+              left: 40.sp,
               child: GestureDetector(
                 onTap: () {
                   context.read<OnboardingCubit>().completeOnboarding();
                 },
                 child: Text(
                   "تخطى",
-                  style: AppText.bodyMedium.copyWith(color: AppColor.secondary),
+                  style: AppText.bodySmall.copyWith(color: AppColor.secondary),
                 ),
               ),
             ),

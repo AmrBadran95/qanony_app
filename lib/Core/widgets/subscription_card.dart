@@ -43,7 +43,7 @@ class SubscriptionCard extends StatelessWidget {
           Container(
             padding: AppPadding.paddingSmall,
             decoration: BoxDecoration(
-              color: AppColor.light.withOpacity(0.8),
+              color: AppColor.grey.withAlpha((0.8 * 255).round()),
               borderRadius: BorderRadius.circular(5),
               border: Border.all(color: AppColor.primary, width: 2),
             ),
@@ -62,11 +62,15 @@ class SubscriptionCard extends StatelessWidget {
                       children: [
                         Text(
                           title,
-                          style: AppText.headingMedium.copyWith(color: AppColor.dark),
+                          style: AppText.headingMedium.copyWith(
+                            color: AppColor.dark,
+                          ),
                         ),
                         Text(
                           option1,
-                          style: AppText.bodyMedium.copyWith(color: AppColor.dark),
+                          style: AppText.bodyMedium.copyWith(
+                            color: AppColor.dark,
+                          ),
                         ),
                         Row(
                           children: [
@@ -77,13 +81,19 @@ class SubscriptionCard extends StatelessWidget {
                             ),
                             Text(
                               text1,
-                              style: AppText.labelSmall.copyWith(color: AppColor.dark.withOpacity(.5)),
+                              style: AppText.labelSmall.copyWith(
+                                color: AppColor.dark.withAlpha(
+                                  (0.8 * 255).round(),
+                                ),
+                              ),
                             ),
                           ],
                         ),
                         Text(
                           option2,
-                          style: AppText.bodyMedium.copyWith(color: AppColor.dark),
+                          style: AppText.bodyMedium.copyWith(
+                            color: AppColor.dark,
+                          ),
                         ),
                         Row(
                           children: [
@@ -94,13 +104,19 @@ class SubscriptionCard extends StatelessWidget {
                             ),
                             Text(
                               text2,
-                              style: AppText.labelSmall.copyWith(color: AppColor.dark.withOpacity(.5)),
+                              style: AppText.labelSmall.copyWith(
+                                color: AppColor.dark.withAlpha(
+                                  (0.5 * 255).round(),
+                                ),
+                              ),
                             ),
                           ],
                         ),
                         Text(
                           option3,
-                          style: AppText.bodyMedium.copyWith(color: AppColor.dark),
+                          style: AppText.bodyMedium.copyWith(
+                            color: AppColor.dark,
+                          ),
                         ),
                         Row(
                           children: [
@@ -111,7 +127,11 @@ class SubscriptionCard extends StatelessWidget {
                             ),
                             Text(
                               text3,
-                              style: AppText.labelSmall.copyWith(color: AppColor.dark.withOpacity(.5)),
+                              style: AppText.labelSmall.copyWith(
+                                color: AppColor.dark.withAlpha(
+                                  (0.5 * 255).round(),
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -163,7 +183,9 @@ class SubscriptionCard extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * .02),
+            padding: EdgeInsets.only(
+              top: MediaQuery.of(context).size.width * .02,
+            ),
             child: Container(
               width: MediaQuery.of(context).size.width * .25,
               height: MediaQuery.of(context).size.height * .03,

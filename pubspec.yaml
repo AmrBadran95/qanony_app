@@ -39,6 +39,7 @@ dependencies:
   flutter_callkit_incoming: ^2.5.6
   flutter_local_notifications: ^19.4.0
   permission_handler: ^11.3.0
+  flutter_screenutil: ^5.9.3
 
 dev_dependencies:
   flutter_test:

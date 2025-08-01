@@ -50,50 +50,56 @@ class SubscriptionScreen extends StatelessWidget {
               );
 
               await Stripe.instance.presentPaymentSheet();
-
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    'تم الاشتراك بنجاح',
-                    style: AppText.bodyMedium.copyWith(color: AppColor.green),
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'تم الاشتراك بنجاح',
+                      style: AppText.bodyMedium.copyWith(color: AppColor.green),
+                    ),
+                    backgroundColor: AppColor.grey,
                   ),
-                  backgroundColor: AppColor.grey,
-                ),
-              );
-
-              await Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      const SuccessfulProcessScreen(),
-                ),
-                (route) => false,
-              );
+                );
+              }
+              if (context.mounted) {
+                await Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        const SuccessfulProcessScreen(),
+                  ),
+                  (route) => false,
+                );
+              }
             } catch (e) {
               if (e is StripeException) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      'خطأ في Stripe: ${e.error.localizedMessage}',
-                      style: AppText.bodyMedium.copyWith(
-                        color: AppColor.primary,
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'خطأ في Stripe: ${e.error.localizedMessage}',
+                        style: AppText.bodyMedium.copyWith(
+                          color: AppColor.primary,
+                        ),
                       ),
+                      backgroundColor: AppColor.grey,
                     ),
-                    backgroundColor: AppColor.grey,
-                  ),
-                );
+                  );
+                }
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      'حدث خطأ أثناء الدفع',
-                      style: AppText.bodyMedium.copyWith(
-                        color: AppColor.primary,
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'حدث خطأ أثناء الدفع',
+                        style: AppText.bodyMedium.copyWith(
+                          color: AppColor.primary,
+                        ),
                       ),
+                      backgroundColor: AppColor.grey,
                     ),
-                    backgroundColor: AppColor.grey,
-                  ),
-                );
+                  );
+                }
               }
             }
           }
@@ -178,14 +184,16 @@ class SubscriptionScreen extends StatelessWidget {
                                 email: user.email ?? '',
                                 subscriptionType: 'free',
                               );
-                          await Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  const SuccessfulProcessScreen(),
-                            ),
-                            (route) => false,
-                          );
+                          if (context.mounted) {
+                            await Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    const SuccessfulProcessScreen(),
+                              ),
+                              (route) => false,
+                            );
+                          }
                         },
                         label: "الباقه الاولى",
                         labelColor: AppColor.secondary,
@@ -225,14 +233,16 @@ class SubscriptionScreen extends StatelessWidget {
                                 email: user.email ?? '',
                                 subscriptionType: 'percentage',
                               );
-                          await Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  const SuccessfulProcessScreen(),
-                            ),
-                            (route) => false,
-                          );
+                          if (context.mounted) {
+                            await Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    const SuccessfulProcessScreen(),
+                              ),
+                              (route) => false,
+                            );
+                          }
                         },
                         label: "الأكثر انتشارا",
                         labelColor: AppColor.primary,
