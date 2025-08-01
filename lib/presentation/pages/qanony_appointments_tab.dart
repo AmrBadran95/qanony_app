@@ -70,6 +70,7 @@ class QanonyAppointmentsTab extends StatelessWidget {
                             : AppColor.primary,
                       ),
                     ),
+                    SizedBox(height: widthSmall),
                     order.status == OrderStatus.paymentDone
                         ? CustomButton(
                             text: "انضم الى الجلسة",

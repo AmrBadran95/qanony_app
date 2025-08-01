@@ -93,6 +93,8 @@ class LawyerScheduleCubit extends Cubit<LawyerScheduleState> {
 
       selectedDate = updated;
 
+      appointments.sort((a, b) => a.compareTo(b));
+
       await saveToFirestore();
       emit(LawyerScheduleUpdated());
     }
@@ -130,6 +132,7 @@ class LawyerScheduleCubit extends Cubit<LawyerScheduleState> {
         }
       }),
     );
+    appointments.sort((a, b) => a.compareTo(b));
 
     emit(LawyerScheduleUpdated());
   }
