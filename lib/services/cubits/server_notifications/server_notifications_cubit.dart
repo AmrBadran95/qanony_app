@@ -24,9 +24,9 @@ class ServerNotificationsCubit extends Cubit<ServerNotificationsState> {
         body: body,
         data: data,
       );
-      emit(ServerNotificationsSuccess());
+      if (!isClosed) emit(ServerNotificationsSuccess());
     } catch (e) {
-      emit(ServerNotificationsError(e.toString()));
+      if (!isClosed) emit(ServerNotificationsError(e.toString()));
     }
   }
 }

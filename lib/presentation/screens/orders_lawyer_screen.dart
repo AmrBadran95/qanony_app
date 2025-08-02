@@ -52,7 +52,7 @@ class OrdersLawyerScreen extends StatelessWidget {
                     name: order.userName,
                     specialty: order.caseType,
                     description: order.caseDescription,
-                    price: '//${order.price} EGP',
+                    price: '${order.price} EGP',
                     date: dateFormat.format(order.date),
                     communication: order.contactMethod,
                     children: [
@@ -87,18 +87,6 @@ class OrdersLawyerScreen extends StatelessWidget {
                                           "المحامي $lawyerName وافق على الاستشارة.",
                                       data: {"type": "lawyer_order"},
                                     );
-
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      "تم قبول الطلب بنجاح بانتظار اكمال الطلب",
-                                      style: AppText.bodyMedium.copyWith(
-                                        color: AppColor.green,
-                                      ),
-                                    ),
-                                    backgroundColor: AppColor.grey,
-                                  ),
-                                );
                               }
                             },
                             width: buttonWidth,
@@ -135,18 +123,6 @@ class OrdersLawyerScreen extends StatelessWidget {
                                           "المحامي $lawyerName قام برفض الاستشارة.",
                                       data: {"type": "lawyer_order"},
                                     );
-
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      "تم رفض الطلب",
-                                      style: AppText.bodyMedium.copyWith(
-                                        color: AppColor.primary,
-                                      ),
-                                    ),
-                                    backgroundColor: AppColor.grey,
-                                  ),
-                                );
                               }
                             },
                             width: buttonWidth,

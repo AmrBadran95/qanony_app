@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/core/styles/color.dart';
 import 'package:qanony/core/styles/text.dart';
 import 'package:qanony/core/widgets/custom_button.dart';
@@ -77,41 +78,46 @@ class LawyerConnect extends StatelessWidget {
               }
             }
           },
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "شكراً لإنضمامك إلى عائلة قانوني",
-                style: AppText.title.copyWith(color: AppColor.primary),
-              ),
-              SizedBox(height: 20.h),
-              Text(
-                "سيتعين عليك تسجيل بيانات حسابك البنكي عبر منصة Stripe حتى تتمكن من الحصول على مستحقاتك المالية من عملائك",
-                style: AppText.bodyLarge.copyWith(color: AppColor.dark),
-              ),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: CustomButton(
-                    text: "اربط حسابك البنكي",
-                    onTap: () {
-                      context.read<ConnectCubit>().startOnboarding(
-                        lawyerId: lawyerId,
-                        email: email,
-                      );
-                    },
-                    width: double.infinity,
-                    height: 50.sp,
-                    backgroundColor: AppColor.secondary,
-                    textStyle: AppText.bodyMedium.copyWith(
-                      color: AppColor.dark,
-                    ),
-                    textColor: AppColor.dark,
+          child: Padding(
+            padding: AppPadding.paddingLarge,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Text(
+                    "شكراً لإنضمامك إلى عائلة قانوني",
+                    style: AppText.title.copyWith(color: AppColor.primary),
                   ),
                 ),
-              ),
-            ],
+                SizedBox(height: 20.h),
+                Text(
+                  "سيتعين عليك تسجيل بيانات حسابك البنكي عبر منصة Stripe حتى تتمكن من الحصول على مستحقاتك المالية من عملائك",
+                  style: AppText.bodyMedium.copyWith(color: AppColor.dark),
+                ),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: CustomButton(
+                      text: "اربط حسابك البنكي",
+                      onTap: () {
+                        context.read<ConnectCubit>().startOnboarding(
+                          lawyerId: lawyerId,
+                          email: email,
+                        );
+                      },
+                      width: double.infinity,
+                      height: 50.sp,
+                      backgroundColor: AppColor.secondary,
+                      textStyle: AppText.bodyMedium.copyWith(
+                        color: AppColor.dark,
+                      ),
+                      textColor: AppColor.dark,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
