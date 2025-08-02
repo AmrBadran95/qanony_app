@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../styles/color.dart';
 import '../styles/padding.dart';
@@ -45,16 +46,17 @@ class SubscriptionCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColor.grey.withAlpha((0.8 * 255).round()),
               borderRadius: BorderRadius.circular(5),
-              border: Border.all(color: AppColor.primary, width: 2),
+              border: Border.all(color: AppColor.primary, width: 2.w),
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
                   height: MediaQuery.of(context).size.height * .2,
                   child: Padding(
                     padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.028,
+                      top: MediaQuery.of(context).size.height * 0.035,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,13 +64,13 @@ class SubscriptionCard extends StatelessWidget {
                       children: [
                         Text(
                           title,
-                          style: AppText.headingMedium.copyWith(
+                          style: AppText.bodyMedium.copyWith(
                             color: AppColor.dark,
                           ),
                         ),
                         Text(
                           option1,
-                          style: AppText.bodyMedium.copyWith(
+                          style: AppText.bodySmall.copyWith(
                             color: AppColor.dark,
                           ),
                         ),
@@ -91,7 +93,7 @@ class SubscriptionCard extends StatelessWidget {
                         ),
                         Text(
                           option2,
-                          style: AppText.bodyMedium.copyWith(
+                          style: AppText.bodySmall.copyWith(
                             color: AppColor.dark,
                           ),
                         ),
@@ -114,7 +116,7 @@ class SubscriptionCard extends StatelessWidget {
                         ),
                         Text(
                           option3,
-                          style: AppText.bodyMedium.copyWith(
+                          style: AppText.bodySmall.copyWith(
                             color: AppColor.dark,
                           ),
                         ),
@@ -139,7 +141,7 @@ class SubscriptionCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: MediaQuery.of(context).size.width * .05),
+
                 Padding(
                   padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.028,
@@ -161,7 +163,7 @@ class SubscriptionCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 8),
+                       SizedBox(height: 4.h),
                       ShaderMask(
                         shaderCallback: (bounds) => const LinearGradient(
                           colors: [AppColor.dark, AppColor.grey],
@@ -170,7 +172,7 @@ class SubscriptionCard extends StatelessWidget {
                         ).createShader(bounds),
                         child: Text(
                           priceText,
-                          style: AppText.bodyMedium.copyWith(
+                          style: AppText.bodySmall.copyWith(
                             color: AppColor.light,
                             fontWeight: FontWeight.bold,
                           ),
@@ -187,7 +189,7 @@ class SubscriptionCard extends StatelessWidget {
               top: MediaQuery.of(context).size.width * .02,
             ),
             child: Container(
-              width: MediaQuery.of(context).size.width * .25,
+              width: MediaQuery.of(context).size.width * .28,
               height: MediaQuery.of(context).size.height * .03,
               color: labelColor,
               alignment: Alignment.center,

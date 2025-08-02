@@ -160,7 +160,7 @@ class SubscriptionScreen extends StatelessWidget {
                       ],
                     ),
                     Padding(
-                      padding: AppPadding.paddingMedium,
+                      padding: AppPadding.paddingSmall,
                       child: SubscriptionCard(
                         onTap: () async {
                           if (user == null) {
@@ -209,7 +209,7 @@ class SubscriptionScreen extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: AppPadding.paddingMedium,
+                      padding: AppPadding.paddingSmall,
                       child: SubscriptionCard(
                         onTap: () async {
                           if (user == null) {
@@ -258,7 +258,7 @@ class SubscriptionScreen extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: AppPadding.paddingMedium,
+                      padding: AppPadding.paddingSmall,
                       child: SubscriptionCard(
                         onTap: () async {
                           if (user == null) {
