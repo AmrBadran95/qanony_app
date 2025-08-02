@@ -86,7 +86,6 @@ class AppointmentPageForUser extends StatelessWidget {
                   return Center(child: Text(state.message));
                 } else if (state is UserOrderLoaded) {
                   final order = state.orders;
-
                   return SizedBox(
                     width: double.infinity,
                     child: Column(
@@ -488,7 +487,22 @@ class AppointmentPageForUser extends StatelessWidget {
                                                   ],
                                                 )
                                               : data.status ==
-                                                    OrderStatus.paymentDone
+                                                        OrderStatus
+                                                            .paymentDone &&
+                                                    data.contactMethod ==
+                                                        "حجز فى المكتب"
+                                              ? Text(
+                                                  "${lawyer.address}",
+                                                  style: AppText.labelSmall
+                                                      .copyWith(
+                                                        color: AppColor.dark,
+                                                      ),
+                                                )
+                                              : data.status ==
+                                                        OrderStatus
+                                                            .paymentDone &&
+                                                    data.contactMethod ==
+                                                        "محادثة فيديو/صوت"
                                               ? StreamBuilder<bool>(
                                                   stream: timeToJoinStream(
                                                     sessionTime,
@@ -540,7 +554,7 @@ class AppointmentPageForUser extends StatelessWidget {
                                                     );
                                                   },
                                                 )
-                                              : const SizedBox.shrink(),
+                                              : SizedBox.shrink(),
                                         ],
                                       ),
                                     ),
