@@ -126,7 +126,7 @@ class SuccessfulProcessScreen extends StatelessWidget {
                                 children: [
                                   Flexible(
                                     child: Text(
-                                      'تاريخ الاشتراك: ${DateFormat('EEEE، yyyy/MM/dd – hh:mm a', 'ar').format(lawyer.subscriptionEnd!)}',
+                                      'تاريخ الاشتراك: ${DateFormat('EEEE، yyyy/MM/dd', 'ar').format(lawyer.subscriptionEnd!)}',
                                       style: AppText.bodyMedium.copyWith(
                                         color: AppColor.dark,
                                       ),
@@ -155,7 +155,12 @@ class SuccessfulProcessScreen extends StatelessWidget {
                             onTap: () async {
                               try {
                                 final pdfPath = await generateSubscriptionPdf(
-                                  subscriptionType: lawyer.subscriptionType,
+                                  subscriptionType:
+                                      lawyer.subscriptionType == "free"
+                                      ? "الباقة المجانية"
+                                      : lawyer.subscriptionType == "fixed"
+                                      ? "الأكثر إنتشاراً"
+                                      : "الباقة الشهرية",
                                   subscriptionStart:
                                       lawyer.subscriptionStart ??
                                       DateTime.now(),
