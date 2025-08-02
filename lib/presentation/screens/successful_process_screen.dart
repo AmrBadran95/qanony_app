@@ -67,7 +67,7 @@ class SuccessfulProcessScreen extends StatelessWidget {
                         children: [
                           Column(
                             children: [
-                               Icon(
+                              Icon(
                                 Icons.check_circle,
                                 size: 100.sp,
                                 color: AppColor.green,
@@ -95,7 +95,11 @@ class SuccessfulProcessScreen extends StatelessWidget {
                               ),
                               SizedBox(height: size.height * 0.02),
                               Text(
-                                ' الباقه الحاليه: ${lawyer.subscriptionType}',
+                                ' الباقه الحاليه: ${lawyer.subscriptionType == "free"
+                                    ? "الباقة المجانية"
+                                    : lawyer.subscriptionType == "fixed"
+                                    ? "الأكثر إنتشاراً"
+                                    : "الباقة الشهرية"}',
                                 style: AppText.bodyMedium.copyWith(
                                   color: AppColor.dark,
                                 ),
@@ -105,12 +109,8 @@ class SuccessfulProcessScreen extends StatelessWidget {
                               Row(
                                 children: [
                                   Flexible(
-                                    child:
-                                    Text(
-                                      'تاريخ الاشتراك: ${ DateFormat(
-                                        'EEEE، yyyy/MM/dd – hh:mm a',
-                                        'ar',
-                                      ).format(lawyer.subscriptionStart!) }',
+                                    child: Text(
+                                      'تاريخ الاشتراك: ${DateFormat('EEEE، yyyy/MM/dd – hh:mm a', 'ar').format(lawyer.subscriptionStart!)}',
                                       style: AppText.bodyMedium.copyWith(
                                         color: AppColor.dark,
                                       ),
@@ -118,9 +118,6 @@ class SuccessfulProcessScreen extends StatelessWidget {
                                       overflow: TextOverflow.visible,
                                       softWrap: true,
                                     ),
-
-
-
                                   ),
                                 ],
                               ),
@@ -128,11 +125,8 @@ class SuccessfulProcessScreen extends StatelessWidget {
                               Row(
                                 children: [
                                   Flexible(
-                                    child:   Text(
-                                      'تاريخ الاشتراك: ${  DateFormat(
-                                        'EEEE، yyyy/MM/dd – hh:mm a',
-                                        'ar',
-                                      ).format(lawyer.subscriptionEnd!) }',
+                                    child: Text(
+                                      'تاريخ الاشتراك: ${DateFormat('EEEE، yyyy/MM/dd – hh:mm a', 'ar').format(lawyer.subscriptionEnd!)}',
                                       style: AppText.bodyMedium.copyWith(
                                         color: AppColor.dark,
                                       ),
