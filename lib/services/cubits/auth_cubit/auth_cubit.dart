@@ -68,7 +68,7 @@ class AuthCubit extends Cubit<AuthState> {
         }
       }
 
-      await FCMHandler().initializeFCM(userId: userId, role: role);
+      await FCMHandler.instance.initializeFCM(userId, role);
     } catch (e) {
       emit(AuthError(e.toString()));
     }

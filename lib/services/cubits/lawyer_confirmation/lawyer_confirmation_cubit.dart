@@ -117,7 +117,7 @@ class LawyerConfirmationCubit extends Cubit<LawyerConfirmationState> {
 
       await LawyerFirestoreService().createLawyer(lawyer);
 
-      await FCMHandler().initializeFCM(userId: uid, role: 'lawyer');
+      await FCMHandler.instance.initializeFCM(uid, 'lawyer');
 
       emit(LawyerConfirmationSubmitted());
     } catch (e) {
