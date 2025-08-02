@@ -21,9 +21,9 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
-        android:label="flutter_application_1"
+        android:label="قانوني"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
 
         <activity
             android:name=".MainActivity"
