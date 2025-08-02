@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -20,7 +21,6 @@ import 'package:qanony/services/cubits/role/role_cubit.dart';
 import 'package:qanony/services/cubits/splash/splash_cubit.dart';
 import 'package:qanony/services/cubits/subscription/stripe_subscription_cubit.dart';
 import 'package:qanony/services/firestore/lawyer_firestore_service.dart';
-import 'package:qanony/services/notifications/notification_service.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'package:zego_uikit/zego_uikit.dart';
@@ -38,15 +38,11 @@ void main() async {
   Stripe.publishableKey = key;
 
   await Stripe.instance.applySettings();
-  await NotificationService().init(
-    onNotificationTap: (payload) {
-      if (payload != null) {
-        navigatorKey.currentState?.pushNamed(payload);
-      }
-    },
-  );
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  await FirebaseMessaging.instance.setAutoInitEnabled(true);
+
   await ZegoUIKit().initLog().then((value) async {
     await ZegoUIKitPrebuiltCallInvitationService().useSystemCallingUI([
       ZegoUIKitSignalingPlugin(),

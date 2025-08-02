@@ -7,7 +7,7 @@ class ServerNotificationsRepo {
     required String fcmToken,
     required String title,
     required String body,
-    required Map<String, String> data,
+    required Map<String, dynamic> data,
   }) async {
     final payload = {
       "fcmToken": fcmToken,

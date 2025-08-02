@@ -164,7 +164,6 @@ class LawyerBaseScreen extends StatelessWidget {
               FirebaseAuth.instance.signOut();
               AppCache.setLoggedIn(false);
               AppCache.setIsLawyer(false);
-              Navigator.pop(context);
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (_) => const ChooseRoleScreen()),
