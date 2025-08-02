@@ -1,31 +1,37 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:qanony/Core/styles/color.dart';
-import 'package:qanony/core/styles/text.dart';
 import 'package:qanony/main.dart';
 import 'package:qanony/presentation/pages/lawyer_base_screen.dart';
 import 'package:qanony/presentation/pages/qanony_appointments_tab.dart';
 import 'package:qanony/presentation/screens/appointment_page_for_user.dart';
 import 'package:qanony/presentation/screens/orders_lawyer_screen.dart';
 
-class FCMHandler {
-  final FirebaseMessaging _messaging = FirebaseMessaging.instance;
-  final FlutterLocalNotificationsPlugin _localNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await FCMHandler.instance.setupFlutterNotifications();
+  await FCMHandler.instance.showNotification(message);
+}
 
-  Future<void> initializeFCM({
-    required String userId,
-    required String role,
-  }) async {
-    await _requestNotificationPermissionIfNeeded();
-    await _messaging.requestPermission();
+class FCMHandler {
+  FCMHandler._();
+  static final FCMHandler instance = FCMHandler._();
+
+  final FirebaseMessaging _messaging = FirebaseMessaging.instance;
+  final FlutterLocalNotificationsPlugin _localNotifications =
+      FlutterLocalNotificationsPlugin();
+  bool _isFlutterLocalNotificationInitialized = false;
+
+  Future<void> initializeFCM(String userId, String role) async {
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    await _requestPermission();
+    await _setupMessageHandlers();
 
     final collectionMap = {'user': 'users', 'lawyer': 'lawyers'};
     final collection = collectionMap[role];
@@ -46,85 +52,107 @@ class FCMHandler {
           .update({'fcmToken': newToken});
     });
 
-    const AndroidNotificationChannel channel = AndroidNotificationChannel(
-      'qanony_channel',
-      'Important Notifications',
-      description: 'This channel is used for important notifications.',
-      importance: Importance.max,
+    await _requestNotificationPermissionIfNeeded();
+  }
+
+  Future<void> _requestPermission() async {
+    await _messaging.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+      provisional: false,
+    );
+  }
+
+  Future<void> setupFlutterNotifications() async {
+    if (_isFlutterLocalNotificationInitialized) return;
+
+    const androidChannel = AndroidNotificationChannel(
+      'high_importance_channel',
+      'High Importance Notifications',
+      description: 'This channel is used for important notifications',
+      importance: Importance.high,
     );
 
-    await _localNotificationsPlugin
+    await _localNotifications
         .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin
         >()
-        ?.createNotificationChannel(channel);
+        ?.createNotificationChannel(androidChannel);
 
-    const androidSettings = AndroidInitializationSettings(
-      '@mipmap/ic_launcher',
+    const initializationSettingsAndroid = AndroidInitializationSettings(
+      '@mipmap/launcher_icon',
     );
-    const iosSettings = DarwinInitializationSettings();
-
-    await _localNotificationsPlugin.initialize(
-      const InitializationSettings(android: androidSettings, iOS: iosSettings),
-      onDidReceiveNotificationResponse: (payload) {},
+    final initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
     );
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      try {
-        print(message);
-        final data = message.data;
-        final title = data['title'] ?? message.notification?.title ?? "تنبيه";
-        final body =
-            data['body'] ?? message.notification?.body ?? "لديك إشعار جديد";
+    await _localNotifications.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (details) {
+        final payload = details.payload;
+        if (payload != null) {
+          try {
+            final data = jsonDecode(payload);
+            handleNavigationFromPayload(data);
+          } catch (e) {
+            handleNavigationFromPayload({'type': payload});
+          }
+        }
+      },
+    );
 
-        showOverlayBanner(title, body, message.data);
-        showLocalNotification(title, body);
-      } catch (e) {
-        print(e);
-      }
-    });
+    _isFlutterLocalNotificationInitialized = true;
+  }
 
-    FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      handleNavigationFromPayload(Map<String, String>.from(message.data));
-    });
+  Future<void> showNotification(RemoteMessage message) async {
+    final notification = message.notification;
+    final android = notification?.android;
 
-    final initialMessage = await _messaging.getInitialMessage();
-    if (initialMessage != null) {
-      handleNavigationFromPayload(
-        Map<String, String>.from(initialMessage.data),
+    if (notification != null && android != null) {
+      await _localNotifications.show(
+        notification.hashCode,
+        notification.title,
+        notification.body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            'high_importance_channel',
+            'High Importance Notifications',
+            channelDescription:
+                'This channel is used for important notifications',
+            importance: Importance.high,
+            priority: Priority.high,
+            icon: '@mipmap/launcher_icon',
+          ),
+        ),
+        payload: jsonEncode(message.data),
       );
     }
   }
 
-  void showLocalNotification(String title, String body) async {
-    const androidDetails = AndroidNotificationDetails(
-      'qanony_channel',
-      'Important Notifications',
-      channelDescription: 'This channel is used for important notifications.',
-      importance: Importance.max,
-      priority: Priority.high,
-      playSound: true,
-    );
+  Future<void> _setupMessageHandlers() async {
+    FirebaseMessaging.onMessage.listen((message) {
+      showNotification(message);
+    });
 
-    const iosDetails = DarwinNotificationDetails();
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      _handleBackgroundMessage(message);
+    });
 
-    const platformDetails = NotificationDetails(
-      android: androidDetails,
-      iOS: iosDetails,
-    );
+    final initialMessage = await _messaging.getInitialMessage();
+    if (initialMessage != null) {
+      _handleBackgroundMessage(initialMessage);
+    }
+  }
 
-    await _localNotificationsPlugin.show(
-      DateTime.now().millisecondsSinceEpoch ~/ 1000,
-      title,
-      body,
-      platformDetails,
-    );
+  void _handleBackgroundMessage(RemoteMessage message) {
+    handleNavigationFromPayload(Map<String, String>.from(message.data));
   }
 
   void handleNavigationFromPayload(Map<String, dynamic> data) {
     final type = data['type'];
     switch (type) {
-      case "lawyer_order":
+      case 'lawyer_order':
         navigatorKey.currentState?.pushReplacement(
           MaterialPageRoute(
             builder: (_) =>
@@ -132,7 +160,8 @@ class FCMHandler {
           ),
         );
         break;
-      case "lawyer_order_accepted":
+
+      case 'lawyer_order_accepted':
         navigatorKey.currentState?.pushReplacement(
           MaterialPageRoute(
             builder: (_) => LawyerBaseScreen(
@@ -142,14 +171,16 @@ class FCMHandler {
           ),
         );
         break;
-      case "user_order":
+
+      case 'user_order':
         navigatorKey.currentState?.pushReplacement(
           MaterialPageRoute(builder: (_) => AppointmentPageForUser()),
         );
         break;
+
       default:
         navigatorKey.currentState?.pushNamedAndRemoveUntil(
-          "/",
+          '/',
           (route) => false,
         );
     }
@@ -169,54 +200,4 @@ class FCMHandler {
       }
     }
   }
-}
-
-void showOverlayBanner(String title, String body, data) {
-  final context = navigatorKey.currentContext;
-  if (context == null) return;
-
-  final overlay = Overlay.of(context);
-  final overlayEntry = OverlayEntry(
-    builder: (context) => Positioned(
-      top: MediaQuery.of(context).padding.top + 10,
-      left: 10,
-      right: 10,
-      child: Material(
-        elevation: 4,
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          decoration: BoxDecoration(
-            color: AppColor.primary,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
-            children: [
-              const Icon(Icons.notifications, color: AppColor.light),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: AppText.title.copyWith(color: AppColor.light),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      body,
-                      style: AppText.bodyLarge.copyWith(color: AppColor.light),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
-  );
-
-  overlay.insert(overlayEntry);
-  Future.delayed(const Duration(seconds: 3)).then((_) => overlayEntry.remove());
 }

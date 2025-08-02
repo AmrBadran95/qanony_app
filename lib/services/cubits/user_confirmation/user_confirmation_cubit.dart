@@ -37,7 +37,7 @@ class UserConfirmationCubit extends Cubit<UserConfirmationState> {
 
       await UserFirestoreService().createUser(user);
 
-      await FCMHandler().initializeFCM(userId: uid, role: 'user');
+await FCMHandler.instance.initializeFCM(uid, 'user');
 
       emit(UserConfirmationSuccess());
     } catch (e) {
