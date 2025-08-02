@@ -97,8 +97,8 @@ class SuccessfulProcessScreen extends StatelessWidget {
                                 ' الباقه الحاليه: ${lawyer.subscriptionType == "free"
                                     ? "الباقة المجانية"
                                     : lawyer.subscriptionType == "fixed"
-                                    ? "الأكثر إنتشاراً"
-                                    : "الباقة الشهرية"}',
+                                    ? "الباقة الشهرية"
+                                    : "الأكثر إنتشاراً"}',
                                 style: AppText.bodyMedium.copyWith(
                                   color: AppColor.dark,
                                 ),
@@ -109,7 +109,7 @@ class SuccessfulProcessScreen extends StatelessWidget {
                                 children: [
                                   Flexible(
                                     child: Text(
-                                      'تاريخ الاشتراك: ${DateFormat('EEEE، yyyy/MM/dd – hh:mm a', 'ar').format(lawyer.subscriptionStart!)}',
+                                      'تاريخ الاشتراك: ${DateFormat('EEEE، yyyy/MM/dd', 'ar').format(lawyer.subscriptionStart!)}',
                                       style: AppText.bodyMedium.copyWith(
                                         color: AppColor.dark,
                                       ),

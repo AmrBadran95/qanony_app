@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:qanony/Core/shared/app_cache.dart';
 import 'package:qanony/services/auth/auth_service.dart';
+import 'package:qanony/services/helpers/firebase_errors.dart';
 import 'package:qanony/services/notifications/fcm_service.dart';
 
 part 'auth_state.dart';
@@ -18,7 +19,7 @@ class AuthCubit extends Cubit<AuthState> {
       final user = await _authService.registerWithEmail(email, password);
       emit(AuthRegistered(user!.uid));
     } catch (e) {
-      emit(AuthError(e.toString()));
+      emit(AuthError(FirebaseErrorHandler.handle(e)));
     }
   }
 
@@ -70,7 +71,7 @@ class AuthCubit extends Cubit<AuthState> {
 
       await FCMHandler.instance.initializeFCM(userId, role);
     } catch (e) {
-      emit(AuthError(e.toString()));
+      emit(AuthError(FirebaseErrorHandler.handle(e)));
     }
   }
 

@@ -32,16 +32,24 @@
             multiDexEnabled = true
         }
 
+        splits {
+        abi {
+            isEnable = true
+            reset()
+            include("armeabi-v7a", "arm64-v8a")
+            isUniversalApk = false
+        }
+    }
+
+
         buildTypes {
-            release {
+            getByName("release") {
                 signingConfig = signingConfigs.getByName("debug")
-
-                minifyEnabled true
-                shrinkResources true
-
+                isMinifyEnabled = true
+                isShrinkResources = true
                 proguardFiles(
                     getDefaultProguardFile("proguard-android-optimize.txt"),
-                    "proguard-rules.pro"
+                    file("proguard-rules.pro")
                 )
             }
         }

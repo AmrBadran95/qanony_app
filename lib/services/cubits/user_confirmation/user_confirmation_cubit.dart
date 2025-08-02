@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qanony/data/models/user_model.dart';
 import 'package:qanony/services/firestore/user_firestore_service.dart';
+import 'package:qanony/services/helpers/firebase_errors.dart';
 import 'package:qanony/services/notifications/fcm_service.dart';
 
 part 'user_confirmation_state.dart';
@@ -37,11 +38,11 @@ class UserConfirmationCubit extends Cubit<UserConfirmationState> {
 
       await UserFirestoreService().createUser(user);
 
-await FCMHandler.instance.initializeFCM(uid, 'user');
+      await FCMHandler.instance.initializeFCM(uid, 'user');
 
       emit(UserConfirmationSuccess());
     } catch (e) {
-      emit(UserConfirmationFailure(e.toString()));
+      emit(UserConfirmationFailure(FirebaseErrorHandler.handle(e)));
     }
   }
 }

@@ -178,7 +178,14 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
                       );
                     },
                     children: [
-                      infoRow("النوع", lawyer.subscriptionType ?? 'غير متوفر'),
+                      infoRow(
+                        "النوع",
+                        lawyer.subscriptionType == "fixed"
+                            ? "الباقه الشهريه"
+                            : lawyer.subscriptionType == "free"
+                            ? "الباقة المجانية"
+                            : "الأكثر إنتشاراً",
+                      ),
                       infoRow(
                         "بداية",
                         lawyer.subscriptionStart?.toLocal().toString().split(

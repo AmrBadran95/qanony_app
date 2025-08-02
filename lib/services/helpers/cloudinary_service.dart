@@ -1,7 +1,10 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:dio/dio.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 
 class CloudinaryService {
   final ImagePicker _picker = ImagePicker();
@@ -19,6 +22,26 @@ class CloudinaryService {
     return File(picked.path);
   }
 
+  Future<File> compressImage(File file) async {
+    final dir = await getTemporaryDirectory();
+    final targetPath = path.join(
+      dir.path,
+      'compressed_${path.basename(file.path)}',
+    );
+
+    final XFile? result = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path,
+      targetPath,
+      quality: 60,
+    );
+
+    if (result != null) {
+      return File(result.path);
+    } else {
+      return file;
+    }
+  }
+
   Future<String?> uploadImage({
     required File file,
     required String type,
@@ -30,8 +53,10 @@ class CloudinaryService {
 
     final publicId = type == 'profile' ? 'profile_$userId' : 'card_$userId';
 
+    final compressedFile = await compressImage(file);
+
     final formData = FormData.fromMap({
-      'file': await MultipartFile.fromFile(file.path),
+      'file': await MultipartFile.fromFile(compressedFile.path),
       'upload_preset': _uploadPreset,
       'folder': folder,
       'public_id': publicId,
@@ -43,7 +68,8 @@ class CloudinaryService {
     );
 
     if (response.statusCode == 200) {
-      return response.data['secure_url'];
+      final url = response.data['secure_url'];
+      return '$url?f_auto,q_auto';
     } else {
       return null;
     }
