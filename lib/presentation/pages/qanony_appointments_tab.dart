@@ -62,12 +62,9 @@ class QanonyAppointmentsTab extends StatelessWidget {
                 final order = orders[index];
                 final now = DateTime.now();
                 final sessionTime = order.date;
-                final endTime = sessionTime.add(
-                  Duration(hours: 1),
-                );
+                final endTime = sessionTime.add(Duration(hours: 1));
                 final isTimeToJoin =
-                    now.isAfter(sessionTime) &&
-                        now.isBefore(endTime);
+                    now.isAfter(sessionTime) && now.isBefore(endTime);
 
                 return QanonyAppointmentCardWidget(
                   name: order.userName,
@@ -91,57 +88,42 @@ class QanonyAppointmentsTab extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 10.h),
-                    order.status == OrderStatus.paymentDone
-                        ?
-                    StreamBuilder<bool>(
-                      stream: timeToJoinStream(
-                        sessionTime,
-                      ),
-                      builder: (context, snapshot) {
-                        final isTimeToJoin =
-                            snapshot.data ?? false;
+                    order.status == OrderStatus.paymentDone &&
+                            order.contactMethod == "محادثة فيديو/صوت"
+                        ? StreamBuilder<bool>(
+                            stream: timeToJoinStream(sessionTime),
+                            builder: (context, snapshot) {
+                              final isTimeToJoin = snapshot.data ?? false;
 
-                        return CustomButton(
-                          text: "انضم الى الجلسة",
-                          onTap: isTimeToJoin
-                              ? () async {
-                            await ZegoUIKitPrebuiltCallInvitationService().send(
-                              resourceID:
-                              "QanonyApp",
-                              invitees: [
-                                ZegoCallUser(
-                                  order.userId,
-                                  order.userName,
-                                ),
-                              ],
-                              isVideoCall:
-                              true,
-                            );
-                          }
-                              : null,
-                          width:
-                          MediaQuery.of(
-                            context,
-                          ).size.width *
-                              0.3,
-                          height:
-                          MediaQuery.of(
-                            context,
-                          ).size.height *
-                              0.04,
-                          backgroundColor:
-                          isTimeToJoin
-                              ? AppColor.green
-                              : AppColor.grey
-                              .withAlpha(
-                            (0.4 * 255)
-                                .round(),
-                          ),
-                          textStyle:
-                          AppText.bodySmall,
-                        );
-                      },
-                    )
+                              return CustomButton(
+                                text: "انضم الى الجلسة",
+                                onTap: isTimeToJoin
+                                    ? () async {
+                                        await ZegoUIKitPrebuiltCallInvitationService()
+                                            .send(
+                                              resourceID: "QanonyApp",
+                                              invitees: [
+                                                ZegoCallUser(
+                                                  order.userId,
+                                                  order.userName,
+                                                ),
+                                              ],
+                                              isVideoCall: true,
+                                            );
+                                      }
+                                    : null,
+                                width: MediaQuery.of(context).size.width * 0.3,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.04,
+                                backgroundColor: isTimeToJoin
+                                    ? AppColor.green
+                                    : AppColor.grey.withAlpha(
+                                        (0.4 * 255).round(),
+                                      ),
+                                textStyle: AppText.bodySmall,
+                              );
+                            },
+                          )
                         : const SizedBox.shrink(),
                   ],
                 );
