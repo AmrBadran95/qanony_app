@@ -1,29 +1,34 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/core/styles/text.dart';
 import 'package:qanony/main.dart';
 import 'package:qanony/presentation/pages/lawyer_base_screen.dart';
+import 'package:qanony/presentation/pages/qanony_appointments_tab.dart';
 import 'package:qanony/presentation/screens/appointment_page_for_user.dart';
 import 'package:qanony/presentation/screens/orders_lawyer_screen.dart';
 
 class FCMHandler {
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
+  final FlutterLocalNotificationsPlugin _localNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   Future<void> initializeFCM({
     required String userId,
     required String role,
   }) async {
+    await _requestNotificationPermissionIfNeeded();
     await _messaging.requestPermission();
 
-    final collectionMap = {
-      'user': 'users',
-      'lawyer': 'lawyers',
-      'admin': 'admins',
-    };
+    final collectionMap = {'user': 'users', 'lawyer': 'lawyers'};
     final collection = collectionMap[role];
-
     if (collection == null) throw Exception("Invalid role: $role");
 
     final token = await _messaging.getToken();
@@ -41,13 +46,41 @@ class FCMHandler {
           .update({'fcmToken': newToken});
     });
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      if (message.notification != null) {
-        final notification = message.notification!;
-        final title = notification.title ?? 'بدون عنوان';
-        final body = notification.body ?? 'بدون محتوى';
+    const AndroidNotificationChannel channel = AndroidNotificationChannel(
+      'qanony_channel',
+      'Important Notifications',
+      description: 'This channel is used for important notifications.',
+      importance: Importance.max,
+    );
 
-        showOverlayBanner(title, body);
+    await _localNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >()
+        ?.createNotificationChannel(channel);
+
+    const androidSettings = AndroidInitializationSettings(
+      '@mipmap/ic_launcher',
+    );
+    const iosSettings = DarwinInitializationSettings();
+
+    await _localNotificationsPlugin.initialize(
+      const InitializationSettings(android: androidSettings, iOS: iosSettings),
+      onDidReceiveNotificationResponse: (payload) {},
+    );
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      try {
+        print(message);
+        final data = message.data;
+        final title = data['title'] ?? message.notification?.title ?? "تنبيه";
+        final body =
+            data['body'] ?? message.notification?.body ?? "لديك إشعار جديد";
+
+        showOverlayBanner(title, body, message.data);
+        showLocalNotification(title, body);
+      } catch (e) {
+        print(e);
       }
     });
 
@@ -63,15 +96,49 @@ class FCMHandler {
     }
   }
 
+  void showLocalNotification(String title, String body) async {
+    const androidDetails = AndroidNotificationDetails(
+      'qanony_channel',
+      'Important Notifications',
+      channelDescription: 'This channel is used for important notifications.',
+      importance: Importance.max,
+      priority: Priority.high,
+      playSound: true,
+    );
+
+    const iosDetails = DarwinNotificationDetails();
+
+    const platformDetails = NotificationDetails(
+      android: androidDetails,
+      iOS: iosDetails,
+    );
+
+    await _localNotificationsPlugin.show(
+      DateTime.now().millisecondsSinceEpoch ~/ 1000,
+      title,
+      body,
+      platformDetails,
+    );
+  }
+
   void handleNavigationFromPayload(Map<String, dynamic> data) {
     final type = data['type'];
-
     switch (type) {
       case "lawyer_order":
         navigatorKey.currentState?.pushReplacement(
           MaterialPageRoute(
             builder: (_) =>
-                LawyerBaseScreen(body: OrdersLawyerScreen(), selectedIndex: 2),
+                LawyerBaseScreen(body: OrdersLawyerScreen(), selectedIndex: 1),
+          ),
+        );
+        break;
+      case "lawyer_order_accepted":
+        navigatorKey.currentState?.pushReplacement(
+          MaterialPageRoute(
+            builder: (_) => LawyerBaseScreen(
+              body: QanonyAppointmentsTab(),
+              selectedIndex: 2,
+            ),
           ),
         );
         break;
@@ -87,14 +154,28 @@ class FCMHandler {
         );
     }
   }
+
+  Future<void> _requestNotificationPermissionIfNeeded() async {
+    if (Platform.isAndroid) {
+      final deviceInfo = DeviceInfoPlugin();
+      final androidInfo = await deviceInfo.androidInfo;
+
+      if (androidInfo.version.sdkInt >= 33) {
+        final status = await Permission.notification.status;
+        if (!status.isGranted) {
+          final result = await Permission.notification.request();
+          debugPrint('Notification permission granted: ${result.isGranted}');
+        }
+      }
+    }
+  }
 }
 
-void showOverlayBanner(String title, String body) {
+void showOverlayBanner(String title, String body, data) {
   final context = navigatorKey.currentContext;
   if (context == null) return;
 
   final overlay = Overlay.of(context);
-
   final overlayEntry = OverlayEntry(
     builder: (context) => Positioned(
       top: MediaQuery.of(context).padding.top + 10,
@@ -137,8 +218,5 @@ void showOverlayBanner(String title, String body) {
   );
 
   overlay.insert(overlayEntry);
-
-  Future.delayed(const Duration(seconds: 3)).then((_) {
-    overlayEntry.remove();
-  });
+  Future.delayed(const Duration(seconds: 3)).then((_) => overlayEntry.remove());
 }

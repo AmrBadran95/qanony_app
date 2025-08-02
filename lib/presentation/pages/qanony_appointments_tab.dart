@@ -76,8 +76,12 @@ class QanonyAppointmentsTab extends StatelessWidget {
                       "الحالة: ${getStatusText(order.status)}",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: order.status == OrderStatus.paymentDone
+                        color:
+                            order.status == OrderStatus.paymentDone ||
+                                order.status == OrderStatus.acceptedByLawyer
                             ? AppColor.green
+                            : order.status == OrderStatus.pending
+                            ? AppColor.secondary
                             : AppColor.primary,
                       ),
                     ),

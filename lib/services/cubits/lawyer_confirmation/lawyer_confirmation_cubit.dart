@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:qanony/data/models/lawyer_model.dart';
 import 'package:qanony/services/controllers/contact_controller.dart';
@@ -7,6 +8,7 @@ import 'package:qanony/services/controllers/personal_info_controllers.dart';
 import 'package:qanony/services/cubits/date_of_birth/date_of_birth_cubit.dart';
 import 'package:qanony/services/cubits/registration_date/registration_date_cubit.dart';
 import 'package:qanony/services/firestore/lawyer_firestore_service.dart';
+import 'package:qanony/services/notifications/fcm_service.dart';
 import 'package:qanony/services/validators/contact_validators.dart';
 
 part 'lawyer_confirmation_state.dart';
@@ -74,6 +76,8 @@ class LawyerConfirmationCubit extends Cubit<LawyerConfirmationState> {
   }) async {
     emit(LawyerConfirmationLoading());
     try {
+      final token = await FirebaseMessaging.instance.getToken();
+
       final lawyer = LawyerModel(
         uid: uid,
         email: email,
@@ -108,9 +112,12 @@ class LawyerConfirmationCubit extends Cubit<LawyerConfirmationState> {
         subscriptionType: 'free',
         subscriptionStart: DateTime.now(),
         subscriptionEnd: DateTime.now().add(Duration(days: 30)),
+        fcmToken: token,
       );
 
       await LawyerFirestoreService().createLawyer(lawyer);
+
+      await FCMHandler().initializeFCM(userId: uid, role: 'lawyer');
 
       emit(LawyerConfirmationSubmitted());
     } catch (e) {

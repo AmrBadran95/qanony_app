@@ -85,7 +85,7 @@ class OrdersLawyerScreen extends StatelessWidget {
                                       title: "تم قبول طلبك",
                                       body:
                                           "المحامي $lawyerName وافق على الاستشارة.",
-                                      data: {"type": "lawyer_order"},
+                                      data: {"type": "user_order"},
                                     );
                               }
                             },
@@ -121,7 +121,7 @@ class OrdersLawyerScreen extends StatelessWidget {
                                       title: "تم رفض طلبك",
                                       body:
                                           "المحامي $lawyerName قام برفض الاستشارة.",
-                                      data: {"type": "lawyer_order"},
+                                      data: {"type": "user_order"},
                                     );
                               }
                             },
