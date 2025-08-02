@@ -14,9 +14,7 @@ class SubscriptionCard extends StatelessWidget {
   final String option1;
   final String option2;
   final String option3;
-  final String text1;
-  final String text2;
-  final String text3;
+
   final VoidCallback onTap;
 
   const SubscriptionCard({
@@ -29,9 +27,6 @@ class SubscriptionCard extends StatelessWidget {
     required this.option1,
     required this.option2,
     required this.option3,
-    required this.text1,
-    required this.text2,
-    required this.text3,
     required this.onTap,
   });
 
@@ -74,68 +69,19 @@ class SubscriptionCard extends StatelessWidget {
                             color: AppColor.dark,
                           ),
                         ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.stars,
-                              color: AppColor.secondary,
-                              size: MediaQuery.of(context).size.width * .03,
-                            ),
-                            Text(
-                              text1,
-                              style: AppText.labelSmall.copyWith(
-                                color: AppColor.dark.withAlpha(
-                                  (0.8 * 255).round(),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+
                         Text(
                           option2,
                           style: AppText.bodySmall.copyWith(
                             color: AppColor.dark,
                           ),
                         ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.stars,
-                              color: AppColor.secondary,
-                              size: MediaQuery.of(context).size.width * .03,
-                            ),
-                            Text(
-                              text2,
-                              style: AppText.labelSmall.copyWith(
-                                color: AppColor.dark.withAlpha(
-                                  (0.5 * 255).round(),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+
                         Text(
                           option3,
                           style: AppText.bodySmall.copyWith(
                             color: AppColor.dark,
                           ),
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.stars,
-                              color: AppColor.secondary,
-                              size: MediaQuery.of(context).size.width * .03,
-                            ),
-                            Text(
-                              text3,
-                              style: AppText.labelSmall.copyWith(
-                                color: AppColor.dark.withAlpha(
-                                  (0.5 * 255).round(),
-                                ),
-                              ),
-                            ),
-                          ],
                         ),
                       ],
                     ),
@@ -143,30 +89,24 @@ class SubscriptionCard extends StatelessWidget {
                 ),
 
                 Padding(
-                  padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.028,
-                  ),
+                  padding: EdgeInsets.only(top: 10.sp, left: 10.sp),
                   child: Column(
                     children: [
                       Container(
-                        width: MediaQuery.of(context).size.width * .2,
-                        height: MediaQuery.of(context).size.height * 0.075,
+                        width: 40.sp,
+                        height: 40.sp,
                         decoration: BoxDecoration(
                           color: labelColor,
                           shape: BoxShape.circle,
                         ),
                         child: Center(
-                          child: Icon(
-                            icon,
-                            color: AppColor.light,
-                            size: MediaQuery.of(context).size.width * .13,
-                          ),
+                          child: Icon(icon, color: AppColor.light, size: 24.sp),
                         ),
                       ),
-                       SizedBox(height: 4.h),
+                      SizedBox(height: 4.h),
                       ShaderMask(
                         shaderCallback: (bounds) => const LinearGradient(
-                          colors: [AppColor.dark, AppColor.grey],
+                          colors: [AppColor.dark, AppColor.darkgrey],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                         ).createShader(bounds),
@@ -195,7 +135,7 @@ class SubscriptionCard extends StatelessWidget {
               alignment: Alignment.center,
               child: Text(
                 label,
-                style: AppText.bodySmall.copyWith(color: AppColor.light),
+                style: AppText.labelSmall.copyWith(color: AppColor.light),
               ),
             ),
           ),
