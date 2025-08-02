@@ -56,7 +56,6 @@ class SuccessfulProcessScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Container(
-                      height: size.height * 0.7,
                       padding: AppPadding.paddingMedium,
                       decoration: BoxDecoration(
                         color: AppColor.light,
@@ -69,7 +68,7 @@ class SuccessfulProcessScreen extends StatelessWidget {
                             children: [
                               Icon(
                                 Icons.check_circle,
-                                size: 100.sp,
+                                size: 80.sp,
                                 color: AppColor.green,
                               ),
                               SizedBox(height: size.height * 0.015),
