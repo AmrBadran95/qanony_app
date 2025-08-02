@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import '../../Core/styles/color.dart';
 import '../../Core/styles/text.dart';
@@ -136,9 +137,7 @@ class LawyerScreen extends StatelessWidget {
                                   runSpacing: 8,
                                   children: lawyer.specialty!.map((spec) {
                                     return Container(
-                                      width:
-                                          MediaQuery.of(context).size.width *
-                                          0.3,
+
                                       height:
                                           MediaQuery.of(context).size.height *
                                           0.045,
@@ -147,11 +146,14 @@ class LawyerScreen extends StatelessWidget {
                                         color: AppColor.primary,
                                         borderRadius: BorderRadius.circular(8),
                                       ),
-                                      child: Text(
-                                        spec,
-                                        textAlign: TextAlign.center,
-                                        style: AppText.bodySmall.copyWith(
-                                          color: AppColor.light,
+                                      child: Padding(
+                                        padding: AppPadding.paddingSmall,
+                                        child: Text(
+                                          spec,
+                                          textAlign: TextAlign.center,
+                                          style: AppText.bodySmall.copyWith(
+                                            color: AppColor.light,
+                                          ),
                                         ),
                                       ),
                                     );
@@ -177,7 +179,7 @@ class LawyerScreen extends StatelessWidget {
                         child: Text(
                           lawyer.bio.toString(),
                           softWrap: true,
-                          style: AppText.labelSmall,
+                          style: AppText.bodySmall,
                         ),
                       ),
                       Container(
@@ -223,7 +225,7 @@ class LawyerScreen extends StatelessWidget {
                                     text: "محادثة فيديو/صوت",
                                     width:
                                         MediaQuery.of(context).size.width *
-                                        0.43,
+                                        0.44,
                                     height:
                                         MediaQuery.of(context).size.height *
                                         0.055,
@@ -324,7 +326,7 @@ class LawyerScreen extends StatelessWidget {
                                         "4.48/5",
                                         style: AppText.headingMedium,
                                       ),
-                                      Text("29 تقيمات"),
+                                      Text("29 تقيمات", style: AppText.labelSmall,),
                                     ],
                                   ),
                                   Column(
@@ -345,7 +347,7 @@ class LawyerScreen extends StatelessWidget {
                                                     color: AppColor.secondary,
                                                   ),
                                               itemCount: 5,
-                                              itemSize: 20.0,
+                                              itemSize: 18.sp,
                                               direction: Axis.horizontal,
                                             ),
                                             SizedBox(
@@ -374,7 +376,7 @@ class LawyerScreen extends StatelessWidget {
                                                     ),
                                                   ),
                                                   FractionallySizedBox(
-                                                    widthFactor: .5,
+                                                    widthFactor: .6.w,
                                                     child: Container(
                                                       height:
                                                           MediaQuery.of(

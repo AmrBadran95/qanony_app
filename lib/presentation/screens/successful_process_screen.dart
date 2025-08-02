@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
@@ -61,13 +63,13 @@ class SuccessfulProcessScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Column(
                             children: [
-                              const Icon(
+                               Icon(
                                 Icons.check_circle,
-                                size: 100,
+                                size: 100.sp,
                                 color: AppColor.green,
                               ),
                               SizedBox(height: size.height * 0.015),
@@ -86,7 +88,7 @@ class SuccessfulProcessScreen extends StatelessWidget {
                             children: [
                               Text(
                                 'تفاصيل الاشتراك:',
-                                style: AppText.headingMedium.copyWith(
+                                style: AppText.title.copyWith(
                                   color: AppColor.dark,
                                 ),
                                 textAlign: TextAlign.center,
@@ -94,7 +96,7 @@ class SuccessfulProcessScreen extends StatelessWidget {
                               SizedBox(height: size.height * 0.02),
                               Text(
                                 ' الباقه الحاليه: ${lawyer.subscriptionType}',
-                                style: AppText.bodyLarge.copyWith(
+                                style: AppText.bodyMedium.copyWith(
                                   color: AppColor.dark,
                                 ),
                                 textAlign: TextAlign.center,
@@ -103,15 +105,22 @@ class SuccessfulProcessScreen extends StatelessWidget {
                               Row(
                                 children: [
                                   Flexible(
-                                    child: Text(
-                                      'تاريخ الاشتراك: ${lawyer.subscriptionStart}',
-                                      style: AppText.bodyLarge.copyWith(
+                                    child:
+                                    Text(
+                                      'تاريخ الاشتراك: ${ DateFormat(
+                                        'EEEE، yyyy/MM/dd – hh:mm a',
+                                        'ar',
+                                      ).format(lawyer.subscriptionStart!) }',
+                                      style: AppText.bodyMedium.copyWith(
                                         color: AppColor.dark,
                                       ),
                                       textAlign: TextAlign.start,
                                       overflow: TextOverflow.visible,
                                       softWrap: true,
                                     ),
+
+
+
                                   ),
                                 ],
                               ),
@@ -119,9 +128,12 @@ class SuccessfulProcessScreen extends StatelessWidget {
                               Row(
                                 children: [
                                   Flexible(
-                                    child: Text(
-                                      'تاريخ الانتهاء: ${lawyer.subscriptionEnd}',
-                                      style: AppText.bodyLarge.copyWith(
+                                    child:   Text(
+                                      'تاريخ الاشتراك: ${  DateFormat(
+                                        'EEEE، yyyy/MM/dd – hh:mm a',
+                                        'ar',
+                                      ).format(lawyer.subscriptionEnd!) }',
+                                      style: AppText.bodyMedium.copyWith(
                                         color: AppColor.dark,
                                       ),
                                       textAlign: TextAlign.start,
@@ -133,10 +145,10 @@ class SuccessfulProcessScreen extends StatelessWidget {
                               ),
 
                               SizedBox(height: size.height * 0.02),
-                              SizedBox(height: size.height * 0.02),
+
                               Text(
                                 'وسيلة الدفع: تحويل بنكي',
-                                style: AppText.bodyLarge.copyWith(
+                                style: AppText.bodyMedium.copyWith(
                                   color: AppColor.dark,
                                 ),
                                 textAlign: TextAlign.center,
@@ -201,7 +213,7 @@ class SuccessfulProcessScreen extends StatelessWidget {
                             },
 
                             width: double.infinity,
-                            height: 50,
+                            height: 50.h,
                             backgroundColor: AppColor.primary,
                             textStyle: AppText.title,
                             textColor: AppColor.light,
@@ -226,7 +238,7 @@ class SuccessfulProcessScreen extends StatelessWidget {
                         );
                       },
                       width: double.infinity,
-                      height: 50,
+                      height: 50.h,
                       backgroundColor: AppColor.secondary,
                       textStyle: AppText.title,
                       textColor: AppColor.dark,

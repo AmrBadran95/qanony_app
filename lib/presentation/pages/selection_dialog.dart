@@ -21,13 +21,16 @@ class SelectionDialog extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text('اختر $label'),
+        title: Text('اختر $label',
+            style: AppText.title.copyWith(color: AppColor.dark)),
+
         content: SizedBox(
           height: 200.h,
           width: double.maxFinite,
           child: ListView(
             children: items.map((item) {
               return RadioListTile<String>(
+                activeColor: AppColor.green,
                 title: Text(
                   item,
                   style: AppText.bodySmall.copyWith(color: AppColor.dark),
