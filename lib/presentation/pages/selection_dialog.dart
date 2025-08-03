@@ -21,8 +21,10 @@ class SelectionDialog extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text('اختر $label',
-            style: AppText.title.copyWith(color: AppColor.dark)),
+        title: Text(
+          'اختر $label',
+          style: AppText.title.copyWith(color: AppColor.dark),
+        ),
 
         content: SizedBox(
           height: 200.h,
@@ -54,24 +56,17 @@ class SelectionDialog extends StatelessWidget {
     return GestureDetector(
       onTap: () => _showSelectionDialog(context),
       child: Container(
-        width: 120.w,
         padding: EdgeInsets.symmetric(horizontal: 12.sp, vertical: 10.sp),
         decoration: BoxDecoration(
           border: Border.all(color: AppColor.grey),
           color: AppColor.light,
           borderRadius: BorderRadius.circular(4),
         ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                value ?? label,
-                style: AppText.bodySmall.copyWith(color: AppColor.dark),
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
+        child: Text(
+          value ?? label,
+          style: AppText.bodySmall.copyWith(color: AppColor.dark),
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
         ),
       ),
     );

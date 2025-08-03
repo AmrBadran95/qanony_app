@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/Core/styles/padding.dart';
+import 'package:qanony/Core/widgets/custom_button.dart';
 import '../../Core/styles/color.dart';
 import '../../Core/styles/text.dart';
-import '../../Core/widgets/custom_button.dart';
 import '../../data/repos/lawyer_repository.dart';
 import '../../data/static/reviews.dart';
 import '../../services/cubits/lawyer/lawyer_cubit.dart';
@@ -27,35 +27,9 @@ class LawyerScreen extends StatelessWidget {
               right: MediaQuery.of(context).size.width * 0.01,
               bottom: MediaQuery.of(context).size.height * 0.01,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "قانوني",
-                  style: AppText.headingMedium.copyWith(color: AppColor.light),
-                ),
-                Stack(
-                  children: [
-                    Icon(
-                      Icons.notifications_none_sharp,
-                      size: MediaQuery.of(context).size.width * 0.095,
-                      color: AppColor.light,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 4, top: 4),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.03,
-                        height: MediaQuery.of(context).size.width * 0.03,
-
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColor.secondary,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+            child: Text(
+              "قانوني",
+              style: AppText.headingMedium.copyWith(color: AppColor.light),
             ),
           ),
         ),
@@ -129,37 +103,31 @@ class LawyerScreen extends StatelessWidget {
                           padding: AppPadding.paddingSmall,
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Wrap(
-                                  spacing: 8,
-                                  runSpacing: 8,
-                                  children: lawyer.specialty!.map((spec) {
-                                    return Container(
-
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                          0.045,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: AppColor.primary,
-                                        borderRadius: BorderRadius.circular(8),
+                            child: Wrap(
+                              spacing: 8,
+                              runSpacing: 8,
+                              children: lawyer.specialty!.map((spec) {
+                                return Container(
+                                  height:
+                                      MediaQuery.of(context).size.height *
+                                      0.045,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: AppColor.primary,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Padding(
+                                    padding: AppPadding.paddingSmall,
+                                    child: Text(
+                                      spec,
+                                      textAlign: TextAlign.center,
+                                      style: AppText.bodySmall.copyWith(
+                                        color: AppColor.light,
                                       ),
-                                      child: Padding(
-                                        padding: AppPadding.paddingSmall,
-                                        child: Text(
-                                          spec,
-                                          textAlign: TextAlign.center,
-                                          style: AppText.bodySmall.copyWith(
-                                            color: AppColor.light,
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                              ],
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
                             ),
                           ),
                         ),
@@ -197,16 +165,19 @@ class LawyerScreen extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Row(
-                              children: [
-                                Text(
-                                  "حجز استشاره عن طريق:",
-                                  style: AppText.bodySmall.copyWith(
-                                    color: AppColor.dark,
-                                    fontWeight: FontWeight.bold,
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "حجز استشارة عن طريق:",
+                                    style: AppText.bodySmall.copyWith(
+                                      color: AppColor.dark,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                             SizedBox(
                               height:
@@ -217,64 +188,62 @@ class LawyerScreen extends StatelessWidget {
                                 bottom:
                                     MediaQuery.of(context).size.height * 0.005,
                               ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomButton(
-                                    text: "محادثة فيديو/صوت",
-                                    width:
-                                        MediaQuery.of(context).size.width *
-                                        0.44,
-                                    height:
-                                        MediaQuery.of(context).size.height *
-                                        0.055,
-                                    textStyle: AppText.bodySmall.copyWith(
-                                      color: AppColor.light,
-                                      fontWeight: FontWeight.bold,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Wrap(
+                                  spacing: 8.sp,
+                                  runSpacing: 8.sp,
+                                  children: [
+                                    CustomButton(
+                                      padding: AppPadding.paddingSmall,
+                                      text: "محادثة فيديو/صوت",
+                                      textColor: AppColor.dark,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                          0.055,
+                                      textStyle: AppText.bodySmall.copyWith(
+                                        color: AppColor.light,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      onTap: () {
+                                        showAppointmentBottomSheet(
+                                          context: context,
+                                          appointments:
+                                              lawyer.availableAppointments,
+                                          bookingType: "محادثة فيديو/صوت",
+                                          price: lawyer.callPrice.toString(),
+                                          lawyerId: lawyerId,
+                                        );
+                                      },
+                                      backgroundColor: AppColor.secondary,
+                                      icon: Icons.photo_camera_front,
                                     ),
-                                    onTap: () {
-                                      showAppointmentBottomSheet(
-                                        context: context,
-                                        appointments:
-                                            lawyer.availableAppointments,
-                                        bookingType: "محادثة فيديو/صوت",
-                                        price: lawyer.callPrice.toString(),
-                                        lawyerId: lawyerId,
-                                      );
-                                    },
-
-                                    backgroundColor: AppColor.secondary,
-                                    icon: Icons.photo_camera_front,
-                                    textColor: AppColor.dark,
-                                  ),
-                                  CustomButton(
-                                    textColor: AppColor.dark,
-                                    text: "حجز فى المكتب",
-                                    width:
-                                        MediaQuery.of(context).size.width *
-                                        0.43,
-                                    height:
-                                        MediaQuery.of(context).size.height *
-                                        0.055,
-                                    textStyle: AppText.bodySmall.copyWith(
-                                      color: AppColor.light,
-                                      fontWeight: FontWeight.bold,
+                                    CustomButton(
+                                      padding: AppPadding.paddingSmall,
+                                      text: "حجز فى المكتب",
+                                      textColor: AppColor.dark,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                          0.055,
+                                      textStyle: AppText.bodySmall.copyWith(
+                                        color: AppColor.light,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      onTap: () {
+                                        showAppointmentBottomSheet(
+                                          context: context,
+                                          appointments:
+                                              lawyer.availableAppointments,
+                                          bookingType: "حجز فى المكتب",
+                                          price: lawyer.officePrice.toString(),
+                                          lawyerId: lawyerId,
+                                        );
+                                      },
+                                      backgroundColor: AppColor.secondary,
+                                      icon: Icons.message_outlined,
                                     ),
-                                    onTap: () {
-                                      showAppointmentBottomSheet(
-                                        context: context,
-                                        appointments:
-                                            lawyer.availableAppointments,
-                                        bookingType: "حجز فى المكتب",
-                                        price: lawyer.officePrice.toString(),
-                                        lawyerId: lawyerId,
-                                      );
-                                    },
-                                    backgroundColor: AppColor.secondary,
-                                    icon: Icons.message_outlined,
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -326,7 +295,10 @@ class LawyerScreen extends StatelessWidget {
                                         "4.48/5",
                                         style: AppText.headingMedium,
                                       ),
-                                      Text("29 تقيمات", style: AppText.labelSmall,),
+                                      Text(
+                                        "29 تقيمات",
+                                        style: AppText.labelSmall,
+                                      ),
                                     ],
                                   ),
                                   Column(

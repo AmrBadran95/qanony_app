@@ -1,8 +1,6 @@
     plugins {
         id("com.android.application")
-        // START: FlutterFire Configuration
         id("com.google.gms.google-services")
-        // END: FlutterFire Configuration
         id("kotlin-android")
         id("dev.flutter.flutter-gradle-plugin")
     }
@@ -20,7 +18,7 @@
         }
 
         kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_11.toString()
+            jvmTarget = "11"
         }
 
         defaultConfig {
@@ -33,18 +31,17 @@
         }
 
         splits {
-        abi {
-            isEnable = true
-            reset()
-            include("armeabi-v7a", "arm64-v8a")
-            isUniversalApk = false
+            abi {
+                isEnable = true
+                reset()
+                include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+                isUniversalApk = true
+            }
         }
-    }
-
 
         buildTypes {
             getByName("release") {
-                signingConfig = signingConfigs.getByName("debug")
+                signingConfig = signingConfigs.getByName("debug") // Replace for production!
                 isMinifyEnabled = true
                 isShrinkResources = true
                 proguardFiles(
@@ -64,5 +61,6 @@
         implementation("com.google.firebase:firebase-analytics")
         implementation("com.google.firebase:firebase-auth")
         implementation("com.google.firebase:firebase-firestore")
+        implementation("com.google.firebase:firebase-messaging")
         coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
     }
