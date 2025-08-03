@@ -4,6 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/widgets/custom_button.dart';
+
 import '../../Core/styles/color.dart';
 import '../../Core/styles/text.dart';
 import '../../data/repos/lawyer_repository.dart';
@@ -108,22 +109,17 @@ class LawyerScreen extends StatelessWidget {
                               runSpacing: 8,
                               children: lawyer.specialty!.map((spec) {
                                 return Container(
-                                  height:
-                                      MediaQuery.of(context).size.height *
-                                      0.045,
+                                  padding: AppPadding.paddingSmall,
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     color: AppColor.primary,
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  child: Padding(
-                                    padding: AppPadding.paddingSmall,
-                                    child: Text(
-                                      spec,
-                                      textAlign: TextAlign.center,
-                                      style: AppText.bodySmall.copyWith(
-                                        color: AppColor.light,
-                                      ),
+                                  child: Text(
+                                    spec,
+                                    textAlign: TextAlign.center,
+                                    style: AppText.bodySmall.copyWith(
+                                      color: AppColor.light,
                                     ),
                                   ),
                                 );

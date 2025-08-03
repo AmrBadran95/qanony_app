@@ -16,6 +16,7 @@ import 'package:qanony/services/cubits/server_notifications/server_notifications
 import 'package:qanony/services/cubits/user_order/user_order_cubit.dart';
 import 'package:qanony/services/firestore/user_firestore_service.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+
 import '../../Core/widgets/custom_button.dart';
 import '../../data/models/order_status_enum.dart';
 import '../../services/call/AppointmentPageForUser .dart';
@@ -493,9 +494,10 @@ class AppointmentPageForUser extends StatelessWidget {
                                                         "حجز فى المكتب"
                                               ? Text(
                                                   "${lawyer.address}",
+                                                  textAlign: TextAlign.center,
                                                   style: AppText.labelSmall
                                                       .copyWith(
-                                                        color: AppColor.dark,
+                                                        color: AppColor.green,
                                                       ),
                                                 )
                                               : data.status ==
