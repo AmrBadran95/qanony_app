@@ -4,23 +4,25 @@ import 'package:qanony/Core/styles/color.dart';
 class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback? onTap;
-  final double width;
+  final double? width;
   final double height;
   final Color backgroundColor;
   final TextStyle textStyle;
   final IconData? icon;
   final Color textColor;
+  final EdgeInsets? padding;
 
   const CustomButton({
     super.key,
     required this.text,
     required this.onTap,
-    required this.width,
+    this.width,
     required this.height,
     required this.backgroundColor,
     required this.textStyle,
     this.icon,
     this.textColor = AppColor.light,
+    this.padding,
   });
 
   @override
@@ -28,6 +30,7 @@ class CustomButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        padding: padding,
         width: width,
         height: height,
         decoration: BoxDecoration(
@@ -48,15 +51,13 @@ class CustomButton extends StatelessWidget {
               ),
               SizedBox(width: MediaQuery.of(context).size.width * 0.02),
             ],
-            Flexible(
-              child: Text(
-                text,
-                textAlign: TextAlign.center,
-                style: textStyle.copyWith(color: textColor),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                softWrap: false,
-              ),
+            Text(
+              text,
+              textAlign: TextAlign.center,
+              style: textStyle.copyWith(color: textColor),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              softWrap: false,
             ),
           ],
         ),
