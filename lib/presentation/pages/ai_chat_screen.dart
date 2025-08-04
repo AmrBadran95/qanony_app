@@ -30,7 +30,7 @@ class AiChatScreen extends StatelessWidget {
               children: [
                 Text(
                   "مساعدك القانوني الذكي",
-                  style: AppText.headingMedium.copyWith(color: AppColor.light),
+                  style: AppText.title.copyWith(color: AppColor.light),
                 ),
               ],
             ),
