@@ -4,6 +4,9 @@ import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
 
+import '../../services/call/AppointmentPageForUser .dart';
+import '../../services/firestore/order_firestore_service.dart';
+
 class QanonyAppointmentCardWidget extends StatelessWidget {
   final String name;
   final String specialty;
@@ -11,6 +14,10 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
   final String communication;
   final String price;
   final String date;
+  final DateTime orderdate;
+  final String orderId;
+
+
   final List<Widget>? children;
 
   const QanonyAppointmentCardWidget({
@@ -21,11 +28,15 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
     required this.price,
     required this.communication,
     required this.date,
+    required this.orderdate,
+    required this.orderId,
     this.children,
   });
 
   @override
   Widget build(BuildContext context) {
+    final orderService = OrderFirestoreService();
+
     final dateParts = date.split('•');
     final String dateOnly = dateParts[0].trim();
     final String timeOnly = dateParts.length > 1 ? dateParts[1].trim() : '';
@@ -50,6 +61,39 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Row(
+              children: [
+                StreamBuilder<bool>(
+                  stream: TimeStreamUtils.canDeleteAfterSession(orderdate, 2),
+                  builder: (context, snapshot) {
+                    final canDelete = snapshot.data ?? false;
+
+
+                    return Expanded(
+
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Padding(
+                            padding: AppPadding.paddingSmall,
+                            child: GestureDetector(
+                              onTap: () {
+                                orderService.deleteOrder(orderId);
+                              },
+                              child: Icon(
+                                Icons.delete,
+                                size: 24.sp,
+                                color: AppColor.primary,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
