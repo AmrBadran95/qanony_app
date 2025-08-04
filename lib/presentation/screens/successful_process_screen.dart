@@ -82,6 +82,8 @@ class SuccessfulProcessScreen extends StatelessWidget {
                             ],
                           ),
 
+                          SizedBox(height: size.height * 0.02),
+
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -148,6 +150,8 @@ class SuccessfulProcessScreen extends StatelessWidget {
                               ),
                             ],
                           ),
+
+                          SizedBox(height: size.height * 0.1),
 
                           CustomButton(
                             text: 'مشاركة',

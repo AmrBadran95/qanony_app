@@ -4,10 +4,12 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/widgets/custom_button.dart';
+import 'package:qanony/services/cubits/rating/rating_cubit.dart';
+import 'package:qanony/services/firestore/rating_firestore_service.dart';
+
 import '../../Core/styles/color.dart';
 import '../../Core/styles/text.dart';
 import '../../data/repos/lawyer_repository.dart';
-import '../../data/static/reviews.dart';
 import '../../services/cubits/lawyer/lawyer_cubit.dart';
 import '../../services/show_appointment_bottom_sheet/show_appointment_bottom_sheet.dart';
 
@@ -16,8 +18,17 @@ class LawyerScreen extends StatelessWidget {
   const LawyerScreen(this.lawyerId, {super.key});
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => LawyerCubit(LawyerRepository())..getLawyer(lawyerId),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => LawyerCubit(LawyerRepository())..getLawyer(lawyerId),
+        ),
+        BlocProvider(
+          create: (_) =>
+              RatingCubit(RatingFirestoreService())
+                ..loadLawyerReviews(lawyerId),
+        ),
+      ],
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: AppColor.primary,
@@ -108,22 +119,17 @@ class LawyerScreen extends StatelessWidget {
                               runSpacing: 8,
                               children: lawyer.specialty!.map((spec) {
                                 return Container(
-                                  height:
-                                      MediaQuery.of(context).size.height *
-                                      0.045,
+                                  padding: AppPadding.paddingSmall,
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     color: AppColor.primary,
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  child: Padding(
-                                    padding: AppPadding.paddingSmall,
-                                    child: Text(
-                                      spec,
-                                      textAlign: TextAlign.center,
-                                      style: AppText.bodySmall.copyWith(
-                                        color: AppColor.light,
-                                      ),
+                                  child: Text(
+                                    spec,
+                                    textAlign: TextAlign.center,
+                                    style: AppText.bodySmall.copyWith(
+                                      color: AppColor.light,
                                     ),
                                   ),
                                 );
@@ -249,277 +255,99 @@ class LawyerScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Container(
-                        width: double.infinity,
-                        padding: AppPadding.paddingSmall,
-                        decoration: BoxDecoration(
-                          color: AppColor.light,
-                          border: Border(
-                            bottom: BorderSide(
-                              color: AppColor.dark.withAlpha(100),
-                              width: MediaQuery.of(context).size.width * 0.004,
-                            ),
-                          ),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Row(
+
+                      BlocBuilder<RatingCubit, RatingState>(
+                        builder: (context, state) {
+                          if (state is RatingLoading) {
+                            return Center(child: CircularProgressIndicator());
+                          } else if (state is ReviewsLoaded) {
+                            return Column(
                               children: [
-                                Text(
-                                  "التقيمات:",
-                                  style: AppText.bodySmall.copyWith(
-                                    color: AppColor.dark,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "${state.average}/5",
+                                      style: AppText.bodyMedium.copyWith(
+                                        color: AppColor.dark,
+                                      ),
+                                    ),
+                                    SizedBox(width: 10.w),
+                                    Text(
+                                      "${state.count} تقيمات",
+                                      style: AppText.labelSmall.copyWith(
+                                        color: AppColor.dark,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.015,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                bottom:
-                                    MediaQuery.of(context).size.height * 0.005,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "4.48/5",
-                                        style: AppText.headingMedium,
-                                      ),
-                                      Text(
-                                        "29 تقيمات",
-                                        style: AppText.labelSmall,
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                            0.7,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            RatingBarIndicator(
-                                              rating: 2.5,
-                                              itemBuilder: (context, index) =>
-                                                  Icon(
-                                                    Icons.star,
-                                                    color: AppColor.secondary,
-                                                  ),
-                                              itemCount: 5,
-                                              itemSize: 18.sp,
-                                              direction: Axis.horizontal,
-                                            ),
-                                            SizedBox(
-                                              width:
-                                                  MediaQuery.of(
-                                                    context,
-                                                  ).size.width *
-                                                  0.02,
-                                            ),
-                                            Flexible(
-                                              child: Stack(
-                                                children: [
-                                                  Container(
-                                                    height:
-                                                        MediaQuery.of(
-                                                          context,
-                                                        ).size.height *
-                                                        0.01,
 
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.grey[300],
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                            4,
-                                                          ),
-                                                    ),
-                                                  ),
-                                                  FractionallySizedBox(
-                                                    widthFactor: .6.w,
-                                                    child: Container(
-                                                      height:
-                                                          MediaQuery.of(
-                                                            context,
-                                                          ).size.height *
-                                                          0.01,
+                                SizedBox(height: 16.h),
 
-                                                      decoration: BoxDecoration(
-                                                        gradient:
-                                                            LinearGradient(
-                                                              colors: [
-                                                                AppColor.grey,
-                                                                AppColor
-                                                                    .secondary,
-                                                              ],
-                                                              begin: Alignment
-                                                                  .centerLeft,
-                                                              end: Alignment
-                                                                  .centerRight,
-                                                            ),
-
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                              4,
-                                                            ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-
-                                            SizedBox(
-                                              width:
-                                                  MediaQuery.of(
-                                                    context,
-                                                  ).size.width *
-                                                  0.02,
-                                            ),
-                                            Text("100%"),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      //>>>>>>>>>>>>>>>>>>>>>>>comments<<<<<<<<<<<<<<<<<<<<<
-                      Flexible(
-                        child: Container(
-                          width: double.infinity,
-                          padding: AppPadding.paddingSmall,
-                          decoration: BoxDecoration(
-                            color: AppColor.light,
-                            border: Border(
-                              bottom: BorderSide(
-                                color: AppColor.dark.withAlpha(100),
-                                width:
-                                    MediaQuery.of(context).size.width * 0.004,
-                              ),
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
+                                if (state.reviews.isEmpty)
                                   Text(
-                                    "المراجعات:",
-                                    style: AppText.bodySmall.copyWith(
-                                      color: AppColor.dark,
-                                      fontWeight: FontWeight.bold,
+                                    "لا توجد مراجعات حتى الآن",
+                                    style: AppText.bodyMedium.copyWith(
+                                      color: AppColor.primary,
+                                    ),
+                                  )
+                                else
+                                  Container(
+                                    color: AppColor.light,
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemCount: state.reviews.length,
+                                      itemBuilder: (context, index) {
+                                        final review = state.reviews[index];
+                                        return ListTile(
+                                          title: Text(review.name),
+                                          subtitle: Text(review.comment),
+                                          trailing: RatingBarIndicator(
+                                            rating: review.rating,
+                                            itemBuilder: (context, _) => Icon(
+                                              Icons.star,
+                                              color: AppColor.secondary,
+                                              size: 24.sp,
+                                            ),
+                                            itemCount: 5,
+                                            itemSize: 20,
+                                          ),
+                                        );
+                                      },
                                     ),
                                   ),
-                                ],
+                              ],
+                            );
+                          } else if (state is RatingError) {
+                            return Text(
+                              "حدث خطأ: ${state.message}",
+                              style: AppText.bodySmall.copyWith(
+                                color: AppColor.primary,
                               ),
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.015,
-                              ),
-                              Expanded(
-                                child: ListView.builder(
-                                  itemCount: reviews.length,
-                                  itemBuilder: (context, index) {
-                                    final review = reviews[index];
-                                    return Container(
-                                      width: double.infinity,
-                                      margin: EdgeInsets.only(
-                                        bottom:
-                                            MediaQuery.of(context).size.height *
-                                            0.01,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: AppColor.grey,
-                                      ),
-                                      child: Padding(
-                                        padding: AppPadding.paddingSmall,
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    review["name"],
-                                                    style: AppText.bodySmall
-                                                        .copyWith(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: AppColor.dark,
-                                                        ),
-                                                  ),
-                                                  SizedBox(
-                                                    height:
-                                                        MediaQuery.of(
-                                                          context,
-                                                        ).size.height *
-                                                        0.005,
-                                                  ),
-                                                  Text(
-                                                    review["comment"],
-                                                    style: AppText.bodySmall
-                                                        .copyWith(
-                                                          color: AppColor.dark,
-                                                        ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            RatingBarIndicator(
-                                              rating: review["rating"],
-                                              itemBuilder: (context, _) =>
-                                                  const Icon(
-                                                    Icons.star,
-                                                    color: AppColor.secondary,
-                                                  ),
-                                              itemCount: 5,
-                                              itemSize:
-                                                  MediaQuery.of(
-                                                    context,
-                                                  ).size.width *
-                                                  0.05,
-                                              direction: Axis.horizontal,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                            );
+                          } else {
+                            return SizedBox();
+                          }
+                        },
                       ),
                     ],
                   ),
                 ),
               );
             } else if (state is LawyerError) {
-              return Center(child: Text("حدث خطأ: ${state.message}"));
+              return Center(
+                child: Text(
+                  "حدث خطأ: ${state.message}",
+                  style: AppText.bodySmall.copyWith(color: AppColor.primary),
+                ),
+              );
             } else {
-              return const Center(child: Text("فشل في تحميل البيانات"));
+              return Center(
+                child: Text(
+                  "فشل في تحميل البيانات",
+                  style: AppText.bodySmall.copyWith(color: AppColor.primary),
+                ),
+              );
             }
           },
         ),

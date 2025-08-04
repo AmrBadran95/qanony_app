@@ -299,7 +299,10 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
 
   Widget chip(String label) {
     return Chip(
-      label: Text(label, style: TextStyle(color: AppColor.light)),
+      label: Text(
+        label,
+        style: AppText.bodySmall.copyWith(color: AppColor.light),
+      ),
       backgroundColor: AppColor.primary,
     );
   }

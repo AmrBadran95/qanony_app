@@ -40,7 +40,12 @@ class OrdersLawyerScreen extends StatelessWidget {
                 .toList();
 
             if (pendingOrders.isEmpty) {
-              return const Center(child: Text('لا يوجد طلبات حالياً'));
+              return Center(
+                child: Text(
+                  "لا توجد طلبات حالياً",
+                  style: AppText.bodyMedium.copyWith(color: AppColor.primary),
+                ),
+              );
             }
             final dateFormat = DateFormat('dd-MM-yyyy • hh:mm a', 'ar');
 

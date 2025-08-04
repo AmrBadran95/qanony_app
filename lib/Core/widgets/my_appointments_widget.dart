@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
@@ -28,14 +29,14 @@ class MyAppointmentCardWidget extends StatelessWidget {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
       child: Padding(
         padding: EdgeInsets.all(AppPadding.medium),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Icon(Icons.person, size: 40, color: AppColor.dark),
-            const SizedBox(width: 12),
+            Icon(Icons.person, size: 40.sp, color: AppColor.dark),
+            SizedBox(width: 12.w),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,7 +45,7 @@ class MyAppointmentCardWidget extends StatelessWidget {
                     name,
                     style: AppText.bodyMedium.copyWith(color: AppColor.dark),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4.h),
                   Text(
                     specialty,
                     style: TextStyle(
@@ -52,7 +53,7 @@ class MyAppointmentCardWidget extends StatelessWidget {
                       color: AppColor.dark,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4.h),
                   Text(
                     description,
                     style: TextStyle(
@@ -60,7 +61,7 @@ class MyAppointmentCardWidget extends StatelessWidget {
                       color: AppColor.dark,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4.h),
                   Text(
                     'طريقه التواصل:$communication',
                     style: TextStyle(
