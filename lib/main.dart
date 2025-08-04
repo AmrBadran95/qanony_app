@@ -21,9 +21,10 @@ import 'package:qanony/services/cubits/role/role_cubit.dart';
 import 'package:qanony/services/cubits/splash/splash_cubit.dart';
 import 'package:qanony/services/cubits/subscription/stripe_subscription_cubit.dart';
 import 'package:qanony/services/firestore/lawyer_firestore_service.dart';
+import 'package:zego_uikit/zego_uikit.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
-import 'package:zego_uikit/zego_uikit.dart';
+
 import 'Core/shared/app_cache.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
