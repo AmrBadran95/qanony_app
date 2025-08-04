@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/core/styles/color.dart';
 import 'package:qanony/core/styles/text.dart';
 import 'package:qanony/services/firestore/rating_firestore_service.dart';
@@ -16,7 +17,7 @@ class RatingDialog extends StatefulWidget {
 
 class _RatingDialogState extends State<RatingDialog> {
   double _rating = 3;
-  TextEditingController _commentController = TextEditingController();
+  final TextEditingController _commentController = TextEditingController();
   bool _isLoading = true;
 
   @override
@@ -57,7 +58,10 @@ class _RatingDialogState extends State<RatingDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("قيم المحامي", style: AppText.bodyMedium),
+      title: Text(
+        "قيم المحامي",
+        style: AppText.bodyMedium.copyWith(color: AppColor.dark),
+      ),
       content: _isLoading
           ? CircularProgressIndicator()
           : Column(
@@ -73,12 +77,16 @@ class _RatingDialogState extends State<RatingDialog> {
                     _rating = value;
                   },
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 10.sp),
                 TextField(
+                  style: AppText.bodyMedium.copyWith(color: AppColor.dark),
                   controller: _commentController,
                   maxLines: 3,
                   decoration: InputDecoration(
                     hintText: "اكتب تعليقك...",
+                    hintStyle: AppText.bodyMedium.copyWith(
+                      color: AppColor.dark,
+                    ),
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -86,12 +94,18 @@ class _RatingDialogState extends State<RatingDialog> {
             ),
       actions: [
         TextButton(
-          child: Text("إلغاء", style: AppText.bodySmall),
+          child: Text(
+            "إلغاء",
+            style: AppText.bodySmall.copyWith(color: AppColor.primary),
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         ElevatedButton(
           onPressed: _submitRating,
-          child: Text("حفظ", style: AppText.bodySmall),
+          child: Text(
+            "حفظ",
+            style: AppText.bodySmall.copyWith(color: AppColor.green),
+          ),
         ),
       ],
     );

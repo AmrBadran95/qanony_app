@@ -289,7 +289,15 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
         StreamBuilder<QuerySnapshot>(
           stream: cubit.getAppointmentsStream(),
           builder: (context, snapshot) {
-            if (snapshot.hasError) return const Center(child: Text('حدث خطأ'));
+            if (snapshot.hasError) {
+              return Center(
+                child: Text(
+                  'حدث خطأ',
+                  style: AppText.bodyMedium.copyWith(color: AppColor.primary),
+                ),
+              );
+            }
+
             if (!snapshot.hasData) {
               return const Center(child: CircularProgressIndicator());
             }
@@ -297,7 +305,12 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
             final appointments = snapshot.data!.docs;
 
             if (appointments.isEmpty) {
-              return const Center(child: Text('لا توجد مواعيد'));
+              return Center(
+                child: Text(
+                  "لا توجد مواعيد حالياً",
+                  style: AppText.bodyMedium.copyWith(color: AppColor.primary),
+                ),
+              );
             }
 
             return ListView.builder(

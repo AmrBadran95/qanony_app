@@ -14,7 +14,7 @@ class FirebaseErrorHandler {
           return "لا يوجد مستخدم بهذا البريد الإلكتروني.";
         case "wrong-password":
         case "invalid-credential":
-          return "كلمة المرور غير صحيحة.";
+          return "كلمة المرور أو البريد الإلكتروني غير صحيحين.";
         case "too-many-requests":
           return "عدد محاولات تسجيل الدخول كبير. الرجاء المحاولة لاحقًا.";
         case "network-request-failed":

@@ -30,18 +30,6 @@ class RatingCubit extends Cubit<RatingState> {
     }
   }
 
-  // Future<void> loadAverageRating(String lawyerId) async {
-  //   emit(RatingLoading());
-
-  //   try {
-  //     final average = await ratingService.getAverageRating(lawyerId);
-  //     final count = await ratingService.getRatingCount(lawyerId);
-  //     emit(AverageRatingLoaded(average: average, count: count));
-  //   } catch (e) {
-  //     emit(RatingError(e.toString()));
-  //   }
-  // }
-
   Future<void> loadLawyerReviews(String lawyerId) async {
     emit(RatingLoading());
 
