@@ -61,6 +61,8 @@ class QanonyAppointmentsTab extends StatelessWidget {
                 final order = orders[index];
 
                 return QanonyAppointmentCardWidget(
+                  orderId: order.orderId,
+                  orderdate: order.date,
                   name: order.userName,
                   specialty: order.caseType,
                   description: order.caseDescription,
