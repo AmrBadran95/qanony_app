@@ -10,7 +10,6 @@ import 'package:qanony/services/cubits/registration_date/registration_date_cubit
 import 'package:qanony/services/firestore/lawyer_firestore_service.dart';
 import 'package:qanony/services/notifications/fcm_service.dart';
 import 'package:qanony/services/validators/contact_validators.dart';
-
 part 'lawyer_confirmation_state.dart';
 
 class LawyerConfirmationCubit extends Cubit<LawyerConfirmationState> {

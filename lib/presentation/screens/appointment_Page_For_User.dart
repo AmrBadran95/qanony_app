@@ -18,6 +18,7 @@ import 'package:qanony/services/firestore/user_firestore_service.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import '../../Core/widgets/custom_button.dart';
 import '../../data/models/order_status_enum.dart';
+
 import '../../services/call/AppointmentPageForUser .dart';
 import '../../services/firestore/lawyer_firestore_service.dart';
 import '../../services/firestore/order_firestore_service.dart';
@@ -109,14 +110,9 @@ class AppointmentPageForUser extends StatelessWidget {
                                   }
 
                                   final lawyer = snapshot.data!;
-                                  final now = DateTime.now();
-                                  final sessionTime = data.date;
-                                  final endTime = sessionTime.add(
-                                    Duration(hours: 1),
-                                  );
-                                  final isTimeToJoin =
-                                      now.isAfter(sessionTime) &&
-                                      now.isBefore(endTime);
+
+
+
 
                                   return Card(
                                     margin: EdgeInsets.only(
@@ -347,32 +343,37 @@ class AppointmentPageForUser extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-                                              Expanded(
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    Padding(
-                                                      padding: AppPadding
-                                                          .paddingSmall,
-                                                      child: GestureDetector(
-                                                        onTap: () {
-                                                          orderService
-                                                              .deleteOrder(
-                                                                data.orderId,
-                                                              );
-                                                        },
-                                                        child: Icon(
-                                                          Icons.delete,
-                                                          size: 24.sp,
-                                                          color:
-                                                              AppColor.primary,
+                                              data.status==OrderStatus.rejectedByLawyer||data.status==OrderStatus.paymentRejected?
+                                              StreamBuilder<bool>(
+                                                stream: TimeStreamUtils.canDeleteAfterSession(data.date, 2),
+                                                builder: (context, snapshot) {
+                                                  final canDelete = snapshot.data ?? false;
+
+
+                                                  return Expanded(
+
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.end,
+                                                      children: [
+                                                        Padding(
+                                                          padding: AppPadding.paddingSmall,
+                                                          child: GestureDetector(
+                                                            onTap: () {
+                                                              orderService.deleteOrder(data.orderId);
+                                                            },
+                                                            child: Icon(
+                                                              Icons.delete,
+                                                              size: 24.sp,
+                                                              color: AppColor.primary,
+                                                            ),
+                                                          ),
                                                         ),
-                                                      ),
+                                                      ],
                                                     ),
-                                                  ],
-                                                ),
-                                              ),
+                                                  );
+                                                },
+                                              )
+                                              :  SizedBox.shrink(),
                                             ],
                                           ),
                                           SizedBox(
@@ -504,9 +505,7 @@ class AppointmentPageForUser extends StatelessWidget {
                                                     data.contactMethod ==
                                                         "محادثة فيديو/صوت"
                                               ? StreamBuilder<bool>(
-                                                  stream: timeToJoinStream(
-                                                    sessionTime,
-                                                  ),
+                                                  stream: TimeStreamUtils.timeToJoinStream(data.date,1),
                                                   builder: (context, snapshot) {
                                                     final isTimeToJoin =
                                                         snapshot.data ?? false;

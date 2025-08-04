@@ -21,7 +21,6 @@ class QanonyAppointmentsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     String? email = FirebaseAuth.instance.currentUser?.email;
     String? lawyerId = FirebaseAuth.instance.currentUser?.uid;
-
     String lawyerName = email != null ? email.split('@')[0] : '';
     CallService callService = CallService();
     callService.onUserLogin(lawyerId.toString(), lawyerName);
@@ -60,11 +59,6 @@ class QanonyAppointmentsTab extends StatelessWidget {
               itemCount: orders.length,
               itemBuilder: (context, index) {
                 final order = orders[index];
-                final now = DateTime.now();
-                final sessionTime = order.date;
-                final endTime = sessionTime.add(Duration(hours: 1));
-                final isTimeToJoin =
-                    now.isAfter(sessionTime) && now.isBefore(endTime);
 
                 return QanonyAppointmentCardWidget(
                   name: order.userName,
@@ -91,7 +85,7 @@ class QanonyAppointmentsTab extends StatelessWidget {
                     order.status == OrderStatus.paymentDone &&
                             order.contactMethod == "محادثة فيديو/صوت"
                         ? StreamBuilder<bool>(
-                            stream: timeToJoinStream(sessionTime),
+                            stream: TimeStreamUtils.timeToJoinStream(order.date,1),
                             builder: (context, snapshot) {
                               final isTimeToJoin = snapshot.data ?? false;
 
@@ -101,7 +95,7 @@ class QanonyAppointmentsTab extends StatelessWidget {
                                     ? () async {
                                         await ZegoUIKitPrebuiltCallInvitationService()
                                             .send(
-                                              resourceID: "QanonyApp",
+                                          resourceID: "QanonyApp",
                                               invitees: [
                                                 ZegoCallUser(
                                                   order.userId,
