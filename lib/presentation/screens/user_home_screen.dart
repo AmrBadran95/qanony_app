@@ -61,7 +61,7 @@ class UserHomeScreen extends StatelessWidget {
                             width: 300.w,
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: AssetImage("//${ad['image']}"),
+                                image: AssetImage("${ad['image']}"),
                                 fit: BoxFit.cover,
                               ),
                             ),
