@@ -354,46 +354,37 @@ class AppointmentPageForUser extends StatelessWidget {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
                                                   children: [
-                                                    Align(
-                                                      alignment:
-                                                          Alignment.centerRight,
-                                                      child: IconButton(
-                                                        icon: Icon(
-                                                          Icons.rate_review,
-                                                          color: AppColor
-                                                              .secondary,
-                                                        ),
-                                                        onPressed: () async {
-                                                          showDialog(
-                                                            context: context,
-                                                            builder: (_) =>
-                                                                RatingDialog(
-                                                                  userId:
-                                                                      userId,
-                                                                  lawyerId: data
-                                                                      .lawyerId,
-                                                                ),
-                                                          );
-                                                        },
+                                                    IconButton(
+                                                      icon: Icon(
+                                                        Icons.rate_review,
+                                                        color:
+                                                            AppColor.secondary,
+                                                        size: 24.sp,
                                                       ),
+                                                      onPressed: () async {
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (_) =>
+                                                              RatingDialog(
+                                                                userId: userId,
+                                                                lawyerId: data
+                                                                    .lawyerId,
+                                                              ),
+                                                        );
+                                                      },
                                                     ),
 
-                                                    Padding(
-                                                      padding: AppPadding
-                                                          .paddingSmall,
-                                                      child: GestureDetector(
-                                                        onTap: () {
-                                                          orderService
-                                                              .deleteOrder(
-                                                                data.orderId,
-                                                              );
-                                                        },
-                                                        child: Icon(
-                                                          Icons.delete,
-                                                          size: 24.sp,
-                                                          color:
-                                                              AppColor.primary,
-                                                        ),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        orderService
+                                                            .deleteOrder(
+                                                              data.orderId,
+                                                            );
+                                                      },
+                                                      child: Icon(
+                                                        Icons.delete,
+                                                        size: 24.sp,
+                                                        color: AppColor.primary,
                                                       ),
                                                     ),
                                                   ],

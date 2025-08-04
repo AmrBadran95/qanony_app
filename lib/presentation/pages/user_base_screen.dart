@@ -130,7 +130,6 @@ class UserBaseScreen extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    //>>>اظهر الدايلوج الاولر وبعدين ف الزرار احط الكود داااا
                     onTap: () {
                       showDialog(
                         context: context,
