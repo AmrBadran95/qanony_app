@@ -248,7 +248,7 @@ void showBookingForm({
                                                 title: "طلب جديد",
                                                 body:
                                                     "لديك طلب جديد من العميل ${nameController.text}",
-                                                data: {"type": "user_order"},
+                                                data: {"type": "lawyer_order"},
                                               );
                                         }
                                       },

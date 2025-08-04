@@ -10,6 +10,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:qanony/main.dart';
 import 'package:qanony/presentation/pages/lawyer_base_screen.dart';
 import 'package:qanony/presentation/pages/qanony_appointments_tab.dart';
+import 'package:qanony/presentation/screens/appointment_lawyer.dart';
 import 'package:qanony/presentation/screens/appointment_page_for_user.dart';
 import 'package:qanony/presentation/screens/orders_lawyer_screen.dart';
 
@@ -169,6 +170,12 @@ class FCMHandler {
               selectedIndex: 2,
             ),
           ),
+        );
+        break;
+
+      case 'lawyer_appointment':
+        navigatorKey.currentState?.pushReplacement(
+          MaterialPageRoute(builder: (_) => AppointmentLawyer()),
         );
         break;
 
