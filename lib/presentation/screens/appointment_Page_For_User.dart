@@ -7,6 +7,7 @@ import 'package:flutter_stripe/flutter_stripe.dart' hide Card;
 import 'package:intl/intl.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
+import 'package:qanony/Core/widgets/RatingDialog.dart';
 import 'package:qanony/core/styles/color.dart';
 import 'package:qanony/data/repos/order_repository.dart';
 import 'package:qanony/data/repos/server_notifications_repo.dart';
@@ -353,6 +354,30 @@ class AppointmentPageForUser extends StatelessWidget {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
                                                   children: [
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.centerRight,
+                                                      child: IconButton(
+                                                        icon: Icon(
+                                                          Icons.rate_review,
+                                                          color: AppColor
+                                                              .secondary,
+                                                        ),
+                                                        onPressed: () async {
+                                                          showDialog(
+                                                            context: context,
+                                                            builder: (_) =>
+                                                                RatingDialog(
+                                                                  userId:
+                                                                      userId,
+                                                                  lawyerId: data
+                                                                      .lawyerId,
+                                                                ),
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
+
                                                     Padding(
                                                       padding: AppPadding
                                                           .paddingSmall,

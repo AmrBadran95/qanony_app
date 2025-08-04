@@ -45,7 +45,7 @@ class UserHomeScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final ad = adsList[index];
                         return Padding(
-                          padding:  EdgeInsets.only(left: 5.w),
+                          padding: EdgeInsets.only(left: 5.w),
                           child: Container(
                             width: 300.w,
                             decoration: BoxDecoration(
@@ -77,7 +77,7 @@ class UserHomeScreen extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                       SizedBox(height: 8.h),
+                                      SizedBox(height: 8.h),
                                       Padding(
                                         padding: AppPadding.horizontalSmall,
                                         child: Text(
@@ -87,7 +87,7 @@ class UserHomeScreen extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                       SizedBox(height: 5.h),
+                                      SizedBox(height: 5.h),
                                     ],
                                   ),
                                 ),
@@ -101,7 +101,7 @@ class UserHomeScreen extends StatelessWidget {
                 ],
               ),
 
-               SizedBox(height: 5.h),
+              SizedBox(height: 5.h),
 
               GestureDetector(
                 onTap: () {
@@ -138,7 +138,7 @@ class UserHomeScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                         SizedBox(width: 10.w),
+                        SizedBox(width: 10.w),
                         Icon(
                           Icons.chat_outlined,
                           size: 60.sp,
@@ -150,7 +150,7 @@ class UserHomeScreen extends StatelessWidget {
                 ),
               ),
 
-               SizedBox(height: 5.h),
+              SizedBox(height: 5.h),
 
               Padding(
                 padding: AppPadding.paddingSmall,
@@ -205,7 +205,7 @@ class UserHomeScreen extends StatelessWidget {
                                         ? Icon(Icons.person)
                                         : null,
                                   ),
-                                   SizedBox(height: 4.h),
+                                  SizedBox(height: 4.h),
                                   Text(
                                     lawyer.fullName ?? "غير معروف",
                                     style: AppText.bodySmall.copyWith(
@@ -222,7 +222,7 @@ class UserHomeScreen extends StatelessWidget {
                                     ),
                                   ),
 
-                                   SizedBox(height: 4.h),
+                                  SizedBox(height: 4.h),
 
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
