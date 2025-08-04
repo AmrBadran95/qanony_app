@@ -67,6 +67,9 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
                   stream: TimeStreamUtils.canDeleteAfterSession(orderdate, 2),
                   builder: (context, snapshot) {
                     final canDelete = snapshot.data ?? false;
+                    if (!canDelete) {
+                      return const SizedBox.shrink();
+                    }
 
 
                     return Expanded(
