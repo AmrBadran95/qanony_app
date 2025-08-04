@@ -9,6 +9,9 @@ import 'package:qanony/data/repos/lawyer_repository.dart';
 import 'package:qanony/data/static/question_list.dart';
 import 'package:qanony/presentation/pages/ai_chat_screen.dart';
 import 'package:qanony/services/call/call_service.dart';
+import 'package:qanony/services/cubits/rating/rating_cubit.dart';
+import 'package:qanony/services/firestore/rating_firestore_service.dart';
+
 import '../../data/static/advertisements.dart';
 import '../../services/cubits/lawyer/lawyer_cubit.dart';
 import '../pages/user_base_screen.dart';
@@ -24,9 +27,17 @@ class UserHomeScreen extends StatelessWidget {
     final String userId = user?.uid ?? "";
     final String userName = user?.displayName ?? email.split('@')[0];
     CallService().onUserLogin(userId, userName);
-    return BlocProvider(
-      create: (_) => LawyerCubit(LawyerRepository())..getPremiumLawyers(),
-
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => LawyerCubit(LawyerRepository())..getPremiumLawyers(),
+        ),
+        BlocProvider<RatingCubit>(
+          create: (_) =>
+              RatingCubit(RatingFirestoreService())
+                ..loadAllLawyersAverageRatings(),
+        ),
+      ],
       child: UserBaseScreen(
         homeColor: AppColor.secondary,
         body: SingleChildScrollView(
@@ -50,7 +61,7 @@ class UserHomeScreen extends StatelessWidget {
                             width: 300.w,
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: AssetImage("${ad['image']}"),
+                                image: AssetImage("//${ad['image']}"),
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -174,71 +185,107 @@ class UserHomeScreen extends StatelessWidget {
                         itemCount: state.lawyers.length,
                         itemBuilder: (context, index) {
                           final lawyer = state.lawyers[index];
-                          int rating = (index % 5) + 1;
 
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      LawyerScreen(lawyer.uid),
+                          return BlocBuilder<RatingCubit, RatingState>(
+                            builder: (context, ratingState) {
+                              double averageRating = 0;
+                              int ratingCount = 0;
+
+                              if (ratingState is AllLawyersRatingsLoaded &&
+                                  ratingState.lawyerRatings.containsKey(
+                                    lawyer.uid,
+                                  )) {
+                                final ratingData =
+                                    ratingState.lawyerRatings[lawyer.uid]!;
+                                averageRating = ratingData.average;
+                                ratingCount = ratingData.count;
+                              }
+
+                              final fullStars = averageRating.floor();
+                              final hasHalfStar =
+                                  (averageRating - fullStars) >= 0.5;
+
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          LawyerScreen(lawyer.uid),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  width: 130.w,
+                                  padding: AppPadding.paddingSmall,
+                                  decoration: BoxDecoration(
+                                    color: AppColor.light,
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 50,
+                                        backgroundImage:
+                                            lawyer.profilePictureUrl != null
+                                            ? NetworkImage(
+                                                lawyer.profilePictureUrl!,
+                                              )
+                                            : null,
+                                        child: lawyer.profilePictureUrl == null
+                                            ? Icon(Icons.person)
+                                            : null,
+                                      ),
+                                      SizedBox(height: 4.h),
+                                      Text(
+                                        lawyer.fullName ?? "غير معروف",
+                                        style: AppText.bodySmall.copyWith(
+                                          color: AppColor.dark,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                      ),
+                                      Text(
+                                        lawyer.role,
+                                        style: AppText.labelSmall.copyWith(
+                                          color: AppColor.dark,
+                                        ),
+                                      ),
+                                      SizedBox(height: 4.h),
+
+                                      // ⭐ تقييم فعلي
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: List.generate(5, (starIndex) {
+                                          if (starIndex < fullStars) {
+                                            return Icon(
+                                              Icons.star,
+                                              size: 14.sp,
+                                              color: AppColor.secondary,
+                                            );
+                                          } else if (starIndex == fullStars &&
+                                              hasHalfStar) {
+                                            return Icon(
+                                              Icons.star_half,
+                                              size: 14.sp,
+                                              color: AppColor.secondary,
+                                            );
+                                          } else {
+                                            return Icon(
+                                              Icons.star_border,
+                                              size: 14.sp,
+                                              color: AppColor.grey,
+                                            );
+                                          }
+                                        }),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
-                            child: Container(
-                              width: 130.w,
-                              padding: AppPadding.paddingSmall,
-                              decoration: BoxDecoration(color: AppColor.light),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  CircleAvatar(
-                                    radius: 50,
-                                    backgroundImage:
-                                        lawyer.profilePictureUrl != null
-                                        ? NetworkImage(
-                                            lawyer.profilePictureUrl!,
-                                          )
-                                        : null,
-                                    child: lawyer.profilePictureUrl == null
-                                        ? Icon(Icons.person)
-                                        : null,
-                                  ),
-                                  SizedBox(height: 4.h),
-                                  Text(
-                                    lawyer.fullName ?? "غير معروف",
-                                    style: AppText.bodySmall.copyWith(
-                                      color: AppColor.dark,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                  Text(
-                                    lawyer.role,
-                                    style: AppText.labelSmall.copyWith(
-                                      color: AppColor.dark,
-                                    ),
-                                  ),
-
-                                  SizedBox(height: 4.h),
-
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: List.generate(5, (starIndex) {
-                                      return Icon(
-                                        Icons.star,
-                                        size: 14.sp,
-                                        color: starIndex < rating
-                                            ? AppColor.secondary
-                                            : AppColor.grey,
-                                      );
-                                    }),
-                                  ),
-                                ],
-                              ),
-                            ),
                           );
                         },
                       );

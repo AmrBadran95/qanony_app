@@ -6,6 +6,9 @@ import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/core/styles/padding.dart';
 import 'package:qanony/core/styles/text.dart';
 import 'package:qanony/services/cubits/Search/search_cubit.dart';
+import 'package:qanony/services/cubits/rating/rating_cubit.dart';
+import 'package:qanony/services/firestore/rating_firestore_service.dart';
+
 import '../pages/search_and_filter.dart';
 import '../pages/user_base_screen.dart';
 import 'lawyer_card.dart';
@@ -15,8 +18,15 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => SearchCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => SearchCubit()),
+        BlocProvider(
+          create: (_) =>
+              RatingCubit(RatingFirestoreService())
+                ..loadAllLawyersAverageRatings(),
+        ),
+      ],
       child: UserBaseScreen(
         searchColor: AppColor.secondary,
         body: Column(
@@ -46,8 +56,7 @@ class LawyersList extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: ListView.separated(
-                separatorBuilder: (context, index) =>
-                     SizedBox(height: 10.h),
+                separatorBuilder: (context, index) => SizedBox(height: 10.h),
                 itemCount: state.lawyers.length,
                 itemBuilder: (context, index) {
                   final lawyer = state.lawyers[index];
@@ -79,41 +88,60 @@ class LawyersList extends StatelessWidget {
                           ],
                         ),
 
-                        child:Padding(
-                          padding:  AppPadding.paddingMedium,
+                        child: Padding(
+                          padding: AppPadding.paddingMedium,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-
                               Row(
                                 children: [
-                                  Column(
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: Image.network(
-                                          lawyer.profilePictureUrl ?? '',
-                                          width: 60.sp,
-                                          height: 60.sp,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      SizedBox(height: 6.h,),
-                                      RatingBarIndicator(
-                                        rating: 2.5,
-                                        itemBuilder: (context, index) =>
-                                            Icon(Icons.star, color: AppColor.secondary),
-                                        itemCount: 5,
-                                        itemSize: 15.0.sp,
-                                        direction: Axis.horizontal,
-                                      ),
-                                    ],
-                                  ),
+                                  BlocBuilder<RatingCubit, RatingState>(
+                                    builder: (context, ratingState) {
+                                      double rating = 0;
 
+                                      if (ratingState
+                                          is AllLawyersRatingsLoaded) {
+                                        final ratingData = ratingState
+                                            .lawyerRatings[lawyer.uid];
+                                        if (ratingData != null) {
+                                          rating = ratingData.average;
+                                        }
+                                      }
+
+                                      return Column(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              8,
+                                            ),
+                                            child: Image.network(
+                                              lawyer.profilePictureUrl ?? '',
+                                              width: 60.sp,
+                                              height: 60.sp,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          SizedBox(height: 6.h),
+                                          RatingBarIndicator(
+                                            rating: rating,
+                                            itemBuilder: (context, index) =>
+                                                Icon(
+                                                  Icons.star,
+                                                  color: AppColor.secondary,
+                                                ),
+                                            itemCount: 5,
+                                            itemSize: 15.0.sp,
+                                            direction: Axis.horizontal,
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  ),
 
                                   SizedBox(width: 10.w),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         lawyer.fullName.toString(),
@@ -121,62 +149,57 @@ class LawyersList extends StatelessWidget {
                                           color: AppColor.dark,
                                           fontWeight: FontWeight.w600,
                                         ),
-
                                       ),
-                                      SizedBox(height: 5.h,),
+                                      SizedBox(height: 5.h),
                                       Text(
                                         " النوع : ${lawyer.gender}",
                                         style: AppText.bodySmall.copyWith(
                                           color: AppColor.dark,
                                         ),
                                       ),
-                                      SizedBox(height: 5.h,),
+                                      SizedBox(height: 5.h),
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           if (lawyer.offersCall == true)
                                             Text(
                                               "مكالمة صوتية/فيديو - ${lawyer.callPrice} جنيه",
-                                              style: AppText.labelSmall.copyWith(
-                                                color: AppColor.primary,
-                                                fontWeight: FontWeight.w500,
-                                              ),
+                                              style: AppText.labelSmall
+                                                  .copyWith(
+                                                    color: AppColor.primary,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
                                             ),
-                                          SizedBox(height: 5.h,),
+                                          SizedBox(height: 5.h),
                                           if (lawyer.offersOffice == true)
                                             Text(
                                               "عبر المكتب - ${lawyer.officePrice} جنيه",
-                                              style: AppText.labelSmall.copyWith(
-                                                color: AppColor.primary,
-                                                fontWeight: FontWeight.w500,
-                                              ),
+                                              style: AppText.labelSmall
+                                                  .copyWith(
+                                                    color: AppColor.primary,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
                                             ),
-                                          if (lawyer.offersCall != true && lawyer.offersOffice != true)
+                                          if (lawyer.offersCall != true &&
+                                              lawyer.offersOffice != true)
                                             Text(
                                               "لا توجد وسيلة تواصل محددة",
-                                              style: AppText.labelSmall.copyWith(
-                                                color: AppColor.primary,
-                                                fontWeight: FontWeight.w500,
-                                              ),
+                                              style: AppText.labelSmall
+                                                  .copyWith(
+                                                    color: AppColor.primary,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
                                             ),
-
                                         ],
                                       ),
-
-
                                     ],
                                   ),
                                 ],
                               ),
-
-
-
-
-
                             ],
                           ),
-                        )
-
+                        ),
                       ),
                     ),
                   );

@@ -13,8 +13,10 @@ import 'package:qanony/data/repos/order_repository.dart';
 import 'package:qanony/data/repos/server_notifications_repo.dart';
 import 'package:qanony/services/cubits/payment/payment_cubit.dart';
 import 'package:qanony/services/cubits/payment/payment_state.dart';
+import 'package:qanony/services/cubits/rating/rating_cubit.dart';
 import 'package:qanony/services/cubits/server_notifications/server_notifications_cubit.dart';
 import 'package:qanony/services/cubits/user_order/user_order_cubit.dart';
+import 'package:qanony/services/firestore/rating_firestore_service.dart';
 import 'package:qanony/services/firestore/user_firestore_service.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
@@ -43,6 +45,11 @@ class AppointmentPageForUser extends StatelessWidget {
         BlocProvider(create: (_) => PaymentCubit()),
         BlocProvider(
           create: (_) => ServerNotificationsCubit(ServerNotificationsRepo()),
+        ),
+        BlocProvider(
+          create: (_) =>
+              RatingCubit(RatingFirestoreService())
+                ..loadAllLawyersAverageRatings(),
         ),
       ],
       child: UserBaseScreen(
@@ -138,49 +145,93 @@ class AppointmentPageForUser extends StatelessWidget {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Column(
-                                                children: [
-                                                  Container(
-                                                    width:
-                                                        MediaQuery.of(
-                                                          context,
-                                                        ).size.width *
-                                                        0.19,
-                                                    height:
-                                                        MediaQuery.of(
-                                                          context,
-                                                        ).size.width *
-                                                        0.19,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                            20,
+                                              BlocBuilder<
+                                                RatingCubit,
+                                                RatingState
+                                              >(
+                                                builder: (context, ratingState) {
+                                                  double averageRating = 0.0;
+
+                                                  if (ratingState
+                                                      is AllLawyersRatingsLoaded) {
+                                                    final ratingData =
+                                                        ratingState
+                                                            .lawyerRatings[lawyer
+                                                            .uid];
+                                                    if (ratingData != null) {
+                                                      averageRating =
+                                                          ratingData.average;
+                                                    }
+                                                  }
+
+                                                  return Column(
+                                                    children: [
+                                                      Container(
+                                                        width:
+                                                            MediaQuery.of(
+                                                              context,
+                                                            ).size.width *
+                                                            0.19,
+                                                        height:
+                                                            MediaQuery.of(
+                                                              context,
+                                                            ).size.width *
+                                                            0.19,
+                                                        decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                20,
+                                                              ),
+                                                          image: DecorationImage(
+                                                            image: NetworkImage(
+                                                              lawyer
+                                                                  .profilePictureUrl
+                                                                  .toString(),
+                                                            ),
+                                                            fit: BoxFit.cover,
                                                           ),
-                                                      image: DecorationImage(
-                                                        image: NetworkImage(
-                                                          lawyer
-                                                              .profilePictureUrl
-                                                              .toString(),
                                                         ),
-                                                        fit: BoxFit.cover,
                                                       ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(height: 5.h),
-                                                  RatingBarIndicator(
-                                                    rating: 2.5,
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
+                                                      SizedBox(height: 5.h),
+                                                      RatingBarIndicator(
+                                                        rating: averageRating,
+                                                        itemBuilder:
+                                                            (
+                                                              context,
+                                                              index,
+                                                            ) => Icon(
                                                               Icons.star,
                                                               color: AppColor
                                                                   .secondary,
                                                             ),
-                                                    itemCount: 5,
-                                                    itemSize: 15.0.sp,
-                                                    direction: Axis.horizontal,
-                                                  ),
-                                                ],
+                                                        itemCount: 5,
+                                                        itemSize: 15.0.sp,
+                                                        direction:
+                                                            Axis.horizontal,
+                                                      ),
+                                                      IconButton(
+                                                        icon: Icon(
+                                                          Icons.rate_review,
+                                                          color: AppColor
+                                                              .secondary,
+                                                          size: 24.sp,
+                                                        ),
+                                                        onPressed: () async {
+                                                          showDialog(
+                                                            context: context,
+                                                            builder: (_) =>
+                                                                RatingDialog(
+                                                                  userId:
+                                                                      userId,
+                                                                  lawyerId: data
+                                                                      .lawyerId,
+                                                                ),
+                                                          );
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
                                               ),
                                               SizedBox(
                                                 width:
@@ -354,26 +405,6 @@ class AppointmentPageForUser extends StatelessWidget {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
                                                   children: [
-                                                    IconButton(
-                                                      icon: Icon(
-                                                        Icons.rate_review,
-                                                        color:
-                                                            AppColor.secondary,
-                                                        size: 24.sp,
-                                                      ),
-                                                      onPressed: () async {
-                                                        showDialog(
-                                                          context: context,
-                                                          builder: (_) =>
-                                                              RatingDialog(
-                                                                userId: userId,
-                                                                lawyerId: data
-                                                                    .lawyerId,
-                                                              ),
-                                                        );
-                                                      },
-                                                    ),
-
                                                     GestureDetector(
                                                       onTap: () {
                                                         orderService

@@ -24,3 +24,16 @@ class ReviewsLoaded extends RatingState {
     required this.reviews,
   });
 }
+
+class AllLawyersRatingsLoaded extends RatingState {
+  final Map<String, LawyerRatingData> lawyerRatings;
+
+  AllLawyersRatingsLoaded(this.lawyerRatings);
+}
+
+class LawyerRatingData {
+  final double average;
+  final int count;
+
+  LawyerRatingData({required this.average, required this.count});
+}
