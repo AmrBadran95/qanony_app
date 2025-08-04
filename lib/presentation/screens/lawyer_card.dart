@@ -256,7 +256,6 @@ class LawyerScreen extends StatelessWidget {
                         ),
                       ),
 
-                      //>>>>>>>>>>>>>>>>>>>>>>>rating<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
                       BlocBuilder<RatingCubit, RatingState>(
                         builder: (context, state) {
                           if (state is RatingLoading) {
@@ -268,21 +267,29 @@ class LawyerScreen extends StatelessWidget {
                                   children: [
                                     Text(
                                       "${state.average}/5",
-                                      style: AppText.headingMedium,
+                                      style: AppText.bodyMedium.copyWith(
+                                        color: AppColor.dark,
+                                      ),
                                     ),
-                                    SizedBox(width: 10),
+                                    SizedBox(width: 10.w),
                                     Text(
                                       "${state.count} تقيمات",
-                                      style: AppText.labelSmall,
+                                      style: AppText.labelSmall.copyWith(
+                                        color: AppColor.dark,
+                                      ),
                                     ),
                                   ],
                                 ),
 
-                                SizedBox(height: 16),
+                                SizedBox(height: 16.h),
 
-                                // ✅ الريفيوهات
                                 if (state.reviews.isEmpty)
-                                  Text("لا توجد مراجعات حتى الآن")
+                                  Text(
+                                    "لا توجد مراجعات حتى الآن",
+                                    style: AppText.bodyMedium.copyWith(
+                                      color: AppColor.primary,
+                                    ),
+                                  )
                                 else
                                   Container(
                                     color: AppColor.light,
@@ -300,6 +307,7 @@ class LawyerScreen extends StatelessWidget {
                                             itemBuilder: (context, _) => Icon(
                                               Icons.star,
                                               color: AppColor.secondary,
+                                              size: 24.sp,
                                             ),
                                             itemCount: 5,
                                             itemSize: 20,
@@ -311,7 +319,12 @@ class LawyerScreen extends StatelessWidget {
                               ],
                             );
                           } else if (state is RatingError) {
-                            return Text("حدث خطأ: ${state.message}");
+                            return Text(
+                              "حدث خطأ: ${state.message}",
+                              style: AppText.bodySmall.copyWith(
+                                color: AppColor.primary,
+                              ),
+                            );
                           } else {
                             return SizedBox();
                           }
@@ -322,9 +335,19 @@ class LawyerScreen extends StatelessWidget {
                 ),
               );
             } else if (state is LawyerError) {
-              return Center(child: Text("حدث خطأ: ${state.message}"));
+              return Center(
+                child: Text(
+                  "حدث خطأ: ${state.message}",
+                  style: AppText.bodySmall.copyWith(color: AppColor.primary),
+                ),
+              );
             } else {
-              return const Center(child: Text("فشل في تحميل البيانات"));
+              return Center(
+                child: Text(
+                  "فشل في تحميل البيانات",
+                  style: AppText.bodySmall.copyWith(color: AppColor.primary),
+                ),
+              );
             }
           },
         ),

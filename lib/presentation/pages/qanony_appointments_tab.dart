@@ -52,7 +52,7 @@ class QanonyAppointmentsTab extends StatelessWidget {
               return Center(
                 child: Text(
                   "لا توجد مواعيد حالياً",
-                  style: AppText.bodyMedium.copyWith(color: AppColor.dark),
+                  style: AppText.bodyMedium.copyWith(color: AppColor.primary),
                 ),
               );
             }
