@@ -22,11 +22,6 @@ class UserHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
-    final email = user?.email ?? '';
-    final String userId = user?.uid ?? "";
-    final String userName = user?.displayName ?? email.split('@')[0];
-    CallService().onUserLogin(userId, userName);
     return MultiBlocProvider(
       providers: [
         BlocProvider(

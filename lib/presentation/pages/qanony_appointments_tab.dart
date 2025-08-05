@@ -20,12 +20,6 @@ class QanonyAppointmentsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String? email = FirebaseAuth.instance.currentUser?.email;
-    String? lawyerId = FirebaseAuth.instance.currentUser?.uid;
-    String lawyerName = email != null ? email.split('@')[0] : '';
-    CallService callService = CallService();
-    callService.onUserLogin(lawyerId.toString(), lawyerName);
-
     return BlocProvider(
       create: (context) {
         final lawyerId = FirebaseAuth.instance.currentUser?.uid ?? '';

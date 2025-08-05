@@ -6,6 +6,8 @@ import 'package:qanony/services/auth/auth_service.dart';
 import 'package:qanony/services/helpers/firebase_errors.dart';
 import 'package:qanony/services/notifications/fcm_service.dart';
 
+import '../../call/call_service.dart';
+
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -31,6 +33,7 @@ class AuthCubit extends Cubit<AuthState> {
 
       final userId = user.uid;
       String role = '';
+      final userName = user.displayName ?? user.email?.split('@')[0] ?? "User";
 
       final lawyerDoc = await FirebaseFirestore.instance
           .collection('lawyers')
@@ -68,7 +71,7 @@ class AuthCubit extends Cubit<AuthState> {
           );
         }
       }
-
+      await CallService().onUserLogin(userId, userName);
       await FCMHandler.instance.initializeFCM(userId, role);
     } catch (e) {
       emit(AuthError(FirebaseErrorHandler.handle(e)));
