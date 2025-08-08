@@ -72,6 +72,7 @@ class AuthCubit extends Cubit<AuthState> {
         }
       }
       await CallService().onUserLogin(userId, userName);
+
       await FCMHandler.instance.initializeFCM(userId, role);
     } catch (e) {
       emit(AuthError(FirebaseErrorHandler.handle(e)));
