@@ -9,6 +9,7 @@ import 'package:qanony/presentation/screens/appointment_lawyer.dart';
 import 'package:qanony/presentation/screens/choose_role_screen.dart';
 import 'package:qanony/presentation/screens/lawyer_account.dart';
 import 'package:qanony/presentation/screens/orders_lawyer_screen.dart';
+import 'package:qanony/services/call/call_service.dart';
 
 class LawyerBaseScreen extends StatelessWidget {
   final Widget body;
@@ -162,8 +163,11 @@ class LawyerBaseScreen extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               FirebaseAuth.instance.signOut();
+              AppCache.clearUserId();
+              AppCache.clearUserName();
               AppCache.setLoggedIn(false);
               AppCache.setIsLawyer(false);
+              CallService().onUserLogout();
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (_) => const ChooseRoleScreen()),

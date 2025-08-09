@@ -4,6 +4,7 @@ import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/presentation/screens/choose_role_screen.dart';
+import 'package:qanony/services/call/call_service.dart';
 import '../../services/auth/auth_service.dart';
 import '../screens/appointment_page_for_user.dart';
 import '../screens/search_screen.dart';
@@ -155,7 +156,9 @@ class UserBaseScreen extends StatelessWidget {
                               onPressed: () async {
                                 final authService = AuthService();
                                 await authService.logout();
-
+                                CallService().onUserLogout();
+                                AppCache.clearUserId();
+                                AppCache.clearUserName();
                                 AppCache.setLoggedIn(false);
                                 AppCache.setIsLawyer(false);
                                 if (context.mounted) {

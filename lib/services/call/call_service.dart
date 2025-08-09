@@ -1,29 +1,34 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 
 import '../../data/static/constants.dart';
 
+class CallService {
+  CallService._internal();
+  static final CallService _instance = CallService._internal();
 
-class CallService{
-  /// on App's user login
-  Future<void> onUserLogin(String id,String userName) async {
-    /// 1.2.1. initialized ZegoUIKitPrebuiltCallInvitationService
-    /// when app's user is logged in or re-logged in
-    /// We recommend calling this method as soon as the user logs in to your app.
+  factory CallService() => _instance;
+  bool _isInitialized = false;
+  Future<void> onUserLogin(String id, String userName) async {
+    if (_isInitialized) {
+      return;
+    }
+
     await ZegoUIKitPrebuiltCallInvitationService().init(
-      appID: Constant.appID /*input your AppID*/,
-      appSign: Constant.appSign /*input your AppSign*/,
+      appID: Constant.appID,
+      appSign: Constant.appSign,
       userID: id,
-      userName:userName,
+      userName: userName,
       plugins: [ZegoUIKitSignalingPlugin()],
     );
+
+    _isInitialized = true;
   }
 
-  /// on App's user logout
   void onUserLogout() {
-    /// 1.2.2. de-initialization ZegoUIKitPrebuiltCallInvitationService
-    /// when app's user is logged out
+    if (!_isInitialized) return;
+
     ZegoUIKitPrebuiltCallInvitationService().uninit();
+    _isInitialized = false;
   }
 }
