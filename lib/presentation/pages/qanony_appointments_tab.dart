@@ -13,19 +13,12 @@ import '../../Core/widgets/custom_button.dart';
 import '../../Core/widgets/qanony_appointment_widget.dart';
 import '../../data/models/order_status_enum.dart';
 import '../../services/call/AppointmentPageForUser .dart';
-import '../../services/call/call_service.dart';
 
 class QanonyAppointmentsTab extends StatelessWidget {
   const QanonyAppointmentsTab({super.key});
 
   @override
   Widget build(BuildContext context) {
-    String? email = FirebaseAuth.instance.currentUser?.email;
-    String? lawyerId = FirebaseAuth.instance.currentUser?.uid;
-    String lawyerName = email != null ? email.split('@')[0] : '';
-    CallService callService = CallService();
-    callService.onUserLogin(lawyerId.toString(), lawyerName);
-
     return BlocProvider(
       create: (context) {
         final lawyerId = FirebaseAuth.instance.currentUser?.uid ?? '';
@@ -45,7 +38,6 @@ class QanonyAppointmentsTab extends StatelessWidget {
             );
           } else if (state is QanonyAppointmentsLoaded) {
             final orders = state.appointments;
-            CallService callService = CallService();
 
             if (orders.isEmpty) {
               return Center(
@@ -88,7 +80,10 @@ class QanonyAppointmentsTab extends StatelessWidget {
                     order.status == OrderStatus.paymentDone &&
                             order.contactMethod == "محادثة فيديو/صوت"
                         ? StreamBuilder<bool>(
-                            stream: TimeStreamUtils.timeToJoinStream(order.date,1),
+                            stream: TimeStreamUtils.timeToJoinStream(
+                              order.date,
+                              1,
+                            ),
                             builder: (context, snapshot) {
                               final isTimeToJoin = snapshot.data ?? false;
 
@@ -98,7 +93,7 @@ class QanonyAppointmentsTab extends StatelessWidget {
                                     ? () async {
                                         await ZegoUIKitPrebuiltCallInvitationService()
                                             .send(
-                                          resourceID: "QanonyApp",
+                                              resourceID: "QanonyApp",
                                               invitees: [
                                                 ZegoCallUser(
                                                   order.userId,

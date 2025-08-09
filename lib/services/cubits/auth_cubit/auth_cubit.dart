@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:qanony/Core/shared/app_cache.dart';
 import 'package:qanony/services/auth/auth_service.dart';
+import 'package:qanony/services/call/call_service.dart';
 import 'package:qanony/services/helpers/firebase_errors.dart';
 import 'package:qanony/services/notifications/fcm_service.dart';
 
@@ -30,6 +31,7 @@ class AuthCubit extends Cubit<AuthState> {
       if (user == null) throw Exception('User not found');
 
       final userId = user.uid;
+      final userName = email.split('@')[0];
       String role = '';
 
       final lawyerDoc = await FirebaseFirestore.instance
@@ -70,6 +72,9 @@ class AuthCubit extends Cubit<AuthState> {
       }
 
       await FCMHandler.instance.initializeFCM(userId, role);
+      await CallService().onUserLogin(userId, userName);
+      AppCache.saveUserId(userId);
+      AppCache.saveUserName(userName);
     } catch (e) {
       emit(AuthError(FirebaseErrorHandler.handle(e)));
     }

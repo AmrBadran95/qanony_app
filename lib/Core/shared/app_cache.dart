@@ -6,7 +6,14 @@ class AppCache {
   static Future init() async {
     appCache = await SharedPreferencesWithCache.create(
       cacheOptions: const SharedPreferencesWithCacheOptions(
-        allowList: {'isFirstLaunch', 'isLoggedIn', 'isLawyer', 'phoneNumber'},
+        allowList: {
+          'isFirstLaunch',
+          'isLoggedIn',
+          'isLawyer',
+          'phoneNumber',
+          'userId',
+          'userName'
+        },
       ),
     );
   }
@@ -37,6 +44,25 @@ class AppCache {
 
   static Future clearPhone() async {
     await appCache.remove('phoneNumber');
+  }
+
+  static Future saveUserId(String userId) async {
+    await appCache.setString('userId', userId);
+  }
+
+  static String? getUserId() => appCache.getString('userId');
+
+  static Future clearUserId() async {
+    await appCache.remove('userId');
+  }
+  static Future saveUserName(String userId) async {
+    await appCache.setString('userName', userId);
+  }
+
+  static String? getUserName() => appCache.getString('userName');
+
+  static Future clearUserName() async {
+    await appCache.remove('userName');
   }
 
   static Future reload() async {

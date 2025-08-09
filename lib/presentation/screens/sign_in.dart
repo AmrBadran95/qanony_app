@@ -109,17 +109,22 @@ class SignInScreen extends StatelessWidget {
                     SizedBox(height: 40.h),
                     Text(
                       'مرحباً بعودتك',
-                      style: AppText.headingMedium.copyWith(color: AppColor.primary),
+                      style: AppText.headingMedium.copyWith(
+                        color: AppColor.primary,
+                      ),
                     ),
-                     SizedBox(height: 40.h),
+                    SizedBox(height: 40.h),
                     Form(
                       key: SignFormKey.formKey,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       child: Column(
-
                         children: [
                           CustomTextFormField(
-                            logo:  Icon(Icons.email_outlined,size: 24.sp,color: AppColor.dark),
+                            logo: Icon(
+                              Icons.email_outlined,
+                              size: 24.sp,
+                              color: AppColor.dark,
+                            ),
                             label: 'البريد الالكتروني',
                             controller: SignInControllers.emailController,
                             textStyle: AppText.bodyMedium.copyWith(
@@ -135,9 +140,13 @@ class SignInScreen extends StatelessWidget {
                             keyboardType: TextInputType.emailAddress,
                             validator: AppValidators.validateEmail,
                           ),
-                           SizedBox(height: 16.h),
+                          SizedBox(height: 16.h),
                           CustomTextFormField(
-                            logo:  Icon(Icons.visibility_off,size: 24.sp,color: AppColor.dark,),
+                            logo: Icon(
+                              Icons.visibility_off,
+                              size: 24.sp,
+                              color: AppColor.dark,
+                            ),
                             label: 'كلمة المرور',
                             controller: SignInControllers.passwordController,
                             textStyle: AppText.bodyMedium.copyWith(
@@ -154,7 +163,7 @@ class SignInScreen extends StatelessWidget {
                             keyboardType: TextInputType.visiblePassword,
                             validator: AppValidators.validatePassword,
                           ),
-                           SizedBox(height: 20.h),
+                          SizedBox(height: 20.h),
                           CustomButton(
                             text: isLoading ? '...جارٍ الدخول' : 'تسجيل الدخول',
                             onTap: () {
@@ -187,12 +196,14 @@ class SignInScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                     SizedBox(height: 30.h),
+                    SizedBox(height: 30.h),
                     Center(
                       child: Text.rich(
                         TextSpan(
                           text: 'ليس لديك حساب؟ ',
-                          style: AppText.bodySmall.copyWith(color: AppColor.dark),
+                          style: AppText.bodySmall.copyWith(
+                            color: AppColor.dark,
+                          ),
                           children: [
                             TextSpan(
                               text: 'تسجيل الحساب',

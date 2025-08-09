@@ -12,6 +12,7 @@ import 'package:qanony/data/repos/gemini_repo.dart';
 import 'package:qanony/data/repos/stripe_subscription_repo.dart';
 import 'package:qanony/firebase_options.dart';
 import 'package:qanony/presentation/screens/splash_screen.dart';
+import 'package:qanony/services/call/call_service.dart';
 import 'package:qanony/services/cubits/appointments/appointments_cubit.dart';
 import 'package:qanony/services/cubits/auth_cubit/auth_cubit.dart';
 import 'package:qanony/services/cubits/deep_link/deep_link_cubit.dart';
@@ -31,18 +32,23 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  ZegoUIKitPrebuiltCallInvitationService().setNavigatorKey(navigatorKey);
   await dotenv.load(fileName: "assets/env/.env");
   await AppCache.init();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  final String userId = AppCache.getUserId() ?? "";
+  final String userName = AppCache.getUserName() ?? "";
 
   final key = dotenv.env['STRIPE_PUBLISHABLE_KEY']!;
   Stripe.publishableKey = key;
 
   await Stripe.instance.applySettings();
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
+  if (userId != "") {
+    await CallService().onUserLogin(userId, userName);
+  }
   await FirebaseMessaging.instance.setAutoInitEnabled(true);
+  ZegoUIKitPrebuiltCallInvitationService().setNavigatorKey(navigatorKey);
 
   await ZegoUIKit().initLog().then((value) async {
     await ZegoUIKitPrebuiltCallInvitationService().useSystemCallingUI([

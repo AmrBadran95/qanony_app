@@ -1,12 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/text.dart';
 import 'package:qanony/presentation/screens/subscription_screen.dart';
 import 'package:qanony/services/cubits/is_subscription/is_subscription_cubit.dart';
-
-import '../../services/call/call_service.dart';
 import '../pages/my_appointments_tab.dart';
 import '../pages/qanony_appointments_tab.dart';
 
@@ -15,12 +12,6 @@ class AppointmentLawyer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
-    final  lawyerId = user?.uid ?? "";
-    final lawyername = user?.displayName ?? user?.email?.split('@')[0] ?? "User";
-
-
-    CallService().onUserLogin(lawyerId, lawyername);
     return BlocProvider(
       create: (context) => SubscriptionCubit()..checkSubscription(),
       child: BlocBuilder<SubscriptionCubit, bool>(
