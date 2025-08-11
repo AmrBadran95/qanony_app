@@ -206,26 +206,38 @@ class AppointmentPageForUser extends StatelessWidget {
                                                         direction:
                                                             Axis.horizontal,
                                                       ),
-                                                      IconButton(
-                                                        icon: Icon(
-                                                          Icons.rate_review,
-                                                          color: AppColor
-                                                              .secondary,
-                                                          size: 24.sp,
-                                                        ),
-                                                        onPressed: () async {
-                                                          showDialog(
-                                                            context: context,
-                                                            builder: (_) =>
-                                                                RatingDialog(
-                                                                  userId:
-                                                                      userId,
-                                                                  lawyerId: data
-                                                                      .lawyerId,
-                                                                ),
-                                                          );
-                                                        },
-                                                      ),
+                                                      data.status==OrderStatus.paymentDone?
+                                                        StreamBuilder<bool>(
+                                                        stream: TimeStreamUtils.canDeleteAfterSession(data.date,2),
+                                                        builder: (context, snapshot) {
+
+                                                          final canDelete = snapshot.data ?? false;
+                                                          if (!canDelete) {
+                                                            return SizedBox.shrink();
+                                                          }
+                                                        return IconButton(
+                                                    icon: Icon(
+                                                      Icons.rate_review,
+                                                      color: AppColor
+                                                          .secondary,
+                                                      size: 24.sp,
+                                                    ),
+                                                    onPressed: () async {
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (_) =>
+                                                            RatingDialog(
+                                                              userId:
+                                                              userId,
+                                                              lawyerId: data
+                                                                  .lawyerId,
+                                                            ),
+                                                      );
+                                                    },
+                                                  );
+                                                       }) :
+                                                      SizedBox.shrink(),
+
                                                     ],
                                                   );
                                                 },
