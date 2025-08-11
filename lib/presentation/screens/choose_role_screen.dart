@@ -36,7 +36,7 @@ class ChooseRoleScreen extends StatelessWidget {
                 onTap: () {
                   context.read<RoleCubit>().selectLawyerRole();
                 },
-                text1: "أنا محامى",
+                text1: "أنا محامٍ",
                 text2:
                     "كمحامٍ، يمكنك تقديم خدماتك، إدارة جلساتك، والتواصل مع عملائك بسهولة.",
                 text3: "ابدأ رحلتك القانونية الآن.",

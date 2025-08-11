@@ -208,11 +208,11 @@ class AppointmentPageForUser extends StatelessWidget {
                                                       ),
                                                       data.status==OrderStatus.paymentDone?
                                                         StreamBuilder<bool>(
-                                                        stream: TimeStreamUtils.canDeleteAfterSession(data.date,2),
+                                                        stream: TimeStreamUtils.timeToJoinStream(data.date,1),
                                                         builder: (context, snapshot) {
 
-                                                          final canDelete = snapshot.data ?? false;
-                                                          if (!canDelete) {
+                                                          final isTimeToJoin = snapshot.data ?? false;
+                                                          if (!isTimeToJoin) {
                                                             return SizedBox.shrink();
                                                           }
                                                         return IconButton(
