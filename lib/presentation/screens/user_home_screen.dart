@@ -158,7 +158,7 @@ class UserHomeScreen extends StatelessWidget {
               Padding(
                 padding: AppPadding.paddingSmall,
                 child: Text(
-                  'المحاميون المميزون',
+                  'المحامون المميزون',
                   style: AppText.bodySmall.copyWith(
                     color: AppColor.dark,
                     fontWeight: FontWeight.bold,
