@@ -95,7 +95,8 @@ class AppointmentPageForUser extends StatelessWidget {
                 } else if (state is UserOrderError) {
                   return Center(child: Text(state.message));
                 } else if (state is UserOrderLoaded) {
-                  final order = state.orders;
+                  final order = state.orders
+                    ..sort((a, b) => b.date.compareTo(a.date));
                   return SizedBox(
                     width: double.infinity,
                     child: Column(
@@ -205,26 +206,38 @@ class AppointmentPageForUser extends StatelessWidget {
                                                         direction:
                                                             Axis.horizontal,
                                                       ),
-                                                      IconButton(
-                                                        icon: Icon(
-                                                          Icons.rate_review,
-                                                          color: AppColor
-                                                              .secondary,
-                                                          size: 24.sp,
-                                                        ),
-                                                        onPressed: () async {
-                                                          showDialog(
-                                                            context: context,
-                                                            builder: (_) =>
-                                                                RatingDialog(
-                                                                  userId:
-                                                                      userId,
-                                                                  lawyerId: data
-                                                                      .lawyerId,
-                                                                ),
-                                                          );
-                                                        },
-                                                      ),
+                                                      data.status==OrderStatus.paymentDone?
+                                                        StreamBuilder<bool>(
+                                                        stream: TimeStreamUtils.timeToJoinStream(data.date,1),
+                                                        builder: (context, snapshot) {
+
+                                                          final isTimeToJoin = snapshot.data ?? false;
+                                                          if (!isTimeToJoin) {
+                                                            return SizedBox.shrink();
+                                                          }
+                                                        return IconButton(
+                                                    icon: Icon(
+                                                      Icons.rate_review,
+                                                      color: AppColor
+                                                          .secondary,
+                                                      size: 24.sp,
+                                                    ),
+                                                    onPressed: () async {
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (_) =>
+                                                            RatingDialog(
+                                                              userId:
+                                                              userId,
+                                                              lawyerId: data
+                                                                  .lawyerId,
+                                                            ),
+                                                      );
+                                                    },
+                                                  );
+                                                       }) :
+                                                      SizedBox.shrink(),
+
                                                     ],
                                                   );
                                                 },
@@ -396,11 +409,37 @@ class AppointmentPageForUser extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-                                              data.status==OrderStatus.rejectedByLawyer||data.status==OrderStatus.paymentRejected?
+                                              data.status==OrderStatus.rejectedByLawyer||data.status==OrderStatus.paymentRejected ?
+                                              Expanded(
+
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  children: [
+                                                    Padding(
+                                                      padding: AppPadding.paddingSmall,
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          orderService.deleteOrder(data.orderId);
+                                                        },
+                                                        child: Icon(
+                                                          Icons.delete,
+                                                          size: 24.sp,
+                                                          color: AppColor.primary,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+
+                                                ),
+                                              )
+                                              : data.status==OrderStatus.paymentDone?
                                               StreamBuilder<bool>(
                                                 stream: TimeStreamUtils.canDeleteAfterSession(data.date, 2),
                                                 builder: (context, snapshot) {
                                                   final canDelete = snapshot.data ?? false;
+                                                  if (!canDelete) {
+                                                    return SizedBox.shrink();
+                                                  }
 
 
                                                   return Expanded(
@@ -426,8 +465,9 @@ class AppointmentPageForUser extends StatelessWidget {
                                                     ),
                                                   );
                                                 },
-                                              )
-                                              :  SizedBox.shrink(),
+                                              ) :
+                                              SizedBox.shrink(),
+
                                             ],
                                           ),
                                           SizedBox(
@@ -565,46 +605,52 @@ class AppointmentPageForUser extends StatelessWidget {
                                                     final isTimeToJoin =
                                                         snapshot.data ?? false;
 
-                                                    return CustomButton(
-                                                      text: "انضم الى الجلسة",
-                                                      onTap: isTimeToJoin
-                                                          ? () async {
-                                                              await ZegoUIKitPrebuiltCallInvitationService().send(
-                                                                resourceID:
-                                                                    "QanonyApp",
-                                                                invitees: [
-                                                                  ZegoCallUser(
-                                                                    data.lawyerId,
-                                                                    lawyer
-                                                                        .fullName
-                                                                        .toString(),
-                                                                  ),
-                                                                ],
-                                                                isVideoCall:
-                                                                    true,
-                                                              );
-                                                            }
-                                                          : null,
-                                                      width:
-                                                          MediaQuery.of(
-                                                            context,
-                                                          ).size.width *
-                                                          0.3,
-                                                      height:
-                                                          MediaQuery.of(
-                                                            context,
-                                                          ).size.height *
-                                                          0.04,
-                                                      backgroundColor:
-                                                          isTimeToJoin
-                                                          ? AppColor.green
-                                                          : AppColor.grey
-                                                                .withAlpha(
-                                                                  (0.4 * 255)
-                                                                      .round(),
-                                                                ),
-                                                      textStyle:
-                                                          AppText.bodySmall,
+                                                    return Row(
+                                                      children: [
+                                                        Expanded(
+                                                          child: CustomButton(
+                                                            text: "انضم الى الجلسة",
+                                                            onTap: isTimeToJoin
+                                                                ? () async {
+                                                                    await ZegoUIKitPrebuiltCallInvitationService().send(
+                                                                      resourceID:
+                                                                          "QanonyApp",
+                                                                      invitees: [
+                                                                        ZegoCallUser(
+                                                                          data.lawyerId,
+                                                                          lawyer
+                                                                              .fullName
+                                                                              .toString(),
+                                                                        ),
+                                                                      ],
+                                                                      isVideoCall:
+                                                                          true,
+                                                                    );
+                                                                  }
+                                                                : null,
+                                                            width:
+                                                                MediaQuery.of(
+                                                                  context,
+                                                                ).size.width *
+                                                                0.3,
+                                                            height:
+                                                                MediaQuery.of(
+                                                                  context,
+                                                                ).size.height *
+                                                                0.04,
+                                                            backgroundColor:
+                                                                isTimeToJoin
+                                                                ? AppColor.green
+                                                                : AppColor.grey
+                                                                      .withAlpha(
+                                                                        (0.4 * 255)
+                                                                            .round(),
+                                                                      ),
+                                                            textStyle:
+                                                                AppText.bodySmall,
+                                                          ),
+                                                        ),
+                                                      ],
                                                     );
                                                   },
                                                 )
