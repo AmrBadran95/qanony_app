@@ -181,7 +181,7 @@ class WeeklyCalendarWidget extends StatelessWidget {
                       IconButton(
                         icon: Icon(
                           Icons.delete,
-                          color: AppColor.primary,
+                          color: AppColor.error,
                           size: 24.sp,
                         ),
                         onPressed: () =>

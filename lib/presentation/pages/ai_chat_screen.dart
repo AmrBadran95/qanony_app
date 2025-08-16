@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/padding.dart';
 import 'package:qanony/core/styles/text.dart';
@@ -25,14 +26,9 @@ class AiChatScreen extends StatelessWidget {
               right: MediaQuery.of(context).size.width * 0.01,
               bottom: MediaQuery.of(context).size.height * 0.01,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "مساعدك القانوني الذكي",
-                  style: AppText.title.copyWith(color: AppColor.light),
-                ),
-              ],
+            child: Text(
+              "مساعدك القانوني الذكي",
+              style: AppText.title.copyWith(color: AppColor.light),
             ),
           ),
         ),
@@ -52,10 +48,10 @@ class AiChatScreen extends StatelessWidget {
                 children: [
                   Text(
                     "مسح المحادثة",
-                    style: AppText.bodySmall.copyWith(color: AppColor.primary),
+                    style: AppText.bodySmall.copyWith(color: AppColor.error),
                   ),
                   SizedBox(width: MediaQuery.of(context).size.width * .02),
-                  Icon(Icons.delete, size: 20, color: AppColor.primary),
+                  Icon(Icons.delete, size: 20, color: AppColor.error),
                 ],
               ),
             ),
@@ -130,69 +126,86 @@ class AiChatScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: MediaQuery.of(context).size.height * .02),
-            Row(
-              children: [
-                BlocBuilder<GeminiCubit, GeminiState>(
-                  builder: (context, state) {
-                    return IconButton(
-                      icon: state is GeminiLoading
-                          ? const SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: CircularProgressIndicator(
-                                color: AppColor.dark,
-                              ),
-                            )
-                          : const Icon(
-                              Icons.keyboard_arrow_right_sharp,
-                              size: 40,
-                              color: AppColor.dark,
-                            ),
-                      onPressed: state is GeminiLoading
-                          ? null
-                          : () {
-                              final prompt = controller.text.trim();
-                              if (prompt.isNotEmpty) {
-                                messages.add(
-                                  ChatMessage(
-                                    role: ChatRole.user,
-                                    content: prompt,
+            Padding(
+              padding: AppPadding.verticalMedium,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  BlocBuilder<GeminiCubit, GeminiState>(
+                    builder: (context, state) {
+                      return SizedBox(
+                        height: 60.h,
+                        width: 60.w,
+                        child: Center(
+                          child: state is GeminiLoading
+                              ? SizedBox(
+                                  height: 24.r,
+                                  width: 24.r,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2.w,
+                                    color: AppColor.dark,
                                   ),
-                                );
-                                controller.clear();
-                                context.read<GeminiCubit>().sendPrompt(prompt);
-                              }
-                            },
-                    );
-                  },
-                ),
-                Expanded(
-                  child: TextField(
-                    maxLength: 1000,
-                    controller: controller,
-                    style: AppText.bodyLarge.copyWith(color: AppColor.dark),
-                    cursorColor: AppColor.dark,
-                    decoration: InputDecoration(
-                      hintText: "اكتب سؤالك...",
-                      hintStyle: AppText.bodyLarge.copyWith(
-                        color: AppColor.dark,
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColor.dark),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColor.dark),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColor.dark),
-                        borderRadius: BorderRadius.circular(30),
+                                )
+                              : IconButton(
+                                  icon: Icon(
+                                    Icons.keyboard_arrow_right_sharp,
+                                    size: 40.sp,
+                                    color: AppColor.dark,
+                                  ),
+                                  onPressed: state is GeminiLoading
+                                      ? null
+                                      : () {
+                                          final prompt = controller.text.trim();
+                                          if (prompt.isNotEmpty) {
+                                            messages.add(
+                                              ChatMessage(
+                                                role: ChatRole.user,
+                                                content: prompt,
+                                              ),
+                                            );
+                                            controller.clear();
+                                            context
+                                                .read<GeminiCubit>()
+                                                .sendPrompt(prompt);
+                                          }
+                                        },
+                                ),
+                        ),
+                      );
+                    },
+                  ),
+                  Expanded(
+                    child: TextField(
+                      maxLength: 1000,
+                      controller: controller,
+                      style: AppText.bodyLarge.copyWith(color: AppColor.dark),
+                      cursorColor: AppColor.dark,
+                      decoration: InputDecoration(
+                        hintText: "اكتب سؤالك...",
+                        hintStyle: AppText.bodyLarge.copyWith(
+                          color: AppColor.dark,
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: AppColor.dark),
+                          borderRadius: BorderRadius.circular(30.r),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColor.dark,
+                            width: 1.5.w,
+                          ),
+                          borderRadius: BorderRadius.circular(30.r),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: AppColor.dark),
+                          borderRadius: BorderRadius.circular(30.r),
+                        ),
+                        counterText: "",
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

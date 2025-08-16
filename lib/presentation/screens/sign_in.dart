@@ -91,7 +91,7 @@ class SignInScreen extends StatelessWidget {
                       content: Text(
                         state.message,
                         style: AppText.bodySmall.copyWith(
-                          color: AppColor.primary,
+                          color: AppColor.error,
                         ),
                       ),
                       backgroundColor: AppColor.grey,

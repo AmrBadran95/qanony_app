@@ -32,7 +32,7 @@ class MultiStepperForm extends StatelessWidget {
             SnackBar(
               content: Text(
                 'يرجى تعبئة جميع الحقول المطلوبة',
-                style: AppText.bodySmall.copyWith(color: AppColor.primary),
+                style: AppText.bodySmall.copyWith(color: AppColor.error),
               ),
               backgroundColor: AppColor.grey,
             ),
@@ -75,7 +75,7 @@ class MultiStepperForm extends StatelessWidget {
                       onTap: details.onStepCancel ?? () {},
                       width: 120.w,
                       height: 50.h,
-                      backgroundColor: AppColor.primary,
+                      backgroundColor: AppColor.error,
                       textStyle: AppText.bodySmall.copyWith(
                         color: AppColor.light,
                       ),

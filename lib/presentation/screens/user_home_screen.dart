@@ -64,7 +64,7 @@ class UserHomeScreen extends StatelessWidget {
                                 Container(
                                   width: double.infinity,
                                   color: AppColor.dark.withAlpha(
-                                    (0.5 * 255).round(),
+                                    (0.9 * 255).round(),
                                   ),
                                   child: Column(
                                     crossAxisAlignment:
@@ -119,7 +119,7 @@ class UserHomeScreen extends StatelessWidget {
                   width: double.infinity,
 
                   decoration: BoxDecoration(
-                    color: AppColor.dark.withAlpha((0.6 * 255).round()),
+                    color: AppColor.dark.withAlpha((0.9 * 255).round()),
                     image: DecorationImage(
                       image: AssetImage('assets/images/image.png'),
                       fit: BoxFit.cover,
@@ -128,7 +128,7 @@ class UserHomeScreen extends StatelessWidget {
                   child: Container(
                     width: double.infinity,
                     padding: AppPadding.paddingMedium,
-                    color: AppColor.dark.withAlpha((0.3 * 255).round()),
+                    color: AppColor.dark.withAlpha((0.7 * 255).round()),
                     child: Row(
                       textDirection: TextDirection.rtl,
                       children: [
@@ -143,7 +143,7 @@ class UserHomeScreen extends StatelessWidget {
                         ),
                         SizedBox(width: 10.w),
                         Icon(
-                          Icons.chat_outlined,
+                          Icons.smart_toy_outlined,
                           size: 60.sp,
                           color: AppColor.light,
                         ),
@@ -246,7 +246,6 @@ class UserHomeScreen extends StatelessWidget {
                                       ),
                                       SizedBox(height: 4.h),
 
-                                      // ⭐ تقييم فعلي
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,

@@ -149,7 +149,7 @@ void showBookingForm({
                                       child: Text(
                                         formFieldState.errorText!,
                                         style: AppText.bodySmall.copyWith(
-                                          color: AppColor.primary,
+                                          color: AppColor.error,
                                         ),
                                         textDirection: TextDirection.rtl,
                                       ),
@@ -209,7 +209,7 @@ void showBookingForm({
                                               content: Text(
                                                 "يرجى اختيار نوع التخصص",
                                               ),
-                                              backgroundColor: AppColor.primary,
+                                              backgroundColor: AppColor.error,
                                             ),
                                           );
                                           return;

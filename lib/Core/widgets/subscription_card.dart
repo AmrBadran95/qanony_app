@@ -39,7 +39,7 @@ class SubscriptionCard extends StatelessWidget {
           Container(
             padding: AppPadding.paddingSmall,
             decoration: BoxDecoration(
-              color: AppColor.grey.withAlpha((0.8 * 255).round()),
+              color: AppColor.grey.withAlpha((0.7 * 255).round()),
               borderRadius: BorderRadius.circular(5),
               border: Border.all(color: AppColor.primary, width: 2.w),
             ),
@@ -104,18 +104,11 @@ class SubscriptionCard extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 4.h),
-                      ShaderMask(
-                        shaderCallback: (bounds) => const LinearGradient(
-                          colors: [AppColor.dark, AppColor.darkgrey],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ).createShader(bounds),
-                        child: Text(
-                          priceText,
-                          style: AppText.bodySmall.copyWith(
-                            color: AppColor.light,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      Text(
+                        priceText,
+                        style: AppText.bodySmall.copyWith(
+                          color: AppColor.dark,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],

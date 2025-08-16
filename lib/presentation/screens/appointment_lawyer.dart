@@ -44,7 +44,7 @@ class AppointmentLawyer extends StatelessWidget {
                       child: Text(
                         "إلغاء",
                         style: AppText.labelLarge.copyWith(
-                          color: AppColor.primary,
+                          color: AppColor.error,
                         ),
                       ),
                     ),

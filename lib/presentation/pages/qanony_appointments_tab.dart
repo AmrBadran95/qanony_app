@@ -33,7 +33,7 @@ class QanonyAppointmentsTab extends StatelessWidget {
             return Center(
               child: Text(
                 "حدث خطأ: ${state.message}",
-                style: AppText.bodySmall.copyWith(color: AppColor.primary),
+                style: AppText.bodySmall.copyWith(color: AppColor.error),
               ),
             );
           } else if (state is QanonyAppointmentsLoaded) {
@@ -43,7 +43,7 @@ class QanonyAppointmentsTab extends StatelessWidget {
               return Center(
                 child: Text(
                   "لا توجد مواعيد حالياً",
-                  style: AppText.bodyMedium.copyWith(color: AppColor.primary),
+                  style: AppText.bodyMedium.copyWith(color: AppColor.error),
                 ),
               );
             }

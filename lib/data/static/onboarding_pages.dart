@@ -3,7 +3,7 @@ import 'package:qanony/Core/widgets/onboarding_screen.dart';
 
 final List<Widget> onboardingPages = [
   OnboardingPage(
-    text: 'أهلاً بك في دستورى',
+    text: 'أهلاً بك في قانوني',
     imagePath: 'assets/images/p1.png',
     paragraph:
         "منصتك القانونية الذكية. سواء كنت محامٍ أو باحث عن استشارة، كل الحلول القانونية بين إيديك",

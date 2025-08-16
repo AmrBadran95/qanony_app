@@ -157,7 +157,7 @@ class LawyerBaseScreen extends StatelessWidget {
             onPressed: () => Navigator.pop(context),
             child: Text(
               'إلغاء',
-              style: AppText.bodyMedium.copyWith(color: AppColor.primary),
+              style: AppText.bodyMedium.copyWith(color: AppColor.error),
             ),
           ),
           ElevatedButton(

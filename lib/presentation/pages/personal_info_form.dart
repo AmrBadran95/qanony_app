@@ -88,7 +88,7 @@ class PersonalInfoForm extends StatelessWidget {
                             ),
                           ),
                           errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: AppColor.primary),
+                            borderSide: BorderSide(color: AppColor.error),
                           ),
                           focusedErrorBorder: OutlineInputBorder(
                             borderSide: BorderSide(
@@ -119,7 +119,7 @@ class PersonalInfoForm extends StatelessWidget {
                       child: Text(
                         state.errorText!,
                         style: AppText.bodySmall.copyWith(
-                          color: AppColor.primary,
+                          color: AppColor.error,
                         ),
                       ),
                     ),
@@ -183,7 +183,7 @@ class PersonalInfoForm extends StatelessWidget {
                           child: Text(
                             state.errorText!,
                             style: AppText.bodySmall.copyWith(
-                              color: AppColor.primary,
+                              color: AppColor.error,
                             ),
                           ),
                         ),
@@ -248,7 +248,7 @@ class PersonalInfoForm extends StatelessWidget {
                       child: Text(
                         state.errorText!,
                         style: AppText.bodySmall.copyWith(
-                          color: AppColor.primary,
+                          color: AppColor.error,
                         ),
                       ),
                     ),
@@ -355,7 +355,7 @@ class PersonalInfoForm extends StatelessWidget {
                             child: Text(
                               state.errorText!,
                               style: AppText.bodySmall.copyWith(
-                                color: AppColor.primary,
+                                color: AppColor.error,
                               ),
                             ),
                           ),

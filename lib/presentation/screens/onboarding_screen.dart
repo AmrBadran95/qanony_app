@@ -26,7 +26,6 @@ class OnboardingScreen extends StatelessWidget {
         }
       },
       child: Scaffold(
-        backgroundColor: AppColor.primary,
         body: Stack(
           children: [
             IntroductionScreen(

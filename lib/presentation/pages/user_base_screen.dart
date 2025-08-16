@@ -148,7 +148,7 @@ class UserBaseScreen extends StatelessWidget {
                               child: Text(
                                 'إلغاء',
                                 style: AppText.bodyMedium.copyWith(
-                                  color: AppColor.primary,
+                                  color: AppColor.error,
                                 ),
                               ),
                             ),
