@@ -58,15 +58,18 @@ class LawyerScheduleCubit extends Cubit<LawyerScheduleState> {
               confirmButtonStyle: ButtonStyle(
                 foregroundColor: WidgetStatePropertyAll(AppColor.green),
               ),
-              dayPeriodColor: AppColor.secondary,
+              cancelButtonStyle: ButtonStyle(
+                foregroundColor: WidgetStatePropertyAll(AppColor.error),
+              ),
+              dayPeriodColor: AppColor.primary,
               backgroundColor: AppColor.grey, // خلفية الدايلوج
-              hourMinuteTextColor: AppColor.light, // لون الأرقام
+              hourMinuteTextColor: AppColor.dark, // لون الأرقام
               dialHandColor: AppColor.primary, // لون عقرب الاختيار
-              dialBackgroundColor: AppColor.secondary, // خلفية الدائرة
-              dialTextColor: AppColor.light, // لون الأرقام داخل الدائرة
-              entryModeIconColor: AppColor.dark, // لون أيقونة الكتابة
+              dialBackgroundColor: AppColor.light, // خلفية الدائرة
+              dialTextColor: AppColor.dark, // لون الأرقام داخل الدائرة
+              entryModeIconColor: AppColor.primary, // لون أيقونة الكتابة
             ),
-            colorScheme: const ColorScheme.dark(
+            colorScheme: const ColorScheme.light(
               primary: AppColor.primary, // لون الساعة المختارة والزراير
               onSurface: AppColor.secondary, // لون النصوص العادية
             ),

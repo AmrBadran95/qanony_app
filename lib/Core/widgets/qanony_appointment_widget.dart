@@ -17,7 +17,6 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
   final DateTime orderdate;
   final String orderId;
 
-
   final List<Widget>? children;
 
   const QanonyAppointmentCardWidget({
@@ -71,9 +70,7 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
                       return const SizedBox.shrink();
                     }
 
-
                     return Expanded(
-
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -86,7 +83,7 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
                               child: Icon(
                                 Icons.delete,
                                 size: 24.sp,
-                                color: AppColor.primary,
+                                color: AppColor.error,
                               ),
                             ),
                           ),

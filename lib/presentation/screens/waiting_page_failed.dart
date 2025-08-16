@@ -51,9 +51,7 @@ class WaitingPageFailed extends StatelessWidget {
                   return Center(
                     child: Text(
                       'حدث خطأ أثناء جلب البيانات',
-                      style: AppText.bodyLarge.copyWith(
-                        color: AppColor.primary,
-                      ),
+                      style: AppText.bodyLarge.copyWith(color: AppColor.error),
                     ),
                   );
                 }
@@ -71,7 +69,7 @@ class WaitingPageFailed extends StatelessWidget {
                         child: Text(
                           'عملية غير ناجحة!',
                           style: AppText.headingMedium.copyWith(
-                            color: AppColor.primary,
+                            color: AppColor.error,
                           ),
                         ),
                       ),
@@ -122,7 +120,7 @@ class WaitingPageFailed extends StatelessWidget {
                         },
                         width: double.infinity,
                         height: 60.h,
-                        backgroundColor: AppColor.primary,
+                        backgroundColor: AppColor.error,
                         textStyle: AppText.bodyMedium.copyWith(
                           color: AppColor.light,
                           fontSize: width * 0.045,

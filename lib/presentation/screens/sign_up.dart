@@ -93,7 +93,7 @@ class SignUpScreen extends StatelessWidget {
               SnackBar(
                 content: Text(
                   state.message,
-                  style: AppText.bodySmall.copyWith(color: AppColor.primary),
+                  style: AppText.bodySmall.copyWith(color: AppColor.error),
                 ),
                 backgroundColor: AppColor.grey,
               ),
@@ -115,7 +115,7 @@ class SignUpScreen extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(height: 40.h,),
+                          SizedBox(height: 40.h),
                           Text(
                             'مرحباً , سجل للانضمام إلينا',
                             style: AppText.headingMedium.copyWith(
@@ -128,7 +128,7 @@ class SignUpScreen extends StatelessWidget {
                             child: Column(
                               children: [
                                 CustomTextFormField(
-                                  logo:  Icon(
+                                  logo: Icon(
                                     Icons.email_outlined,
                                     color: AppColor.dark,
                                     size: 24.sp,
@@ -148,9 +148,9 @@ class SignUpScreen extends StatelessWidget {
                                   keyboardType: TextInputType.emailAddress,
                                   validator: AppValidators.validateEmail,
                                 ),
-                                 SizedBox(height: 20.h),
+                                SizedBox(height: 20.h),
                                 CustomTextFormField(
-                                  logo:  Icon(
+                                  logo: Icon(
                                     Icons.phone,
                                     color: AppColor.dark,
                                     size: 24.sp,
@@ -172,7 +172,7 @@ class SignUpScreen extends StatelessWidget {
                                 ),
                                 SizedBox(height: 20.h),
                                 CustomTextFormField(
-                                  logo:  Icon(
+                                  logo: Icon(
                                     Icons.visibility_off,
                                     color: AppColor.dark,
                                     size: 24.sp,
@@ -194,9 +194,9 @@ class SignUpScreen extends StatelessWidget {
                                   keyboardType: TextInputType.visiblePassword,
                                   validator: AppValidators.validatePassword,
                                 ),
-                                 SizedBox(height: 20.h),
+                                SizedBox(height: 20.h),
                                 CustomTextFormField(
-                                  logo:  Icon(
+                                  logo: Icon(
                                     Icons.visibility_off,
                                     color: AppColor.dark,
                                     size: 24.sp,
@@ -224,7 +224,7 @@ class SignUpScreen extends StatelessWidget {
                                             .text,
                                       ),
                                 ),
-                                 SizedBox(height: 30.h),
+                                SizedBox(height: 30.h),
                                 CustomButton(
                                   text: isLoading
                                       ? '...جارٍ تسجيل الحساب'
@@ -243,10 +243,11 @@ class SignUpScreen extends StatelessWidget {
                                     }
                                   },
                                   width: double.infinity,
-                                  height: 50.sp,
+                                  height: 50.h,
                                   backgroundColor: AppColor.primary,
-                                  textStyle: AppText.title.copyWith(
+                                  textStyle: AppText.bodyMedium.copyWith(
                                     color: AppColor.light,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ],
@@ -257,7 +258,9 @@ class SignUpScreen extends StatelessWidget {
                             child: Text.rich(
                               TextSpan(
                                 text: 'هل لديك حساب؟ ',
-                                style: AppText.bodySmall.copyWith(color:AppColor.dark),
+                                style: AppText.bodySmall.copyWith(
+                                  color: AppColor.dark,
+                                ),
 
                                 children: [
                                   TextSpan(

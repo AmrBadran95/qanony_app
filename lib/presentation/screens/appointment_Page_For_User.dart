@@ -121,9 +121,6 @@ class AppointmentPageForUser extends StatelessWidget {
 
                                   final lawyer = snapshot.data!;
 
-
-
-
                                   return Card(
                                     margin: EdgeInsets.only(
                                       bottom:
@@ -206,38 +203,47 @@ class AppointmentPageForUser extends StatelessWidget {
                                                         direction:
                                                             Axis.horizontal,
                                                       ),
-                                                      data.status==OrderStatus.paymentDone?
-                                                        StreamBuilder<bool>(
-                                                        stream: TimeStreamUtils.timeToJoinStream(data.date,1),
-                                                        builder: (context, snapshot) {
-
-                                                          final isTimeToJoin = snapshot.data ?? false;
-                                                          if (!isTimeToJoin) {
-                                                            return SizedBox.shrink();
-                                                          }
-                                                        return IconButton(
-                                                    icon: Icon(
-                                                      Icons.rate_review,
-                                                      color: AppColor
-                                                          .secondary,
-                                                      size: 24.sp,
-                                                    ),
-                                                    onPressed: () async {
-                                                      showDialog(
-                                                        context: context,
-                                                        builder: (_) =>
-                                                            RatingDialog(
-                                                              userId:
-                                                              userId,
-                                                              lawyerId: data
-                                                                  .lawyerId,
-                                                            ),
-                                                      );
-                                                    },
-                                                  );
-                                                       }) :
-                                                      SizedBox.shrink(),
-
+                                                      data.status ==
+                                                              OrderStatus
+                                                                  .paymentDone
+                                                          ? StreamBuilder<bool>(
+                                                              stream:
+                                                                  TimeStreamUtils.timeToJoinStream(
+                                                                    data.date,
+                                                                    1,
+                                                                  ),
+                                                              builder: (context, snapshot) {
+                                                                final isTimeToJoin =
+                                                                    snapshot
+                                                                        .data ??
+                                                                    false;
+                                                                if (!isTimeToJoin) {
+                                                                  return SizedBox.shrink();
+                                                                }
+                                                                return IconButton(
+                                                                  icon: Icon(
+                                                                    Icons
+                                                                        .rate_review,
+                                                                    color: AppColor
+                                                                        .secondary,
+                                                                    size: 24.sp,
+                                                                  ),
+                                                                  onPressed: () async {
+                                                                    showDialog(
+                                                                      context:
+                                                                          context,
+                                                                      builder: (_) => RatingDialog(
+                                                                        userId:
+                                                                            userId,
+                                                                        lawyerId:
+                                                                            data.lawyerId,
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                );
+                                                              },
+                                                            )
+                                                          : SizedBox.shrink(),
                                                     ],
                                                   );
                                                 },
@@ -409,65 +415,86 @@ class AppointmentPageForUser extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-                                              data.status==OrderStatus.rejectedByLawyer||data.status==OrderStatus.paymentRejected ?
-                                              Expanded(
-
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.end,
-                                                  children: [
-                                                    Padding(
-                                                      padding: AppPadding.paddingSmall,
-                                                      child: GestureDetector(
-                                                        onTap: () {
-                                                          orderService.deleteOrder(data.orderId);
-                                                        },
-                                                        child: Icon(
-                                                          Icons.delete,
-                                                          size: 24.sp,
-                                                          color: AppColor.primary,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-
-                                                ),
-                                              )
-                                              : data.status==OrderStatus.paymentDone?
-                                              StreamBuilder<bool>(
-                                                stream: TimeStreamUtils.canDeleteAfterSession(data.date, 2),
-                                                builder: (context, snapshot) {
-                                                  final canDelete = snapshot.data ?? false;
-                                                  if (!canDelete) {
-                                                    return SizedBox.shrink();
-                                                  }
-
-
-                                                  return Expanded(
-
-                                                    child: Row(
-                                                      mainAxisAlignment: MainAxisAlignment.end,
-                                                      children: [
-                                                        Padding(
-                                                          padding: AppPadding.paddingSmall,
-                                                          child: GestureDetector(
-                                                            onTap: () {
-                                                              orderService.deleteOrder(data.orderId);
-                                                            },
-                                                            child: Icon(
-                                                              Icons.delete,
-                                                              size: 24.sp,
-                                                              color: AppColor.primary,
+                                              data.status ==
+                                                          OrderStatus
+                                                              .rejectedByLawyer ||
+                                                      data.status ==
+                                                          OrderStatus
+                                                              .paymentRejected
+                                                  ? Expanded(
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          Padding(
+                                                            padding: AppPadding
+                                                                .paddingSmall,
+                                                            child: GestureDetector(
+                                                              onTap: () {
+                                                                orderService
+                                                                    .deleteOrder(
+                                                                      data.orderId,
+                                                                    );
+                                                              },
+                                                              child: Icon(
+                                                                Icons.delete,
+                                                                size: 24.sp,
+                                                                color: AppColor
+                                                                    .error,
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
-                                                      ],
+                                                        ],
+                                                      ),
+                                                    )
+                                                  : data.status ==
+                                                        OrderStatus.paymentDone
+                                                  ? StreamBuilder<bool>(
+                                                      stream:
+                                                          TimeStreamUtils.canDeleteAfterSession(
+                                                            data.date,
+                                                            2,
+                                                          ),
+                                                      builder: (context, snapshot) {
+                                                        final canDelete =
+                                                            snapshot.data ??
+                                                            false;
+                                                        if (!canDelete) {
+                                                          return SizedBox.shrink();
+                                                        }
 
-                                                    ),
-                                                  );
-                                                },
-                                              ) :
-                                              SizedBox.shrink(),
-
+                                                        return Expanded(
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Padding(
+                                                                padding: AppPadding
+                                                                    .paddingSmall,
+                                                                child: GestureDetector(
+                                                                  onTap: () {
+                                                                    orderService
+                                                                        .deleteOrder(
+                                                                          data.orderId,
+                                                                        );
+                                                                  },
+                                                                  child: Icon(
+                                                                    Icons
+                                                                        .delete,
+                                                                    size: 24.sp,
+                                                                    color: AppColor
+                                                                        .error,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        );
+                                                      },
+                                                    )
+                                                  : SizedBox.shrink(),
                                             ],
                                           ),
                                           SizedBox(
@@ -575,7 +602,7 @@ class AppointmentPageForUser extends StatelessWidget {
                                                           ).size.height *
                                                           0.04,
                                                       backgroundColor:
-                                                          AppColor.primary,
+                                                          AppColor.error,
                                                       textStyle:
                                                           AppText.bodySmall,
                                                     ),
@@ -600,7 +627,11 @@ class AppointmentPageForUser extends StatelessWidget {
                                                     data.contactMethod ==
                                                         "محادثة فيديو/صوت"
                                               ? StreamBuilder<bool>(
-                                                  stream: TimeStreamUtils.timeToJoinStream(data.date,1),
+                                                  stream:
+                                                      TimeStreamUtils.timeToJoinStream(
+                                                        data.date,
+                                                        1,
+                                                      ),
                                                   builder: (context, snapshot) {
                                                     final isTimeToJoin =
                                                         snapshot.data ?? false;
@@ -609,7 +640,8 @@ class AppointmentPageForUser extends StatelessWidget {
                                                       children: [
                                                         Expanded(
                                                           child: CustomButton(
-                                                            text: "انضم الى الجلسة",
+                                                            text:
+                                                                "انضم الى الجلسة",
                                                             onTap: isTimeToJoin
                                                                 ? () async {
                                                                     await ZegoUIKitPrebuiltCallInvitationService().send(
@@ -646,8 +678,8 @@ class AppointmentPageForUser extends StatelessWidget {
                                                                         (0.4 * 255)
                                                                             .round(),
                                                                       ),
-                                                            textStyle:
-                                                                AppText.bodySmall,
+                                                            textStyle: AppText
+                                                                .bodySmall,
                                                           ),
                                                         ),
                                                       ],
@@ -669,7 +701,10 @@ class AppointmentPageForUser extends StatelessWidget {
                   );
                 }
                 return Center(
-                  child: Text('لا توجد طلبات حالياً', style: AppText.bodySmall),
+                  child: Text(
+                    'لا توجد طلبات حالياً',
+                    style: AppText.bodySmall.copyWith(color: AppColor.dark),
+                  ),
                 );
               },
             ),

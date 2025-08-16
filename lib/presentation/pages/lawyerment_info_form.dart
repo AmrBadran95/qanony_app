@@ -91,7 +91,7 @@ class LawyermentInfoForm extends StatelessWidget {
                               child: Text(
                                 state.errorText!,
                                 style: AppText.bodySmall.copyWith(
-                                  color: AppColor.primary,
+                                  color: AppColor.error,
                                 ),
                               ),
                             ),
@@ -159,7 +159,7 @@ class LawyermentInfoForm extends StatelessWidget {
                                 child: Text(
                                   "إلغاء",
                                   style: AppText.bodyMedium.copyWith(
-                                    color: AppColor.dark,
+                                    color: AppColor.error,
                                   ),
                                 ),
                                 onPressed: () =>
@@ -169,7 +169,7 @@ class LawyermentInfoForm extends StatelessWidget {
                                 child: Text(
                                   "تم",
                                   style: AppText.bodyMedium.copyWith(
-                                    color: AppColor.dark,
+                                    color: AppColor.green,
                                   ),
                                 ),
                                 onPressed: () =>
@@ -206,7 +206,7 @@ class LawyermentInfoForm extends StatelessWidget {
                             label: "التخصصات",
                             contentPadding: AppPadding.paddingMedium,
                             backgroundColor: AppColor.grey,
-                            textStyle: AppText.bodyLarge.copyWith(
+                            textStyle: AppText.bodyMedium.copyWith(
                               color: AppColor.dark,
                             ),
                             labelStyle: AppText.bodyLarge.copyWith(
@@ -219,7 +219,7 @@ class LawyermentInfoForm extends StatelessWidget {
                               child: Text(
                                 state.errorText!,
                                 style: AppText.bodySmall.copyWith(
-                                  color: AppColor.primary,
+                                  color: AppColor.error,
                                 ),
                               ),
                             ),
@@ -330,7 +330,7 @@ class LawyermentInfoForm extends StatelessWidget {
                           Text(
                             state.errorText!,
                             style: AppText.bodySmall.copyWith(
-                              color: AppColor.primary,
+                              color: AppColor.error,
                             ),
                           ),
                       ],

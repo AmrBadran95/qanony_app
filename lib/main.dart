@@ -110,7 +110,7 @@ class QanonyApp extends StatelessWidget {
               borderSide: BorderSide(color: AppColor.dark, width: 2),
             ),
             errorBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: AppColor.primary),
+              borderSide: BorderSide(color: AppColor.error),
             ),
             focusedErrorBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: AppColor.dark, width: 2),

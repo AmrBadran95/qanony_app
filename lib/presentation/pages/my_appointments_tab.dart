@@ -109,7 +109,7 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
                                   : '  التاريخ: ${DateFormat('dd/MM/yyyy - hh:mm a', 'ar').format(selectedDate!)}',
                               style: selectedDate == null
                                   ? AppText.bodySmall.copyWith(
-                                      color: AppColor.primary,
+                                      color: AppColor.error,
                                     )
                                   : AppText.bodyMedium.copyWith(
                                       color: AppColor.dark,
@@ -142,7 +142,7 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
                                       textButtonTheme: TextButtonThemeData(
                                         style: TextButton.styleFrom(
                                           foregroundColor: AppColor.dark,
-                                          textStyle: AppText.bodyMedium,
+                                          textStyle: AppText.bodySmall,
                                         ),
                                       ),
                                     ),
@@ -158,29 +158,38 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
                                     builder: (context, child) {
                                       return Theme(
                                         data: Theme.of(context).copyWith(
-                                          timePickerTheme:
-                                              const TimePickerThemeData(
-                                                confirmButtonStyle: ButtonStyle(
-                                                  foregroundColor:
-                                                      WidgetStatePropertyAll(
-                                                        AppColor.green,
-                                                      ),
-                                                ),
-                                                dayPeriodColor:
-                                                    AppColor.secondary,
-                                                backgroundColor: AppColor.grey,
-                                                hourMinuteTextColor:
-                                                    AppColor.light,
-                                                dialHandColor: AppColor.primary,
-                                                dialBackgroundColor:
-                                                    AppColor.secondary,
-                                                dialTextColor: AppColor.light,
-                                                entryModeIconColor:
-                                                    AppColor.dark,
-                                              ),
-                                          colorScheme: const ColorScheme.dark(
-                                            primary: AppColor.primary,
-                                            onSurface: AppColor.secondary,
+                                          timePickerTheme: const TimePickerThemeData(
+                                            confirmButtonStyle: ButtonStyle(
+                                              foregroundColor:
+                                                  WidgetStatePropertyAll(
+                                                    AppColor.green,
+                                                  ),
+                                            ),
+                                            cancelButtonStyle: ButtonStyle(
+                                              foregroundColor:
+                                                  WidgetStatePropertyAll(
+                                                    AppColor.error,
+                                                  ),
+                                            ),
+                                            dayPeriodColor: AppColor.primary,
+                                            backgroundColor:
+                                                AppColor.grey, // خلفية الدايلوج
+                                            hourMinuteTextColor:
+                                                AppColor.dark, // لون الأرقام
+                                            dialHandColor: AppColor
+                                                .primary, // لون عقرب الاختيار
+                                            dialBackgroundColor:
+                                                AppColor.light, // خلفية الدائرة
+                                            dialTextColor: AppColor
+                                                .dark, // لون الأرقام داخل الدائرة
+                                            entryModeIconColor: AppColor
+                                                .primary, // لون أيقونة الكتابة
+                                          ),
+                                          colorScheme: const ColorScheme.light(
+                                            primary: AppColor
+                                                .primary, // لون الساعة المختارة والزراير
+                                            onSurface: AppColor
+                                                .secondary, // لون النصوص العادية
                                           ),
                                         ),
                                         child: child!,
@@ -217,7 +226,7 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
                   },
                   child: Text(
                     "إلغاء",
-                    style: AppText.bodyMedium.copyWith(color: AppColor.primary),
+                    style: AppText.bodySmall.copyWith(color: AppColor.error),
                   ),
                 ),
                 ElevatedButton(
@@ -249,7 +258,7 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
                   },
                   child: Text(
                     isEdit ? "تحديث" : "إضافة",
-                    style: AppText.bodyMedium.copyWith(color: AppColor.green),
+                    style: AppText.bodySmall.copyWith(color: AppColor.green),
                   ),
                 ),
               ],
@@ -293,7 +302,7 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
               return Center(
                 child: Text(
                   'حدث خطأ',
-                  style: AppText.bodyMedium.copyWith(color: AppColor.primary),
+                  style: AppText.bodyMedium.copyWith(color: AppColor.error),
                 ),
               );
             }
@@ -308,7 +317,7 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
               return Center(
                 child: Text(
                   "لا توجد مواعيد حالياً",
-                  style: AppText.bodyMedium.copyWith(color: AppColor.primary),
+                  style: AppText.bodyMedium.copyWith(color: AppColor.error),
                 ),
               );
             }

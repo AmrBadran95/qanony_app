@@ -79,9 +79,7 @@ class SplashScreen extends StatelessWidget {
                   Expanded(
                     child: Text(
                       "حدث خطأ ما. برجاء إعادة المحاولة",
-                      style: AppText.bodySmall.copyWith(
-                        color: AppColor.primary,
-                      ),
+                      style: AppText.bodySmall.copyWith(color: AppColor.error),
                     ),
                   ),
                 ],
@@ -121,7 +119,7 @@ class SplashScreen extends StatelessWidget {
               SizedBox(height: 20.h),
               Text(
                 "للمحـاماة و الأستشارات القانونية ",
-                style: AppText.bodySmall.copyWith(color: AppColor.secondary),
+                style: AppText.bodyLarge.copyWith(color: AppColor.secondary),
               ),
             ],
           ),

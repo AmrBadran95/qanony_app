@@ -33,7 +33,7 @@ class SubscriptionScreen extends StatelessWidget {
                 SnackBar(
                   content: Text(
                     "حدث خطأ: clientSecret غير متوفر",
-                    style: AppText.bodySmall.copyWith(color: AppColor.primary),
+                    style: AppText.bodySmall.copyWith(color: AppColor.error),
                   ),
                   backgroundColor: AppColor.grey,
                 ),
@@ -80,7 +80,7 @@ class SubscriptionScreen extends StatelessWidget {
                       content: Text(
                         'خطأ في Stripe: ${e.error.localizedMessage}',
                         style: AppText.bodySmall.copyWith(
-                          color: AppColor.primary,
+                          color: AppColor.error,
                         ),
                       ),
                       backgroundColor: AppColor.grey,
@@ -94,7 +94,7 @@ class SubscriptionScreen extends StatelessWidget {
                       content: Text(
                         'حدث خطأ أثناء الدفع',
                         style: AppText.bodySmall.copyWith(
-                          color: AppColor.primary,
+                          color: AppColor.error,
                         ),
                       ),
                       backgroundColor: AppColor.grey,
@@ -122,7 +122,7 @@ class SubscriptionScreen extends StatelessWidget {
               Container(
                 width: double.infinity,
                 height: double.infinity,
-                color: Colors.black54,
+                color: AppColor.dark.withAlpha((0.8 * 255).round()),
               ),
               SingleChildScrollView(
                 padding: EdgeInsets.symmetric(vertical: 48.sp),
@@ -137,13 +137,13 @@ class SubscriptionScreen extends StatelessWidget {
                             Text(
                               "Go Pro",
                               style: AppText.headingMedium.copyWith(
-                                color: AppColor.primary,
+                                color: AppColor.secondary,
                               ),
                             ),
                             SizedBox(width: 8.sp),
                             Icon(
                               Icons.star_rounded,
-                              color: AppColor.primary,
+                              color: AppColor.secondary,
                               size: MediaQuery.of(context).size.width * 0.1,
                             ),
                           ],
@@ -154,7 +154,7 @@ class SubscriptionScreen extends StatelessWidget {
                         Text(
                           "اختر نظام الاشتراك المناسب لك",
                           style: AppText.title.copyWith(
-                            color: AppColor.primary,
+                            color: AppColor.secondary,
                           ),
                         ),
                       ],
@@ -169,7 +169,7 @@ class SubscriptionScreen extends StatelessWidget {
                                 content: Text(
                                   'يجب تسجيل الدخول أولاً',
                                   style: AppText.bodySmall.copyWith(
-                                    color: AppColor.primary,
+                                    color: AppColor.error,
                                   ),
                                 ),
                                 backgroundColor: AppColor.grey,
@@ -215,7 +215,7 @@ class SubscriptionScreen extends StatelessWidget {
                                 content: Text(
                                   'يجب تسجيل الدخول أولاً',
                                   style: AppText.bodySmall.copyWith(
-                                    color: AppColor.primary,
+                                    color: AppColor.error,
                                   ),
                                 ),
                                 backgroundColor: AppColor.grey,
@@ -261,7 +261,7 @@ class SubscriptionScreen extends StatelessWidget {
                                 content: Text(
                                   'يجب تسجيل الدخول أولاً',
                                   style: AppText.bodySmall.copyWith(
-                                    color: AppColor.primary,
+                                    color: AppColor.error,
                                   ),
                                 ),
                                 backgroundColor: AppColor.grey,

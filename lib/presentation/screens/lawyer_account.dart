@@ -15,6 +15,7 @@ import 'package:qanony/presentation/screens/subscription_screen.dart';
 import 'package:qanony/services/auth/auth_service.dart';
 import 'package:qanony/services/cubits/lawyer_info/lawyer_info_cubit.dart';
 import 'package:qanony/services/firestore/lawyer_firestore_service.dart';
+import 'package:qanony/services/validators/signin_signup_validators.dart';
 
 class AccountLawyerScreen extends StatefulWidget {
   const AccountLawyerScreen({super.key});
@@ -332,7 +333,9 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   controller: phoneController,
+                  validator: AppValidators.validatePhone,
                   decoration: InputDecoration(
                     labelText: 'رقم الهاتف',
                     labelStyle: AppText.bodyLarge.copyWith(
@@ -342,7 +345,10 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
                   style: AppText.bodyMedium.copyWith(color: AppColor.dark),
                   keyboardType: TextInputType.phone,
                 ),
+                SizedBox(height: 10.h),
                 TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: AppValidators.validateEmail,
                   controller: emailController,
                   decoration: InputDecoration(
                     labelText: 'البريد الالكتروني',
@@ -353,7 +359,7 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
                   style: AppText.bodyMedium.copyWith(color: AppColor.dark),
                   keyboardType: TextInputType.emailAddress,
                 ),
-
+                SizedBox(height: 10.h),
                 DropdownButtonFormField<String>(
                   dropdownColor: AppColor.grey,
                   value: selectedGovernorate.isNotEmpty
@@ -388,7 +394,7 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
               onPressed: () => Navigator.pop(context),
               child: Text(
                 'إلغاء',
-                style: AppText.bodySmall.copyWith(color: AppColor.primary),
+                style: AppText.bodySmall.copyWith(color: AppColor.error),
               ),
             ),
             ElevatedButton(
@@ -460,7 +466,7 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
                   onPressed: () => Navigator.pop(context),
                   child: Text(
                     'إلغاء',
-                    style: AppText.bodySmall.copyWith(color: AppColor.primary),
+                    style: AppText.bodySmall.copyWith(color: AppColor.error),
                   ),
                 ),
                 ElevatedButton(
@@ -511,7 +517,7 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
               onPressed: () => Navigator.pop(context),
               child: Text(
                 'إلغاء',
-                style: AppText.bodySmall.copyWith(color: AppColor.primary),
+                style: AppText.bodySmall.copyWith(color: AppColor.error),
               ),
             ),
             ElevatedButton(
@@ -622,7 +628,7 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
                   onPressed: () => Navigator.pop(context),
                   child: Text(
                     'إلغاء',
-                    style: AppText.bodyMedium.copyWith(color: AppColor.primary),
+                    style: AppText.bodySmall.copyWith(color: AppColor.error),
                   ),
                 ),
                 ElevatedButton(
@@ -645,7 +651,7 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
                   },
                   child: Text(
                     'حفظ',
-                    style: AppText.bodyMedium.copyWith(color: AppColor.green),
+                    style: AppText.bodySmall.copyWith(color: AppColor.green),
                   ),
                 ),
               ],
@@ -668,13 +674,10 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
               onPressed: () => Navigator.pop(context),
               child: const Text(
                 'إلغاء',
-                style: TextStyle(color: AppColor.dark),
+                style: TextStyle(color: AppColor.error),
               ),
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColor.primary,
-              ),
               onPressed: () async {
                 try {
                   await FirebaseFirestore.instance
@@ -696,14 +699,23 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
                   if (context.mounted) {
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('فشل حذف الحساب، حاول مرة أخرى.'),
+                      SnackBar(
+                        content: Text(
+                          'فشل حذف الحساب، حاول مرة أخرى.',
+                          style: AppText.bodySmall.copyWith(
+                            color: AppColor.error,
+                          ),
+                        ),
+                        backgroundColor: AppColor.grey,
                       ),
                     );
                   }
                 }
               },
-              child: const Text('حذف', style: TextStyle(color: AppColor.light)),
+              child: Text(
+                'حذف',
+                style: AppText.bodySmall.copyWith(color: AppColor.green),
+              ),
             ),
           ],
         );

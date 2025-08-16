@@ -43,7 +43,7 @@ class OrdersLawyerScreen extends StatelessWidget {
               return Center(
                 child: Text(
                   "لا توجد طلبات حالياً",
-                  style: AppText.bodyMedium.copyWith(color: AppColor.primary),
+                  style: AppText.bodyMedium.copyWith(color: AppColor.error),
                 ),
               );
             }
@@ -134,7 +134,7 @@ class OrdersLawyerScreen extends StatelessWidget {
                             },
                             width: buttonWidth,
                             height: buttonHeight,
-                            backgroundColor: AppColor.primary,
+                            backgroundColor: AppColor.error,
                             textStyle: AppText.bodyMedium,
                           ),
                         ],

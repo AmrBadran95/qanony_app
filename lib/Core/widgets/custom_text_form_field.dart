@@ -80,7 +80,7 @@ class CustomTextFormField extends StatelessWidget {
           prefixIcon: logo != null
               ? Padding(padding: const EdgeInsets.only(right: 32), child: logo)
               : null,
-          errorStyle: AppText.bodySmall.copyWith(color: AppColor.primary),
+          errorStyle: AppText.bodySmall.copyWith(color: AppColor.error),
         ),
       ),
     );

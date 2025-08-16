@@ -92,7 +92,7 @@ class MyAppointmentCardWidget extends StatelessWidget {
                     ),
                     IconButton(
                       onPressed: onDelete,
-                      icon: const Icon(Icons.delete, color: AppColor.primary),
+                      icon: const Icon(Icons.delete, color: AppColor.error),
                     ),
                   ],
                 ),

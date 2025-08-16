@@ -82,7 +82,7 @@ class CustomCalendar extends StatelessWidget {
                   textButtonTheme: TextButtonThemeData(
                     style: TextButton.styleFrom(
                       foregroundColor: AppColor.dark,
-                      textStyle: AppText.bodyMedium,
+                      textStyle: AppText.bodySmall,
                     ),
                   ),
                 ),
