@@ -401,11 +401,11 @@ class AppointmentPageForUser extends StatelessWidget {
                                                           : data.status ==
                                                                 OrderStatus
                                                                     .rejectedByLawyer
-                                                          ? AppColor.primary
+                                                          ? AppColor.error
                                                           : data.status ==
                                                                 OrderStatus
                                                                     .paymentRejected
-                                                          ? AppColor.primary
+                                                          ? AppColor.error
                                                           : data.status ==
                                                                 OrderStatus
                                                                     .paymentDone
