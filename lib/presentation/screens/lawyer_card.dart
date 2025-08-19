@@ -200,54 +200,61 @@ class LawyerScreen extends StatelessWidget {
                                   spacing: 8.sp,
                                   runSpacing: 8.sp,
                                   children: [
-                                    CustomButton(
-                                      padding: AppPadding.paddingSmall,
-                                      text: "محادثة فيديو/صوت",
-                                      textColor: AppColor.dark,
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                          0.055,
-                                      textStyle: AppText.bodySmall.copyWith(
-                                        color: AppColor.light,
-                                        fontWeight: FontWeight.bold,
+                                    if (lawyer.offersCall == true &&
+                                        lawyer.callPrice != null &&
+                                        lawyer.callPrice! > 0)
+                                      CustomButton(
+                                        padding: AppPadding.paddingSmall,
+                                        text: "محادثة فيديو/صوت",
+                                        textColor: AppColor.dark,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                            0.055,
+                                        textStyle: AppText.bodySmall.copyWith(
+                                          color: AppColor.light,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        onTap: () {
+                                          showAppointmentBottomSheet(
+                                            context: context,
+                                            appointments:
+                                                lawyer.availableAppointments,
+                                            bookingType: "محادثة فيديو/صوت",
+                                            price: lawyer.callPrice.toString(),
+                                            lawyerId: lawyerId,
+                                          );
+                                        },
+                                        backgroundColor: AppColor.secondary,
+                                        icon: Icons.photo_camera_front,
                                       ),
-                                      onTap: () {
-                                        showAppointmentBottomSheet(
-                                          context: context,
-                                          appointments:
-                                              lawyer.availableAppointments,
-                                          bookingType: "محادثة فيديو/صوت",
-                                          price: lawyer.callPrice.toString(),
-                                          lawyerId: lawyerId,
-                                        );
-                                      },
-                                      backgroundColor: AppColor.secondary,
-                                      icon: Icons.photo_camera_front,
-                                    ),
-                                    CustomButton(
-                                      padding: AppPadding.paddingSmall,
-                                      text: "حجز فى المكتب",
-                                      textColor: AppColor.dark,
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                          0.055,
-                                      textStyle: AppText.bodySmall.copyWith(
-                                        color: AppColor.light,
-                                        fontWeight: FontWeight.bold,
+                                    if (lawyer.offersOffice == true &&
+                                        lawyer.officePrice != null &&
+                                        lawyer.officePrice! > 0)
+                                      CustomButton(
+                                        padding: AppPadding.paddingSmall,
+                                        text: "حجز فى المكتب",
+                                        textColor: AppColor.dark,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                            0.055,
+                                        textStyle: AppText.bodySmall.copyWith(
+                                          color: AppColor.light,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        onTap: () {
+                                          showAppointmentBottomSheet(
+                                            context: context,
+                                            appointments:
+                                                lawyer.availableAppointments,
+                                            bookingType: "حجز فى المكتب",
+                                            price: lawyer.officePrice
+                                                .toString(),
+                                            lawyerId: lawyerId,
+                                          );
+                                        },
+                                        backgroundColor: AppColor.secondary,
+                                        icon: Icons.message_outlined,
                                       ),
-                                      onTap: () {
-                                        showAppointmentBottomSheet(
-                                          context: context,
-                                          appointments:
-                                              lawyer.availableAppointments,
-                                          bookingType: "حجز فى المكتب",
-                                          price: lawyer.officePrice.toString(),
-                                          lawyerId: lawyerId,
-                                        );
-                                      },
-                                      backgroundColor: AppColor.secondary,
-                                      icon: Icons.message_outlined,
-                                    ),
                                   ],
                                 ),
                               ),
