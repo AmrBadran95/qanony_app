@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:qanony/Core/styles/color.dart';
 import 'package:qanony/Core/styles/text.dart';
+import 'package:qanony/core/styles/padding.dart';
 import 'package:qanony/data/static/lawyer_specializations.dart';
 import 'package:qanony/services/cubits/appointments/appointments_cubit.dart';
 
@@ -323,7 +324,7 @@ class _MyAppointmentsTabState extends State<MyAppointmentsTab> {
             }
 
             return ListView.builder(
-              padding: const EdgeInsets.only(bottom: 80),
+              padding: AppPadding.paddingExtraSmall,
               itemCount: appointments.length,
               itemBuilder: (context, index) {
                 final item = appointments[index];

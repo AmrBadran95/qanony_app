@@ -52,9 +52,9 @@ class QanonyAppointmentCardWidget extends StatelessWidget {
     final String dayName = arabicDays[parsedDate.weekday % 7];
 
     return Card(
-      elevation: 4,
+      elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      margin: EdgeInsets.symmetric(vertical: 1.h),
+      margin: EdgeInsets.all(1.sp),
       child: Padding(
         padding: EdgeInsets.all(AppPadding.large),
         child: Column(

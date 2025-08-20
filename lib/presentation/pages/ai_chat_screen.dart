@@ -34,7 +34,7 @@ class AiChatScreen extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: AppPadding.paddingLarge,
+        padding: AppPadding.paddingSmall,
         child: Column(
           children: [
             GestureDetector(
@@ -178,11 +178,11 @@ class AiChatScreen extends StatelessWidget {
                     child: TextField(
                       maxLength: 1000,
                       controller: controller,
-                      style: AppText.bodyLarge.copyWith(color: AppColor.dark),
+                      style: AppText.bodyMedium.copyWith(color: AppColor.dark),
                       cursorColor: AppColor.dark,
                       decoration: InputDecoration(
                         hintText: "اكتب سؤالك...",
-                        hintStyle: AppText.bodyLarge.copyWith(
+                        hintStyle: AppText.bodyMedium.copyWith(
                           color: AppColor.dark,
                         ),
                         border: OutlineInputBorder(

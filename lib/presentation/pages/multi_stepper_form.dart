@@ -113,7 +113,7 @@ class MultiStepperForm extends StatelessWidget {
             ),
             Step(
               title: Text(
-                'طريفة التواصل',
+                'طريقة التواصل',
                 style: AppText.bodyMedium.copyWith(color: AppColor.dark),
               ),
               content: const ContactForm(),

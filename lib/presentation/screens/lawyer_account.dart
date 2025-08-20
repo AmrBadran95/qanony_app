@@ -154,7 +154,7 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
                     onPressed: () => _showCommunicationDialog(context, lawyer),
                     children: [
                       infoRow(
-                        lawyer.offersCall == true ? 'مكالمه فيديو/صوت' : '',
+                        lawyer.offersCall == true ? 'مكالمة فيديو/صوت' : '',
                         lawyer.offersCall == true
                             ? lawyer.callPrice?.toString() ?? ''
                             : '',
@@ -280,19 +280,13 @@ class _AccountLawyerScreenState extends State<AccountLawyerScreen> {
     return Padding(
       padding: EdgeInsets.only(bottom: AppPadding.small),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
-            child: Text(
-              label,
-              style: AppText.bodyMedium.copyWith(color: AppColor.primary),
-            ),
+          Text(
+            label,
+            style: AppText.bodyMedium.copyWith(color: AppColor.primary),
           ),
-          Expanded(
-            child: Text(
-              value,
-              style: AppText.bodySmall.copyWith(color: AppColor.dark),
-            ),
-          ),
+          Text(value, style: AppText.bodySmall.copyWith(color: AppColor.dark)),
         ],
       ),
     );

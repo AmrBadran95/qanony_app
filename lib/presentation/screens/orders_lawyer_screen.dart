@@ -50,7 +50,7 @@ class OrdersLawyerScreen extends StatelessWidget {
             final dateFormat = DateFormat('dd-MM-yyyy • hh:mm a', 'ar');
 
             return SingleChildScrollView(
-              padding: AppPadding.paddingMedium,
+              padding: AppPadding.paddingSmall,
               child: Column(
                 children: pendingOrders.map((order) {
                   return QanonyAppointmentCardWidget(

@@ -29,7 +29,6 @@ class MyAppointmentCardWidget extends StatelessWidget {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      margin: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
       child: Padding(
         padding: EdgeInsets.all(AppPadding.medium),
         child: Row(
