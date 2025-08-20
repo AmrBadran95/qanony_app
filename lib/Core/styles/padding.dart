@@ -2,16 +2,20 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppPadding {
+  static double extraSmall = 4.w;
   static double small = 8.w;
   static double medium = 16.w;
   static double large = 24.w;
   static double extraLarge = 32.w;
 
+  static EdgeInsets get paddingExtraSmall => EdgeInsets.all(extraSmall);
   static EdgeInsets get paddingSmall => EdgeInsets.all(small);
   static EdgeInsets get paddingMedium => EdgeInsets.all(medium);
   static EdgeInsets get paddingLarge => EdgeInsets.all(large);
   static EdgeInsets get paddingExtraLarge => EdgeInsets.all(extraLarge);
 
+  static EdgeInsets get horizontalExtraSmall =>
+      EdgeInsets.symmetric(horizontal: extraSmall);
   static EdgeInsets get horizontalSmall =>
       EdgeInsets.symmetric(horizontal: small);
   static EdgeInsets get horizontalMedium =>
@@ -21,6 +25,8 @@ class AppPadding {
   static EdgeInsets get horizontalExtraLarge =>
       EdgeInsets.symmetric(horizontal: extraLarge);
 
+  static EdgeInsets get verticalExtraSmall =>
+      EdgeInsets.symmetric(vertical: extraSmall);
   static EdgeInsets get verticalSmall => EdgeInsets.symmetric(vertical: small);
   static EdgeInsets get verticalMedium =>
       EdgeInsets.symmetric(vertical: medium);

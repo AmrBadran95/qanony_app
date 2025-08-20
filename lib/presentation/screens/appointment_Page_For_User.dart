@@ -79,7 +79,7 @@ class AppointmentPageForUser extends StatelessWidget {
                 SnackBar(
                   content: Text(
                     state.error,
-                    style: AppText.bodyMedium.copyWith(color: AppColor.primary),
+                    style: AppText.bodyMedium.copyWith(color: AppColor.error),
                   ),
                   backgroundColor: AppColor.grey,
                 ),
@@ -93,10 +93,27 @@ class AppointmentPageForUser extends StatelessWidget {
                 if (state is UserOrderLoading) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is UserOrderError) {
-                  return Center(child: Text(state.message));
+                  return Center(
+                    child: Text(
+                      state.message,
+                      style: AppText.bodyMedium.copyWith(color: AppColor.error),
+                    ),
+                  );
                 } else if (state is UserOrderLoaded) {
                   final order = state.orders
                     ..sort((a, b) => b.date.compareTo(a.date));
+
+                  if (state.orders.isEmpty) {
+                    return Center(
+                      child: Text(
+                        'لا توجد طلبات حالياً',
+                        style: AppText.bodySmall.copyWith(
+                          color: AppColor.error,
+                        ),
+                      ),
+                    );
+                  }
+
                   return SizedBox(
                     width: double.infinity,
                     child: Column(
@@ -703,7 +720,7 @@ class AppointmentPageForUser extends StatelessWidget {
                 return Center(
                   child: Text(
                     'لا توجد طلبات حالياً',
-                    style: AppText.bodySmall.copyWith(color: AppColor.dark),
+                    style: AppText.bodySmall.copyWith(color: AppColor.error),
                   ),
                 );
               },
